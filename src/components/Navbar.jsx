@@ -3,6 +3,7 @@ import mainLogo from "../assets/main-logo.png";
 import { FaRegUserCircle } from "react-icons/fa";
 import styled from "styled-components";
 import TobBarLine from "./ui/TobBarLine";
+import { NavLink } from "react-router-dom";
 const Navbar = () => {
   return (
     <Styled>
@@ -10,16 +11,16 @@ const Navbar = () => {
         <img src={mainLogo} width={200} alt="" />
         <div className="links">
           <li>
-            <a href="/">Admin Report</a>{" "}
+            <NavLink to="/">Admin Report</NavLink>{" "}
           </li>
           <li>
-            <a href="/">Branch</a>{" "}
+            <NavLink to="/">Branch</NavLink>{" "}
           </li>
           <li>
-            <a href="/">User</a>{" "}
+            <NavLink to="/users">User</NavLink>{" "}
           </li>
           <li>
-            <a href="/">Setting</a>{" "}
+            <NavLink to="/">Setting</NavLink>{" "}
           </li>
         </div>
 

@@ -2,6 +2,7 @@ import React from "react";
 import { Button, Checkbox, Form, Input } from "antd";
 import styled from "styled-components";
 import BloodLoginImage from "../assets/blood1.webp";
+import {Link} from 'react-router-dom'
 const onFinish = (values) => {
   console.log("Success:", values);
 };
@@ -37,7 +38,6 @@ const Login = () => {
           </Form.Item>
 
           <Form.Item
-            //   label="Password"
             name="password"
             rules={[
               {
@@ -48,6 +48,7 @@ const Login = () => {
           >
             <Input.Password placeholder="password" className="input-style " />
           </Form.Item>
+          <Link style={{textDecoration:"underline", margin:"10px 10px",display:"block"}} to={"/"} >Forget Password</Link>
 
           <Form.Item>
             <Button className="button-style" type="primary" htmlType="submit">
