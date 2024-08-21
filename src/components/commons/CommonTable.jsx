@@ -38,7 +38,7 @@ const CommonTable = React.memo(
     console.log("common table");
 
     return (
-      <div className="mx-6 border-[1px] border-[#F0F0F0] rounded">
+      <TableStyle className="mx-6 border-[1px] border-[#F0F0F0] rounded">
         <div className="common_table">
           <Table
             scroll={scroll || null}
@@ -73,7 +73,7 @@ const CommonTable = React.memo(
             />
           </div>
         )}
-      </div>
+      </TableStyle>
     );
   }
 );
@@ -96,17 +96,17 @@ export const TableStyle = styled.div`
   }
 
   th {
-    font-size: 15px;
+    font-size: 17px;
 
     background-color: #fafafa !important;
   }
 
   tr {
-    font-size: 15px;
+    font-size: 17px;
   }
 
   tr:n {
-    font-size: 15px;
+    font-size: 17px;
     background-color: #ffffff;
   }
 `;

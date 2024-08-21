@@ -2,20 +2,20 @@ import api from "./api";
 import TokenService from "./token.service";
 
 class AuthService {
-  login(username, password) {
-    console.log("inside login service")
+  login(email, password) {
+    console.log("inside login service");
     return api
-      .post("/auth/signin", {
-        username,
-        password
+      .post("/auth/login", {
+        email,
+        password,
       })
-      .then(response => {
-        console.log('response',response)
-        if (response.data.data.accessToken) {
-          TokenService.setUser(response.data.data);
+      .then((response) => {
+        console.log("response", response);
+        if (response.data.token) {
+          TokenService.setUser(response.data);
         }
 
-        return response.data.data;
+        return response.data;
       });
   }
 
@@ -27,7 +27,7 @@ class AuthService {
     return api.post("/auth/signup", {
       username,
       email,
-      password
+      password,
     });
   }
 
@@ -35,12 +35,10 @@ class AuthService {
     return TokenService.getUser();
   }
 
-  async checkPermmision(permmission,value){
-    const res  = await api
-    .get(`/auth/checkPermmission/${permmission}/${value}`)
-    
+  async checkPermmision(permmission, value) {
+    const res = await api.get(`/auth/checkPermmission/${permmission}/${value}`);
+
     return res.data?.data;
-    
   }
 }
 

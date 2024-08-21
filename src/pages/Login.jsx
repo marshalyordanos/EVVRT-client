@@ -1,16 +1,33 @@
-import React from "react";
-import { Button, Checkbox, Form, Input } from "antd";
+import React, { useState } from "react";
+import { Button, Checkbox, Form, Input, Spin } from "antd";
 import styled from "styled-components";
 import BloodLoginImage from "../assets/blood1.webp";
-import {Link} from 'react-router-dom'
-const onFinish = (values) => {
-  console.log("Success:", values);
-};
-const onFinishFailed = (errorInfo) => {
-  console.log("Failed:", errorInfo);
-};
+import { Link, useNavigate } from "react-router-dom";
+import api from "../api/api";
+import { useDispatch } from "react-redux";
+import { login } from "../redux/auth/authSlice";
+
 const Login = () => {
-  return (
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const onFinish = async (values) => {
+    try {
+      setLoading(true);
+      const res = await dispatch(login(values));
+      console.log("res", res);
+      navigate("/blood");
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+
+      console.log("error", error);
+    }
+  };
+  const onFinishFailed = (errorInfo) => {
+    console.log("Failed:", errorInfo);
+  };
+  return !loading ? (
     <Container>
       <div className="login_con">
         <p>EVVRT Login</p>
@@ -26,11 +43,12 @@ const Login = () => {
           <Form.Item
             //   label="Username"
             //   style={{ border: "2px solid" }}
-            name="username"
+            name="email"
             rules={[
               {
+                type: "email",
                 required: true,
-                message: "Please input your username!",
+                message: "Please input valid email!",
               },
             ]}
           >
@@ -48,7 +66,16 @@ const Login = () => {
           >
             <Input.Password placeholder="password" className="input-style " />
           </Form.Item>
-          <Link style={{textDecoration:"underline", margin:"10px 10px",display:"block"}} to={"/"} >Forget Password</Link>
+          <Link
+            style={{
+              textDecoration: "underline",
+              margin: "10px 10px",
+              display: "block",
+            }}
+            to={"/"}
+          >
+            Forget Password
+          </Link>
 
           <Form.Item>
             <Button className="button-style" type="primary" htmlType="submit">
@@ -68,15 +95,26 @@ const Login = () => {
         </div>
       </div>
     </Container>
+  ) : (
+    <SpinContainer className="spin_con flex justify-center items-center">
+      <Spin size="large" />
+    </SpinContainer>
   );
 };
 
+const SpinContainer = styled.div`
+  height: calc(100vh - 200px);
+  .ant-spin-dot-item {
+    background-color: #be0a0a;
+  }
+`;
 const Container = styled.div`
   margin: auto;
   margin-top: 30px;
   max-width: 1200px;
   display: flex;
   justify-content: space-between;
+
   .login_con {
     min-width: 400px;
   }

@@ -9,7 +9,7 @@ const handleErrorResponse = (errorMessage) => {
 };
 
 const instance = axios.create({
-  baseURL: "http://localhost:8001/api/v1",
+  baseURL: "http://localhost:8000/api",
   headers: {
     "Content-Type": "application/json",
   },
@@ -21,6 +21,7 @@ const setup = (store) => {
   instance.interceptors.request.use(
     (config) => {
       const token = TokenService.getLocalAccessToken();
+      console.log("token", token);
       if (token) {
         config.headers["Authorization"] = "Bearer " + token; // for Spring Boot back-end
         // config.headers["x-access-token"] = token; // for Node.js Express back-end
@@ -32,60 +33,60 @@ const setup = (store) => {
     }
   );
 
-  const { dispatch } = store;
+  // const { dispatch } = store;
 
-  instance.interceptors.response.use(
-    (res) => {
-      isreFrasing = false;
-      return res;
-    },
-    async (err) => {
-      const originalConfig = err.config;
+  // instance.interceptors.response.use(
+  //   (res) => {
+  //     isreFrasing = false;
+  //     return res;
+  //   },
+  //   async (err) => {
+  //     const originalConfig = err.config;
 
-      console.log("ppppppppppppppp0000000pppp-----top", isreFrasing);
+  //     console.log("ppppppppppppppp0000000pppp-----top", isreFrasing);
 
-      if (originalConfig.url !== "/auth/signin" && err.response) {
-        console.log("ppppppppppppppp0000000pppp", isreFrasing);
+  //     if (originalConfig.url !== "/auth/signin" && err.response) {
+  //       console.log("ppppppppppppppp0000000pppp", isreFrasing);
 
-        if (err.response.status === 401 && !isreFrasing) {
-          originalConfig._retry = true;
-          isreFrasing = true;
+  //       if (err.response.status === 401 && !isreFrasing) {
+  //         originalConfig._retry = true;
+  //         isreFrasing = true;
 
-          console.log("ppppppppppppppppppp", isreFrasing);
+  //         console.log("ppppppppppppppppppp", isreFrasing);
 
-          try {
-            const rs = await instance.post("/auth/refreshtoken", {
-              refreshToken: TokenService.getLocalRefreshToken(),
-            });
+  //         try {
+  //           const rs = await instance.post("/auth/refreshtoken", {
+  //             refreshToken: TokenService.getLocalRefreshToken(),
+  //           });
 
-            const { accessToken, refreshToken } = rs.data;
-            TokenService.updateLocalAccessToken(accessToken);
-            TokenService.updateLOcalRefreshToken(refreshToken);
+  //           const { accessToken, refreshToken } = rs.data;
+  //           TokenService.updateLocalAccessToken(accessToken);
+  //           TokenService.updateLOcalRefreshToken(refreshToken);
 
-            return instance(originalConfig);
-          } catch (_error) {
-            TokenService.removeUser();
-            dispatch(logout());
+  //           return instance(originalConfig);
+  //         } catch (_error) {
+  //           TokenService.removeUser();
+  //           dispatch(logout());
 
-            handleErrorResponse(err.response?.data?.message || err.message);
+  //           handleErrorResponse(err.response?.data?.message || err.message);
 
-            return Promise.reject(_error);
-          }
-        } else {
-          return handleErrorResponse(
-            err.response?.data?.message || err.message
-          );
-        }
-      } else if (
-        err.response?.status !== 401 ||
-        (originalConfig.url === "/auth/signin" && err.response)
-      ) {
-        return handleErrorResponse(err.response?.data?.message || err.message);
-      }
+  //           return Promise.reject(_error);
+  //         }
+  //       } else {
+  //         return handleErrorResponse(
+  //           err.response?.data?.message || err.message
+  //         );
+  //       }
+  //     } else if (
+  //       err.response?.status !== 401 ||
+  //       (originalConfig.url === "/auth/signin" && err.response)
+  //     ) {
+  //       return handleErrorResponse(err.response?.data?.message || err.message);
+  //     }
 
-      return Promise.reject(err);
-    }
-  );
+  //     return Promise.reject(err);
+  //   }
+  // );
 };
 export default instance;
 export { setup };

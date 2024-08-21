@@ -3,9 +3,9 @@ import authService from "../../api/auth.service";
 
 export const login = createAsyncThunk(
   "auth/login",
-  async ({ username, password }, { rejectWithValue }) => {
+  async ({ email, password }, { rejectWithValue }) => {
     try {
-      const res = await authService.login(username, password);
+      const res = await authService.login(email, password);
       return res;
     } catch (err) {
       console.log(err);
@@ -25,7 +25,7 @@ export const authSlice = createSlice({
       const { user } = action.payload;
       state.user = user;
     },
-    logout: (state, action) => {
+    logout: (state) => {
       state.user = null;
       state.token = null;
     },
@@ -33,18 +33,20 @@ export const authSlice = createSlice({
       state.value += action.payload;
     },
   },
-  extraReducers: {
-    [login.pending]: (state, action) => {
-      state.status = "loading";
-    },
-    [login.fulfilled]: (state, action) => {
-      state.status = "success";
-      state.user = action.payload;
-    },
-    [login.rejected]: (state, action) => {
-      state.status = "failed";
-      state.err = action.payload?.message;
-    },
+  extraReducers: (builder) => {
+    builder
+      .addCase(login.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(login.fulfilled, (state, action) => {
+        console.log("fulfilled", action);
+        state.status = "success";
+        state.user = action.payload;
+      })
+      .addCase(login.rejected, (state, action) => {
+        state.status = "failed";
+        state.err = action.payload?.message;
+      });
   },
 });
 
@@ -52,4 +54,4 @@ export const { setCredential, logout, incrementByAmount } = authSlice.actions;
 
 export default authSlice.reducer;
 export const selectCurrentUser = (state) => state.auth.user;
-export const token = (state) => state.auth.user?.accessToken;
+export const token = (state) => state.auth.user?.token;
