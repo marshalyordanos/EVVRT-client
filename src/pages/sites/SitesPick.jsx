@@ -1,24 +1,24 @@
 
     import React, { useEffect, useRef, useState } from 'react'
     import { useSearchParams } from 'react-router-dom'
-    import usersService from './UsersService';
+    import sitesService from './SitesService';
     import CommonTable from '../../components/commons/CommonTable';
     import { ButtonStyle, SearchInputStyle } from '../../components/commons/CommonStyles';
     import { Divider, Input } from 'antd';
-    import { searchUsers, updateUsersState, usersSearchText } from './UsersRedux';//** */
+    import { searchSites, updateSitesState, sitesSearchText } from './SitesRedux';//** */
     import { useDispatch, useSelector } from 'react-redux'; /*** */
 
     
-    const UsersPick = ({setIsModalOpen,selectHandler}) => {
-    const [usersData, setUsersData] = useState([])
+    const SitesPick = ({setIsModalOpen,selectHandler}) => {
+    const [sitesData, setSitesData] = useState([])
     const [total, setTotal] = useState()
     const [searchParams,setSearchParams] = useSearchParams()
     const dispatch = useDispatch(); /*** */
-    const searchText = useSelector(usersSearchText); //** */
+    const searchText = useSelector(sitesSearchText); //** */
     
     
     const [loading, setLoading] = useState();
-    const [usersSelection, setUsersSelection] = useState([])
+    const [sitesSelection, setSitesSelection] = useState([])
     const delayTimerRef = useRef(null);
     
     const getPaginationInfo = () => {
@@ -29,7 +29,7 @@
 
     useEffect(() => {
         const [page, limit] = getPaginationInfo();
-        dispatch(updateUsersState({ page: page, limit: limit }))
+        dispatch(updateSitesState({ page: page, limit: limit }))
 
         searchData();
     }, [])
@@ -37,19 +37,21 @@
     async function searchData() {
         try {
             setLoading(true)
-            const { payload } = await dispatch(searchUsers());
-            setUsersData(payload.data)
+            const { payload } = await dispatch(searchSites());
+            console.log("paylod",payload)
+            setSitesData(payload.data)
             setTotal(payload.total)
             setLoading(false)
         } catch (err) {
             setLoading(false)
         }
     }
+
     const searchHandler = (e) => {
         const { value } = e.target;
         const [page, limit] = getPaginationInfo();
 
-        dispatch(updateUsersState({ page: page, limit: limit, searchText: value }))
+        dispatch(updateSitesState({ page: page, limit: limit, searchText: value }))
         clearTimeout(delayTimerRef.current);
         delayTimerRef.current = setTimeout(() => {
 
@@ -60,62 +62,30 @@
 
     }
 
-    const handlePagination = (page, pageSize) => {
-        
-        // setSearchParams({page:page,limit:pageSize})
-        dispatch(updateUsersState({ page: page, limit: pageSize }))
+    const handlePagination = async (page, pageSize) => {
+       console.log("============")
+
+        // setSearchParams({ page: page, limit: pageSize })
+        dispatch(updateSitesState({ page: page, limit: pageSize }))
 
         searchData()
     }
-    
     
      const columns = [
          
     
      
             {
-                title: 'username',
-                dataIndex: 'username',
+                title: 'name',
+                dataIndex: 'name',
 
             },
              
             {
-                title: 'password',
-                dataIndex: 'password',
+                title: 'coordinatorid',
+                dataIndex: 'coordinatorid',
 
             },
-             
-            {
-                title: 'email',
-                dataIndex: 'email',
-
-            },
-             
-            {
-                title: 'First Name',
-                dataIndex: 'firstName',
-
-            },
-             
-            {
-                title: 'lastname',
-                dataIndex: 'lastName',
-
-            },
-             
-            {
-                title: 'Phone Number',
-                dataIndex: 'phoneNumber',
-
-            },
-             
-            {
-                title: 'role',
-                dataIndex: 'role',
-
-            },
-             
-          
             
          
          ];
@@ -136,9 +106,9 @@
 
     <CommonTable
                 rowSelectionType={"radio"}
-                data={usersData}
+                data={sitesData}
                 columns={columns}
-                setSelection={setUsersSelection}
+                setSelection={setSitesSelection}
                 handlePagination={handlePagination}
                 total={total}
                 loadding={loading}
@@ -150,7 +120,7 @@
      <button    onClick={()=>setIsModalOpen(false)} >
         cancel
       </button>
-      <button disabled={usersSelection.length==0} className={usersSelection.length>0?'':'disable'} onClick={()=>selectHandler(usersSelection[0])}>
+      <button disabled={sitesSelection.length==0} className={sitesSelection.length>0?'':'disable'} onClick={()=>selectHandler(sitesSelection[0])}>
         Return
       </button>
      </ButtonStyle>     
@@ -161,5 +131,5 @@
     
     
 
-    export default UsersPick
+    export default SitesPick
     

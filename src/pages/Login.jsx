@@ -16,7 +16,7 @@ const Login = () => {
       setLoading(true);
       const res = await dispatch(login(values));
       console.log("res", res);
-      navigate("/blood");
+      navigate("/users");
       setLoading(false);
     } catch (error) {
       setLoading(false);

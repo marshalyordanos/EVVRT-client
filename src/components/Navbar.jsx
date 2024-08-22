@@ -19,7 +19,12 @@ const Navbar = () => {
 
   return (
     <Styled>
-      <AppDrawer open={openDrawer} setOpen={setOpenDrawer}>
+      <AppDrawer
+        closable={true}
+        placement={"right"}
+        open={openDrawer}
+        setOpen={setOpenDrawer}
+      >
         <div className="links_small">
           <li>
             <NavLink to="/">Admin Report</NavLink>{" "}

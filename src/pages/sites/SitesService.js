@@ -2,25 +2,25 @@
     
 import api from '../../api/api';
 
-class UsersService {
-    createUser(data) {
+class SitesService {
+    createSite(data) {
         return api
-            .post("/users/create", data)
+            .post("/sites", data)
             .then(response => {
                 return response.data.data;
             });
     }
 
-    updateUser(data, id) {
+    updateSite(data, id) {
         return api
-            .patch("/users/update/" + id, data)
+            .patch("/sites/" + id, data)
             .then(response => {
                 return response.data.data;
             });
     }
 
-    searchUser({page, limit,searchText=null,sort=null,order}) {
-        let url = `/users?page=${page}&limit=${limit}`
+    searchSite({page, limit,searchText=null,sort=null,order}) {
+        let url = `/sites?page=${page}&limit=${limit}`
         if(sort){
     const sortValue = order == 'ascend' ? sort : order == 'descend' ? '-'+sort:'';
             url = url + `&sort=${sortValue}`
@@ -38,40 +38,40 @@ class UsersService {
             });
     }
 
-    getUser(id) {
+    getSite(id) {
         return api
-            .get("/users/" + id)
+            .get("/sites/" + id)
             .then(response => {
                 return response.data.data;
             });
     }
 
 
-    deleteUser( id) {
+    deleteSite( id) {
         return api
-            .delete("/users/delete/" + id)
+            .delete("/sites/" + id)
             .then(response => {
                 return response.data.data;
             });
     }
 
-    usersDo({method,payload}){
+    sitesDo({method,payload}){
         return api
-            .post("/users/do",{method,payload})
+            .post("/sites/do",{method,payload})
             .then(response => {
                 return response.data.data;
             });
     }
 
-    userDo({method,payload,id}){
+    siteDo({method,payload,id}){
         return api
-            .post("/users/do/"+id,{method,payload})
+            .post("/sites/do/"+id,{method,payload})
             .then(response => {
                 return response.data.data;
             });
     }
 }
 
-export default new UsersService();
+export default new SitesService();
 
     

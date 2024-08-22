@@ -118,7 +118,7 @@
       {loading ? <SpinStyle>
         <Spin style={{ color: "#fff" }} size="large" />
       </SpinStyle> : ""}
-      <button onClick={() => setUserPick(true)}>hhhhhh</button>
+      {/* <button onClick={() => setUserPick(true)}>hhhhhh</button> */}
       
       
     <FormStyle
@@ -132,11 +132,10 @@
       >
       
 
-    
-            <Form.Item
+            <FlexStyle><Form.Item
             className=' flex-1'
-            name={['user', 'username']}
-            label="username"
+            name={['user', 'firstName']}
+            label="First Name"
             rules={[
                 {
                 required: true,
@@ -150,8 +149,24 @@
             
             <Form.Item
             className=' flex-1'
-            name={['user', 'password']}
-            label="password"
+            name={['user', 'lastName']}
+            label="Last Name"
+            rules={[
+                {
+                required: true,
+                },
+            ]}
+            >
+            <Input  
+            className='border-gray-400 py-2'
+            />
+            </Form.Item></FlexStyle>
+    
+           <FlexStyle>
+           <Form.Item
+            className=' flex-1'
+            name={['user', 'username']}
+            label="Username"
             rules={[
                 {
                 required: true,
@@ -166,7 +181,7 @@
             <Form.Item
             className=' flex-1'
             name={['user', 'email']}
-            label="email"
+            label="Email"
             rules={[
                 {
                 required: true,
@@ -178,10 +193,16 @@
             />
             </Form.Item>
             
-            <Form.Item
+           </FlexStyle>
+
+           
+            
+            
+          <FlexStyle> 
+            {!mode&& <Form.Item
             className=' flex-1'
-            name={['user', 'firstname']}
-            label="firstname"
+            name={['user', 'password']}
+            label="Password"
             rules={[
                 {
                 required: true,
@@ -191,27 +212,12 @@
             <Input  
             className='border-gray-400 py-2'
             />
-            </Form.Item>
+            </Form.Item>}
             
             <Form.Item
             className=' flex-1'
-            name={['user', 'lastname']}
-            label="lastname"
-            rules={[
-                {
-                required: true,
-                },
-            ]}
-            >
-            <Input  
-            className='border-gray-400 py-2'
-            />
-            </Form.Item>
-            
-            <Form.Item
-            className=' flex-1'
-            name={['user', 'phonenumber']}
-            label="phonenumber"
+            name={['user', 'phoneNumber']}
+            label="Phone Number"
             rules={[
                 {
                 required: true,
@@ -225,8 +231,8 @@
             
                 <Form.Item
             name={['user', 'role']}
-            label="role"
-            className=' flex-1'
+            label="Role"
+            className='flex-1'
             rules={[
               {
                 required: true,
@@ -235,18 +241,16 @@
             ]}
           >
             <Select
-              className='border-gray-400 '
+              className='border-gray-400 h-10'
               placeholder="select your role">
-              <Option value="value1">Value1</Option>
-              <Option value="value2">Value2</Option>
+              <Option value="admin">Admin</Option>
+              <Option value="site_coordiantor">Site coordiantor</Option>
+              <Option value="regional_manager">Rsegional manager</Option>
+
             </Select>
-          </Form.Item>
+          </Form.Item></FlexStyle>
             
-                <Form.Item name={['user', 'isverified']} label="isverified" >
-                    <Switch checked={switch2} onChange={(value)=>setSwitch2(value)} style={{background:switch2?'blue':'gray'}} />
-                </Form.Item>
-            
-      
+             
       <ButtonStyle>
           <button onClick={() => setIsModalOpen(false)} >
             cancel

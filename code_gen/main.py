@@ -33,7 +33,7 @@ def start():
         val = input(f"Enter the yupe of {key} [string, bool, enum, date, number]: ")
         fields[key.lower()]=val
         count +=1
-    folder_path = os.path.join(os.path.dirname(__file__), 'src','pages',smodel)
+    folder_path = os.path.join(os.path.dirname(__file__), '..','src','pages',smodel)
     # folder_path_model = os.path.join(os.path.dirname(__file__), '..','server','src','models')
     # folder_path_back = os.path.join(os.path.dirname(__file__), '..','server','src','routes',smodel)
 

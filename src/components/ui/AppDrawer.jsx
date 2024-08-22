@@ -1,19 +1,28 @@
 import React, { useState } from "react";
 import { Button, Drawer } from "antd";
 import styled from "styled-components";
-const AppDrawer = ({ children, open, setOpen }) => {
+const AppDrawer = ({
+  children,
+  closable,
+  getContainer,
+  open,
+  placement,
+  setOpen,
+}) => {
   const onClose = () => {
     setOpen(false);
   };
   return (
-    <>
-      {/* <Button type="primary" onClick={showDrawer}>
-        Open
-      </Button> */}
-      <Drawer title="Menu" onClose={onClose} open={open}>
-        <Container>{children}</Container>
-      </Drawer>
-    </>
+    <Drawer
+      getContainer={getContainer}
+      placement={placement}
+      title="Menu"
+      onClose={onClose}
+      closable={closable}
+      open={open}
+    >
+      <Container>{children}</Container>
+    </Drawer>
   );
 };
 const Container = styled.div`

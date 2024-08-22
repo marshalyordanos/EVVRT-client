@@ -2,25 +2,25 @@
     
 import api from '../../api/api';
 
-class UsersService {
-    createUser(data) {
+class RegionsService {
+    createRegion(data) {
         return api
-            .post("/users/create", data)
+            .post("/regions", data)
             .then(response => {
                 return response.data.data;
             });
     }
 
-    updateUser(data, id) {
+    updateRegion(data, id) {
         return api
-            .patch("/users/update/" + id, data)
+            .patch("/regions/" + id, data)
             .then(response => {
                 return response.data.data;
             });
     }
 
-    searchUser({page, limit,searchText=null,sort=null,order}) {
-        let url = `/users?page=${page}&limit=${limit}`
+    searchRegion({page, limit,searchText=null,sort=null,order}) {
+        let url = `/regions?page=${page}&limit=${limit}`
         if(sort){
     const sortValue = order == 'ascend' ? sort : order == 'descend' ? '-'+sort:'';
             url = url + `&sort=${sortValue}`
@@ -38,40 +38,40 @@ class UsersService {
             });
     }
 
-    getUser(id) {
+    getRegion(id) {
         return api
-            .get("/users/" + id)
+            .get("/regions/" + id)
             .then(response => {
                 return response.data.data;
             });
     }
 
 
-    deleteUser( id) {
+    deleteRegion( id) {
         return api
-            .delete("/users/delete/" + id)
+            .delete("/regions/" + id)
             .then(response => {
                 return response.data.data;
             });
     }
 
-    usersDo({method,payload}){
+    regionsDo({method,payload}){
         return api
-            .post("/users/do",{method,payload})
+            .post("/regions/do",{method,payload})
             .then(response => {
                 return response.data.data;
             });
     }
 
-    userDo({method,payload,id}){
+    regionDo({method,payload,id}){
         return api
-            .post("/users/do/"+id,{method,payload})
+            .post("/regions/do/"+id,{method,payload})
             .then(response => {
                 return response.data.data;
             });
     }
 }
 
-export default new UsersService();
+export default new RegionsService();
 
     

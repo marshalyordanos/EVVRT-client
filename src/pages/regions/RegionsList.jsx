@@ -4,10 +4,9 @@ import { MoreOutlined, ReloadOutlined } from "@ant-design/icons";
 import { Button, Dropdown, Input } from "antd";
 import styled from "styled-components";
 import CommonModal from "../../components/commons/CommonModel";
-import { IoMdAdd } from "react-icons/io";
 
-import usersService from "./UsersService";
-import UsersEdit from "./UsersEdit";
+import regionsService from "./RegionsService";
+import RegionsEdit from "./RegionsEdit";
 import { NavLink, useSearchParams } from "react-router-dom";
 import {
   HeaderStyle,
@@ -15,17 +14,22 @@ import {
 } from "../../components/commons/CommonStyles";
 import CommonDeleteModal from "../../components/commons/CommonDeleteModal";
 import { useDispatch, useSelector } from "react-redux";
-import { searchUsers, updateUsersState, usersSearchText } from "./UsersRedux";
-import { FiEdit } from "react-icons/fi";
+import {
+  searchRegions,
+  updateRegionsState,
+  regionsSearchText,
+} from "./RegionsRedux";
 import { IoTrashOutline } from "react-icons/io5";
+import { FiEdit } from "react-icons/fi";
+import { IoMdAdd } from "react-icons/io";
 
-const UsersList = () => {
-  const [usersData, setUsersData] = useState([]);
+const RegionsList = () => {
+  const [regionsData, setRegionsData] = useState([]);
   const [total, setTotal] = useState();
 
-  const searchText = useSelector(usersSearchText);
+  const searchText = useSelector(regionsSearchText);
   const [loading, setLoading] = useState();
-  const [usersSelection, setUsersSelection] = useState([]);
+  const [regionsSelection, setRegionsSelection] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
@@ -41,7 +45,7 @@ const UsersList = () => {
 
   useEffect(() => {
     const [page, limit] = getPaginationInfo();
-    dispatch(updateUsersState({ page: page, limit: limit }));
+    dispatch(updateRegionsState({ page: page, limit: limit }));
     // setSearchParams({ ...Object.fromEntries(searchParams), 'searchText': e.target.value })
     searchData();
   }, []);
@@ -49,8 +53,8 @@ const UsersList = () => {
   async function searchData() {
     try {
       setLoading(true);
-      const { payload } = await dispatch(searchUsers());
-      setUsersData(payload.data);
+      const { payload } = await dispatch(searchRegions());
+      setRegionsData(payload.data);
       setTotal(payload.total);
       setLoading(false);
     } catch (err) {
@@ -63,7 +67,9 @@ const UsersList = () => {
     const [page, limit] = getPaginationInfo();
 
     // setSearchParams({ page: page, limit: limit })
-    dispatch(updateUsersState({ page: page, limit: limit, searchText: value }));
+    dispatch(
+      updateRegionsState({ page: page, limit: limit, searchText: value })
+    );
     clearTimeout(delayTimerRef.current);
     delayTimerRef.current = setTimeout(() => {
       searchData();
@@ -73,19 +79,19 @@ const UsersList = () => {
   const handlePagination = async (page, pageSize) => {
     // permmission exmple
 
-    // if (!(await authService.checkPermmision('users', 'read'))) {
+    // if (!(await authService.checkPermmision('regions', 'read'))) {
     //     return message.error('You have not a permmission');
     // }
 
     setSearchParams({ page: page, limit: pageSize });
-    dispatch(updateUsersState({ page: page, limit: pageSize }));
+    dispatch(updateRegionsState({ page: page, limit: pageSize }));
 
     searchData();
   };
 
   const tableChange = (pagination, filters, sorter) => {
     const { field, order } = sorter;
-    dispatch(updateUsersState({ sort: field, order: order }));
+    dispatch(updateRegionsState({ sort: field, order: order }));
 
     searchData();
   };
@@ -95,7 +101,7 @@ const UsersList = () => {
 
     setSearchParams({ page: 1, limit: 5 });
     dispatch(
-      updateUsersState({
+      updateRegionsState({
         page: 1,
         limit: 5,
         sort: "",
@@ -109,7 +115,7 @@ const UsersList = () => {
   const handleDelete = async () => {
     try {
       setLoading(true);
-      const data = await usersService.deleteUser(modeID);
+      const data = await regionsService.deleteRegion(modeID);
       setIsDeleteModalOpen(false);
 
       searchData();
@@ -152,8 +158,8 @@ const UsersList = () => {
 
   const columns = [
     {
-      title: "Username",
-      dataIndex: "username",
+      title: "Name",
+      dataIndex: "name",
       render: (text, recored) => {
         return (
           <NavLink
@@ -169,62 +175,42 @@ const UsersList = () => {
     },
 
     {
-      title: "Email",
-      dataIndex: "email",
+      title: "Manager",
+      dataIndex: "managerId",
+      render: (_, recored) => {
+        return (
+          <p>
+            {recored?.managerId.firstName + " " + recored?.managerId.lastName}
+          </p>
+        );
+      },
       sorter: true,
     },
-
-    {
-      title: "First name",
-      dataIndex: "firstName",
-      sorter: true,
-    },
-
-    {
-      title: "Last name",
-      dataIndex: "lastName",
-      sorter: true,
-    },
-
-    {
-      title: "Phone Number",
-      dataIndex: "phoneNumber",
-      sorter: true,
-    },
-
-    {
-      title: "role",
-      dataIndex: "role",
-      sorter: true,
-    },
-
     {
       title: "Action",
       dataIndex: "action",
       render: (_, recored) => {
         return (
           <div className="flex g-2">
-          
             <Button
               type="text"
-              style={{border:"1px solid ligthgray",width:50}}
+              style={{ border: "1px solid ligthgray", width: 50 }}
               icon={<FiEdit size={20} />}
               onClick={() => {
                 setModeID(recored._id);
                 setIsModalOpen(true);
               }}
-             ></Button>
-             <di className="mx-1"></di>
-             <Button
+            ></Button>
+            <di className="mx-1"></di>
+            <Button
               type="text"
               icon={<IoTrashOutline size={20} />}
-              style={{border:"1px solid ligthgray",width:50}}
+              style={{ border: "1px solid ligthgray", width: 50 }}
               onClick={() => {
-                setModeID(recored._id); 
-      setIsDeleteModalOpen(true);
-
+                setModeID(recored._id);
+                setIsDeleteModalOpen(true);
               }}
-             ></Button>
+            ></Button>
           </div>
         );
       },
@@ -239,8 +225,8 @@ const UsersList = () => {
           isModalOpen={isModalOpen}
           setIsModalOpen={setIsModalOpen}
         >
-          <UsersEdit
-            usersData={usersData}
+          <RegionsEdit
+            regionsData={regionsData}
             searchData={searchData}
             setMode={setModeID}
             mode={modeID}
@@ -278,11 +264,11 @@ const UsersList = () => {
           <div className="flex bg-gray-300 py-2 px-4 rounded-full w-[200px] gap-2">
             <div className="flex justify-center items-center">
               <p className="bg-gray-600 text-white py-2 px-7 rounded-full text-xl">
-                {total}
+                {total || 0}
               </p>
             </div>
             <div className="flex justify-center items-center">
-              <p className="text-lg leading-4">Number of user</p>
+              <p className="text-lg leading-4">Number of site</p>
             </div>
           </div>
           <div
@@ -298,7 +284,7 @@ const UsersList = () => {
               </div>
             </div>
             <div className="flex justify-center items-center">
-              <p className="text-lg leading-4">Add New user</p>
+              <p className="text-lg leading-4">Add New Site</p>
             </div>
           </div>
         </div>
@@ -306,9 +292,9 @@ const UsersList = () => {
 
       <CommonTable
         rowSelectionType={"checkbox"}
-        data={usersData}
+        data={regionsData}
         columns={columns}
-        setSelection={setUsersSelection}
+        setSelection={setRegionsSelection}
         handlePagination={handlePagination}
         total={total}
         loadding={loading}
@@ -318,4 +304,4 @@ const UsersList = () => {
   );
 };
 
-export default UsersList;
+export default RegionsList;
