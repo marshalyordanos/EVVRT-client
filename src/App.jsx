@@ -14,6 +14,7 @@ import { useDispatch } from "react-redux";
 import { setCredential } from "./redux/auth/authSlice";
 import authService from "./api/auth.service";
 import SettingRoutting from "./setting-routing";
+import IndicatorsList from "./pages/indicators/IndicatorsList";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -38,6 +39,8 @@ function App() {
             <Route path="/users" element={<UsersList />} />
             <Route path="/sites" element={<SitesList />} />
             <Route path="/regions" element={<RegionsList />} />
+            <Route path="/indicators" element={<IndicatorsList />} />
+
             <Route path="/setting/*" element={<SettingRoutting />} />
 
             {/* <Route path="/blood/*" element={<LayoutRouting />} /> */}

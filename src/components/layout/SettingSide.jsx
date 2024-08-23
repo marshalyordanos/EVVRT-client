@@ -3,12 +3,13 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "../../redux/auth/authSlice";
 import { NavLink } from "react-router-dom";
+import styled from "styled-components";
 
 const SettingSide = () => {
   const user = useSelector(selectCurrentUser);
   console.log("user", user);
   return (
-    <div>
+    <Container>
       <div className="flex flex-col items-center ">
         <Avatar
           style={{
@@ -31,26 +32,6 @@ const SettingSide = () => {
       <div>
         <p>
           <NavLink
-            to={"/setting/dashboard"}
-            className={
-              "p-3 block hover:bg-black hover:text-white border-b-[1px] border-gray-300"
-            }
-          >
-            Profile
-          </NavLink>
-        </p>
-        <p>
-          <NavLink
-            to={"/setting/dashboard"}
-            className={
-              "p-3 block hover:bg-black hover:text-white border-b-[1px] border-gray-300"
-            }
-          >
-            Profile
-          </NavLink>
-        </p>
-        <p>
-          <NavLink
             to={"/setting/profile"}
             className={
               "p-3 block hover:bg-black hover:text-white border-b-[1px] border-gray-300"
@@ -59,9 +40,35 @@ const SettingSide = () => {
             Profile
           </NavLink>
         </p>
+        <p>
+          <NavLink
+            to={"/setting/change_password"}
+            className={
+              "p-3 block hover:bg-black hover:text-white border-b-[1px] border-gray-300"
+            }
+          >
+            Change password
+          </NavLink>
+        </p>
+        <p>
+          <NavLink
+            to={"/setting/q"}
+            className={
+              "p-3 block hover:bg-black hover:text-white border-b-[1px] border-gray-300"
+            }
+          >
+            Profile
+          </NavLink>
+        </p>
       </div>
-    </div>
+    </Container>
   );
 };
 
+const Container = styled.div`
+  .active {
+    color: white;
+    background-color: black;
+  }
+`;
 export default SettingSide;

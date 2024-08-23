@@ -36,7 +36,7 @@ const Navbar = () => {
             <NavLink to="/users">User</NavLink>{" "}
           </li>
           <li>
-            <NavLink to="/">Setting</NavLink>{" "}
+            <NavLink to="/setting/profile">Setting</NavLink>{" "}
           </li>
         </div>
         <div className="button_con">
@@ -52,13 +52,13 @@ const Navbar = () => {
               <NavLink to="/">Admin Report</NavLink>{" "}
             </li>
             <li>
-              <NavLink to="/">Branch</NavLink>{" "}
+              <NavLink to="/indicators">Branch</NavLink>{" "}
             </li>
             <li>
               <NavLink to="/users">User</NavLink>{" "}
             </li>
             <li>
-              <NavLink to="/">Setting</NavLink>{" "}
+              <NavLink to="/setting/profile">Setting</NavLink>{" "}
             </li>
             <li>
               <button
@@ -122,6 +122,10 @@ const Styled = styled.div`
         color: black;
         /* margin: 0 20px; */
       }
+      .active {
+        color: #b81010;
+        /* background-color: red; */
+      }
       a:hover {
         color: #bb2424;
       }
@@ -146,6 +150,7 @@ const Styled = styled.div`
       font-size: 20px;
     }
   }
+
   @media only screen and (max-width: 768px) {
     .links,
     .button_con {
