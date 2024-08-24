@@ -52,10 +52,16 @@ const Navbar = () => {
               <NavLink to="/">Admin Report</NavLink>{" "}
             </li>
             <li>
-              <NavLink to="/indicators">Branch</NavLink>{" "}
+              <NavLink to="/indicators">Indicators</NavLink>{" "}
             </li>
             <li>
               <NavLink to="/users">User</NavLink>{" "}
+            </li>
+            <li>
+              <NavLink to="/regions">Region</NavLink>{" "}
+            </li>
+            <li>
+              <NavLink to="/sites">Site</NavLink>{" "}
             </li>
             <li>
               <NavLink to="/setting/profile">Setting</NavLink>{" "}

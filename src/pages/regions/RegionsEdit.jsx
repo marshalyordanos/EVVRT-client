@@ -183,7 +183,7 @@ const RegionsEdit = ({
             <Input
               disabled
               value={selectedUser?.username}
-              className="border-none flex-1"
+              className="border-none flex-1 disabled:text-black"
             />
             <div
               onClick={() => setUserPick(true)}

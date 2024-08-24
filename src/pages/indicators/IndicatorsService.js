@@ -11,6 +11,14 @@ class IndicatorsService {
             });
     }
 
+    saveIndicator(data) {
+        return api
+            .post("/indicators/save", data)
+            .then(response => {
+                return response.data.data;
+            });
+    }
+
     updateIndicator(data, id) {
         return api
             .patch("/indicators/" + id, data)

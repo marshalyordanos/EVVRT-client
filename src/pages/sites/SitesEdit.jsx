@@ -22,6 +22,7 @@ import SitesPick from "./SitesPick";
 import dayjs from "dayjs";
 import UsersPick from "../users/UsersPick";
 import { IoSearchOutline } from "react-icons/io5";
+import RegionsPick from "../regions/RegionsPick";
 
 const { Option } = Select;
 
@@ -50,6 +51,8 @@ const SitesEdit = ({
   const [sitePick, setSitePick] = useState(false);
   const [userPick, setUserPick] = useState(false);
   const [selectedUser, setSelecteduser] = useState(null);
+  const [regionPick, setRegionPick] = useState(false);
+  const [selectedRegion, setSelectedregion] = useState(null);
 
   useEffect(() => {
     const featchData = async () => {
@@ -89,6 +92,16 @@ const SitesEdit = ({
       },
     });
     setUserPick(false);
+  };
+  const regionPickHandler = (data) => {
+    setSelectedregion(data);
+    form.setFieldsValue({
+      site: {
+        ...form.getFieldsValue().site,
+        regionId: data?._id,
+      },
+    });
+    setRegionPick(false);
   };
   console.log("data", selectedUser?.username);
 
@@ -140,7 +153,20 @@ const SitesEdit = ({
       ) : (
         ""
       )}
-
+      {regionPick ? (
+        <CommonModal
+          width={700}
+          isModalOpen={regionPick}
+          setIsModalOpen={setRegionPick}
+        >
+          <RegionsPick
+            setIsModalOpen={setRegionPick}
+            selectHandler={regionPickHandler}
+          />
+        </CommonModal>
+      ) : (
+        ""
+      )}
       {loading ? (
         <SpinStyle>
           <Spin style={{ color: "#fff" }} size="large" />
@@ -184,10 +210,34 @@ const SitesEdit = ({
             <Input
               disabled
               value={selectedUser?.username}
-              className="border-none flex-1"
+              className="border-none flex-1 disabled:text-black"
             />
             <div
               onClick={() => setUserPick(true)}
+              className="flex justify-center items-center py-2 px-4 hover:bg-red-700"
+            >
+              <IoSearchOutline size={18} />
+            </div>
+          </div>
+        </Form.Item>
+        <Form.Item
+          className=" flex-1"
+          name={["site", "regionId"]}
+          label="Region"
+          rules={[
+            {
+              required: true,
+            },
+          ]}
+        >
+          <div className=" flex bg-slate-200 border-gray-200 border-[1px] rounded ">
+            <Input
+              disabled
+              value={selectedRegion?.name}
+              className="border-none flex-1 disabled:text-black"
+            />
+            <div
+              onClick={() => setRegionPick(true)}
               className="flex justify-center items-center py-2 px-4 hover:bg-red-700"
             >
               <IoSearchOutline size={18} />
