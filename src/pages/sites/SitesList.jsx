@@ -187,7 +187,7 @@ const SitesList = () => {
       title: "Region",
       dataIndex: "regionId",
       render: (text, recored) => {
-        return <p>{recored?.regionId.name}</p>;
+        return <p>{recored?.regionId?.name}</p>;
       },
       sorter: true,
     },

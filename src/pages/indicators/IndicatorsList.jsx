@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import CommonTable from "../../components/commons/CommonTable";
 import { MoreOutlined, ReloadOutlined } from "@ant-design/icons";
-import { Button, Dropdown, Input } from "antd";
+import { Button, Dropdown, Input, Modal } from "antd";
 import styled from "styled-components";
 import CommonModal from "../../components/commons/CommonModel";
+import { FaCirclePlus } from "react-icons/fa6";
 
 import indicatorsService from "./IndicatorsService";
 import IndicatorsEdit from "./IndicatorsEdit";
@@ -20,7 +21,7 @@ import {
   indicatorsSearchText,
 } from "./IndicatorsRedux";
 import { FiEdit } from "react-icons/fi";
-import { IoTrashOutline } from "react-icons/io5";
+import { IoPulseOutline, IoTrashOutline } from "react-icons/io5";
 import { IoMdAdd } from "react-icons/io";
 
 const IndicatorsList = () => {
@@ -159,43 +160,10 @@ const IndicatorsList = () => {
 
   const columns = [
     {
-      title: " ",
-      dataIndex: "action",
-      render: (_, recored) => {
-        return (
-          <Dropdown
-            menu={{
-              items,
-              onClick: (value) => onClick(value, recored),
-            }}
-            trigger={["click"]}
-            placement="bottomLeft"
-          >
-            <Button
-              type="text"
-              icon={<MoreOutlined style={{ fontSize: 20 }} />}
-              onClick={() => {
-                setModeID(recored._id);
-              }}
-            ></Button>
-          </Dropdown>
-        );
-      },
-    },
-
-    {
       title: "siteid",
       dataIndex: "siteId",
       render: (text, recored) => {
-        return (
-          <NavLink
-            style={{ color: "#2f1dca" }}
-            state={recored}
-            to={`${recored._id}`}
-          >
-            {text}
-          </NavLink>
-        );
+        return <p>{recored?.siteId?.name}</p>;
       },
       sorter: true,
     },
@@ -237,11 +205,10 @@ const IndicatorsList = () => {
             <di className="mx-1"></di>
             <Button
               type="text"
-              icon={<IoTrashOutline size={20} />}
-              style={{ border: "1px solid ligthgray", width: 50 }}
+              icon={<FaCirclePlus style={{ fontSize: 20 }} />}
               onClick={() => {
                 setModeID(recored.id);
-                setIsDeleteModalOpen(true);
+                setIsModalOpen(true);
               }}
             ></Button>
           </div>

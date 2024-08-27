@@ -9,6 +9,8 @@ import AppDrawer from "./ui/AppDrawer";
 import { useDispatch, useSelector } from "react-redux";
 import { logout, selectCurrentUser } from "../redux/auth/authSlice";
 import { FaLongArrowAltLeft } from "react-icons/fa";
+import { Modal } from "antd";
+import { ButtonStyle } from "./commons/CommonStyles";
 
 const Navbar = () => {
   const [openDrawer, setOpenDrawer] = useState(false);
@@ -16,9 +18,29 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const user = useSelector(selectCurrentUser);
   console.log("user", user);
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+  const handleOk = () => {
+    dispatch(logout());
+    localStorage.removeItem("user");
+    navigate("/login");
+    setIsModalOpen(false);
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
   return (
     <Styled>
+      <Modal
+        title="Logout"
+        open={isModalOpen}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
+        <p className="text-2xl">Are you sure you want to logout?</p>
+      </Modal>
       <AppDrawer
         closable={true}
         placement={"right"}
@@ -70,9 +92,7 @@ const Navbar = () => {
               <button
                 className="logut_link"
                 onClick={() => {
-                  dispatch(logout());
-                  localStorage.removeItem("user");
-                  navigate("/login");
+                  setIsModalOpen(true);
                 }}
               >
                 Log out

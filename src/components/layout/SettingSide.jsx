@@ -5,7 +5,7 @@ import { selectCurrentUser } from "../../redux/auth/authSlice";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 
-const SettingSide = () => {
+const SettingSide = ({ setOpenDrawer }) => {
   const user = useSelector(selectCurrentUser);
   console.log("user", user);
   return (
@@ -30,7 +30,13 @@ const SettingSide = () => {
         <p className="text-md leading-5 ">@{user?.user?.username}</p>
       </div>
       <div>
-        <p>
+        <p
+          onClick={() => {
+            if (setOpenDrawer) {
+              setOpenDrawer();
+            }
+          }}
+        >
           <NavLink
             to={"/setting/profile"}
             className={
@@ -40,7 +46,13 @@ const SettingSide = () => {
             Profile
           </NavLink>
         </p>
-        <p>
+        <p
+          onClick={() => {
+            if (setOpenDrawer) {
+              setOpenDrawer();
+            }
+          }}
+        >
           <NavLink
             to={"/setting/change_password"}
             className={
@@ -50,7 +62,7 @@ const SettingSide = () => {
             Change password
           </NavLink>
         </p>
-        <p>
+        {/* <p>
           <NavLink
             to={"/setting/q"}
             className={
@@ -59,7 +71,7 @@ const SettingSide = () => {
           >
             Profile
           </NavLink>
-        </p>
+        </p> */}
       </div>
     </Container>
   );

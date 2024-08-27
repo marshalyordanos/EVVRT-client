@@ -10,12 +10,18 @@ import { login } from "../redux/auth/authSlice";
 const Login = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
+  const [err, setErr] = useState("");
+
   const navigate = useNavigate();
   const onFinish = async (values) => {
     try {
       setLoading(true);
       const res = await dispatch(login(values));
       console.log("res", res);
+      // if (res.type == "auth/login/rejected") {
+      //   setErr("");
+      // }
+
       navigate("/users");
       setLoading(false);
     } catch (error) {

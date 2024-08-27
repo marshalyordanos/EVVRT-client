@@ -130,7 +130,7 @@ const IndicatorsEdit = ({
       const data = await indicatorsService.createIndicator(datas.form);
 
       // setIsModalOpen(false);
-      // searchData();
+      searchData();
 
       // setLoading(false);
     } catch (err) {
