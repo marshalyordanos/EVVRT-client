@@ -12,6 +12,7 @@
 
             const res = await IndicatorsService.searchIndicator({page,limit,searchText,sort,order});
             
+            
     
             return res;
         } catch (err) {

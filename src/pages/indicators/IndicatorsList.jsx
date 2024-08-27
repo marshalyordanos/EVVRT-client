@@ -54,6 +54,7 @@ const IndicatorsList = () => {
     try {
       setLoading(true);
       const { payload } = await dispatch(searchIndicators());
+      console.log("data playlpd:", payload);
       setIndicatorsData(payload.data);
       setTotal(payload.total);
       setLoading(false);
@@ -184,7 +185,7 @@ const IndicatorsList = () => {
 
     {
       title: "siteid",
-      dataIndex: "siteid",
+      dataIndex: "siteId",
       render: (text, recored) => {
         return (
           <NavLink
@@ -201,7 +202,7 @@ const IndicatorsList = () => {
 
     {
       title: "duedate",
-      dataIndex: "duedate",
+      dataIndex: "dueDate",
       sorter: true,
     },
 
@@ -213,7 +214,7 @@ const IndicatorsList = () => {
 
     {
       title: "ispublish",
-      dataIndex: "ispublish",
+      dataIndex: "isPublish",
       render: (text, recored) => {
         return recored.ispublish ? <p>true</p> : <p>false</p>;
       },
@@ -229,7 +230,7 @@ const IndicatorsList = () => {
               style={{ border: "1px solid ligthgray", width: 50 }}
               icon={<FiEdit size={20} />}
               onClick={() => {
-                setModeID(recored._id);
+                setModeID(recored.id);
                 setIsModalOpen(true);
               }}
             ></Button>
@@ -239,7 +240,7 @@ const IndicatorsList = () => {
               icon={<IoTrashOutline size={20} />}
               style={{ border: "1px solid ligthgray", width: 50 }}
               onClick={() => {
-                setModeID(recored._id);
+                setModeID(recored.id);
                 setIsDeleteModalOpen(true);
               }}
             ></Button>

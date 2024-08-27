@@ -42,7 +42,7 @@ class IndicatorsService {
         return api
             .get(url)
             .then(response => {
-                return {data:response.data.data,total:response.data.total};
+                return {data:response.data.forms,total:response.data.total};
             });
     }
 
@@ -50,7 +50,7 @@ class IndicatorsService {
         return api
             .get("/indicators/" + id)
             .then(response => {
-                return response.data.data;
+                return response.data;
             });
     }
 

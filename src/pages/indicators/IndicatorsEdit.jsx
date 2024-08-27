@@ -52,6 +52,8 @@ const IndicatorsEdit = ({
   const [indicatorPick, setIndicatorPick] = useState(false);
   const [sitePick, setSitePick] = useState(false);
   const [selectedSite, setSelectedsite] = useState(null);
+  const [forms, setForms] = useState(null);
+
   // *********************** steper****************************
   const { token } = theme.useToken();
   const [current, setCurrent] = useState(0);
@@ -77,8 +79,20 @@ const IndicatorsEdit = ({
     const featchData = async () => {
       try {
         const data = await indicatorsService.getIndicator(mode);
+        console.log("one data:", data);
+        setSelectedsite(data.siteId);
+        setForms({
+          siteId: data.siteId._id,
+          dueDate: dayjs(data.dueDate),
+          date: dayjs(data.date),
+        });
         form.setFieldsValue({
-          indicator: { ...data, updatedAt: dayjs(data.updatedAt) },
+          form: {
+            siteId: data.siteId._id,
+            dueDate: dayjs(data.dueDate),
+            date: dayjs(data.date),
+          },
+          indicator: data.indicators,
         });
       } catch (err) {}
     };
@@ -110,7 +124,7 @@ const IndicatorsEdit = ({
 
   const onAdd = async (datas) => {
     try {
-      setLoading(true);
+      // setLoading(true);
       console.log("datas", datas);
 
       const data = await indicatorsService.createIndicator(datas.form);
@@ -118,24 +132,24 @@ const IndicatorsEdit = ({
       // setIsModalOpen(false);
       // searchData();
 
-      setLoading(false);
+      // setLoading(false);
     } catch (err) {
-      setLoading(false);
+      // setLoading(false);
     }
 
     try {
-      setLoading(true);
+      // setLoading(true);
       console.log("datas", "===================================datas");
 
       const data2 = await indicatorsService.saveIndicator({
         ...datas.form,
         indicators: datas.indicator,
       });
-      console.lof("datas for save: ", data);
+      // console.lof("datas for save: ", data);
       // setIsModalOpen(false);
       // searchData();
 
-      setLoading(false);
+      // setLoading(false);
     } catch (err) {
       console.log(err);
     }
@@ -143,17 +157,20 @@ const IndicatorsEdit = ({
 
   const onUpdate = async (datas) => {
     try {
-      setLoading(true);
+      // setLoading(true);
+      console.log("datas", "===================================datas", datas);
 
-      const data = await indicatorsService.updateIndicator(
-        datas.indicator,
-        mode
-      );
-      searchData();
-      setIsModalOpen(false);
-      setLoading(false);
+      const data2 = await indicatorsService.saveIndicator({
+        ...forms,
+        indicators: datas.indicator,
+      });
+      console.lof("datas for save: ", data2);
+      // setIsModalOpen(false);
+      // searchData();
+
+      // setLoading(false);
     } catch (err) {
-      setLoading(false);
+      console.log(err);
     }
   };
 
