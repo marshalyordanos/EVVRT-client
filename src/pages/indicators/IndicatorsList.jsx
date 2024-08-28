@@ -33,6 +33,7 @@ const IndicatorsList = () => {
   const [indicatorsSelection, setIndicatorsSelection] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [type, setType] = useState("");
 
   const [modeID, setModeID] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
@@ -169,22 +170,22 @@ const IndicatorsList = () => {
     },
 
     {
-      title: "duedate",
+      title: "Due date",
       dataIndex: "dueDate",
       sorter: true,
     },
 
     {
-      title: "date",
+      title: "Date",
       dataIndex: "date",
       sorter: true,
     },
 
     {
-      title: "ispublish",
-      dataIndex: "isPublish",
+      title: "Is Published",
+      dataIndex: "isPublished",
       render: (text, recored) => {
-        return recored.ispublish ? <p>true</p> : <p>false</p>;
+        return recored.isPublished ? <p>true</p> : <p>false</p>;
       },
     },
     {
@@ -199,6 +200,7 @@ const IndicatorsList = () => {
               icon={<FiEdit size={20} />}
               onClick={() => {
                 setModeID(recored.id);
+                setType("form");
                 setIsModalOpen(true);
               }}
             ></Button>
@@ -208,6 +210,7 @@ const IndicatorsList = () => {
               icon={<FaCirclePlus style={{ fontSize: 20 }} />}
               onClick={() => {
                 setModeID(recored.id);
+                setType("indicator");
                 setIsModalOpen(true);
               }}
             ></Button>
@@ -230,6 +233,7 @@ const IndicatorsList = () => {
             searchData={searchData}
             setMode={setModeID}
             mode={modeID}
+            type={type}
             isModelOpen={isModalOpen}
             setIsModalOpen={setIsModalOpen}
           />
@@ -274,6 +278,7 @@ const IndicatorsList = () => {
           <div
             onClick={() => {
               setModeID("");
+              setType("form");
               setIsModalOpen(true);
             }}
             className="flex bg-gray-300 py-2 px-4 rounded-full w-[200px] gap-2"

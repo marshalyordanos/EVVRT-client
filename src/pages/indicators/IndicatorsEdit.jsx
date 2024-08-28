@@ -45,6 +45,7 @@ const IndicatorsEdit = ({
   setMode,
   indicatorsData,
   searchData,
+  type,
 }) => {
   const [form] = Form.useForm();
   const [switch2, setSwitch2] = useState("");
@@ -53,7 +54,7 @@ const IndicatorsEdit = ({
   const [sitePick, setSitePick] = useState(false);
   const [selectedSite, setSelectedsite] = useState(null);
   const [forms, setForms] = useState(null);
-
+  console.log("type", type);
   // *********************** steper****************************
   const { token } = theme.useToken();
   const [current, setCurrent] = useState(0);
@@ -129,48 +130,66 @@ const IndicatorsEdit = ({
 
       const data = await indicatorsService.createIndicator(datas.form);
 
-      // setIsModalOpen(false);
+      setIsModalOpen(false);
       searchData();
 
-      // setLoading(false);
+      setLoading(false);
     } catch (err) {
-      // setLoading(false);
-    }
-
-    try {
-      // setLoading(true);
-      console.log("datas", "===================================datas");
-
-      const data2 = await indicatorsService.saveIndicator({
-        ...datas.form,
-        indicators: datas.indicator,
-      });
-      // console.lof("datas for save: ", data);
-      // setIsModalOpen(false);
-      // searchData();
-
-      // setLoading(false);
-    } catch (err) {
+      setLoading(false);
       console.log(err);
     }
+
+    // try {
+    //   // setLoading(true);
+    //   console.log("datas", "===================================datas");
+
+    //   const data2 = await indicatorsService.saveIndicator({
+    //     ...datas.form,
+    //     indicators: datas.indicator,
+    //   });
+    //   // console.lof("datas for save: ", data);
+    //   // setIsModalOpen(false);
+    //   // searchData();
+
+    //   // setLoading(false);
+    // } catch (err) {
+    //   console.log(err);
+    // }
   };
 
   const onUpdate = async (datas) => {
-    try {
-      // setLoading(true);
-      console.log("datas", "===================================datas", datas);
+    if (type == "form") {
+      try {
+        // setLoading(true);
+        console.log("datas", datas);
 
-      const data2 = await indicatorsService.saveIndicator({
-        ...forms,
-        indicators: datas.indicator,
-      });
-      console.lof("datas for save: ", data2);
-      // setIsModalOpen(false);
-      // searchData();
+        const data = await indicatorsService.updateIndicator(datas.form, mode);
 
-      // setLoading(false);
-    } catch (err) {
-      console.log(err);
+        setIsModalOpen(false);
+        searchData();
+
+        setLoading(false);
+      } catch (err) {
+        setLoading(false);
+        console.log(err);
+      }
+    } else {
+      try {
+        // setLoading(true);
+        console.log("datas", "===================================datas", datas);
+
+        const data2 = await indicatorsService.saveIndicator({
+          ...forms,
+          indicators: datas.indicator,
+        });
+        console.lof("datas for save: ", data2);
+        // setIsModalOpen(false);
+        // searchData();
+
+        // setLoading(false);
+      } catch (err) {
+        console.log(err);
+      }
     }
   };
 
@@ -182,66 +201,6 @@ const IndicatorsEdit = ({
   const step_one = (
     <div>
       {" "}
-      <FlexStyle>
-        <Form.Item
-          className=" flex-1"
-          name={["form", "siteId"]}
-          label="Site"
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
-          <div className=" flex bg-slate-200 border-gray-200 border-[1px] rounded ">
-            <Input
-              disabled
-              value={selectedSite?.name}
-              className="border-none flex-1"
-            />
-            <div
-              onClick={() => setSitePick(true)}
-              className="flex justify-center items-center py-2 px-4 hover:bg-red-700"
-            >
-              <IoSearchOutline size={18} />
-            </div>
-          </div>
-        </Form.Item>
-
-        <Form.Item
-          className="flex-1 "
-          name={["form", "dueDate"]}
-          label="Due date"
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
-          <DatePicker className="w-full" format={"YYYY/MM/DD"} />
-        </Form.Item>
-
-        <Form.Item
-          className="flex-1 "
-          name={["form", "date"]}
-          label="Date"
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
-          <DatePicker className="w-full" format={"YYYY/MM/DD"} />
-        </Form.Item>
-
-        {/* <Form.Item name={["indicator", "isPublish"]} label="Is publish">
-          <Switch
-            checked={switch2}
-            onChange={(value) => setSwitch2(value)}
-            style={{ background: switch2 ? "blue" : "gray" }}
-          />
-        </Form.Item> */}
-      </FlexStyle>
       <FlexStyle>
         <Form.Item
           className="flex-1 "
@@ -2858,55 +2817,130 @@ overload"
         ""
       )}
 
-      <FormStyle
-        form={form}
-        layout="vertical"
-        name="nest-messages"
-        onFinish={onFinish}
-        onError={() => {}}
-        validateMessages={validateMessages}
-      >
-        {/* **************************** steper ****************************** */}
-        <>
-          <Steps current={current} items={items} />
-          <div style={contentStyle}>{steps[current].content}</div>
-          <div
-            style={{
-              marginTop: 24,
-            }}
+      {type == "form" ? (
+        <FormStyle
+          form={form}
+          layout="vertical"
+          name="nest-messages"
+          onFinish={onFinish}
+          onError={() => {}}
+          validateMessages={validateMessages}
+        >
+          <Form.Item
+            className=" flex-1"
+            name={["form", "siteId"]}
+            label="Site"
+            rules={[
+              {
+                required: true,
+              },
+            ]}
           >
-            {current < steps.length - 1 && (
-              <Button htmlType="submit" type="primary">
-                Next
-              </Button>
-            )}
-            {current === steps.length - 1 && (
-              <Button
-                type="primary"
-                onClick={() => message.success("Processing complete!")}
+            <div className=" flex bg-slate-200 border-gray-200 border-[1px] rounded ">
+              <Input
+                disabled
+                value={selectedSite?.name}
+                className="border-none flex-1"
+              />
+              <div
+                onClick={() => setSitePick(true)}
+                className="flex justify-center items-center py-2 px-4 hover:bg-red-700"
               >
-                Done
-              </Button>
-            )}
-            {current > 0 && (
-              <Button
-                style={{
-                  margin: "0 8px",
-                }}
-                onClick={() => prev()}
-              >
-                Previous
-              </Button>
-            )}
-          </div>
-        </>
-        {/* ******************************** steper *************************** */}
+                <IoSearchOutline size={18} />
+              </div>
+            </div>
+          </Form.Item>
 
-        {/* <ButtonStyle>
+          <Form.Item
+            className="flex-1 "
+            name={["form", "dueDate"]}
+            label="Due date"
+            rules={[
+              {
+                required: true,
+              },
+            ]}
+          >
+            <DatePicker className="w-full" format={"YYYY/MM/DD"} />
+          </Form.Item>
+
+          <Form.Item
+            className="flex-1 "
+            name={["form", "date"]}
+            label="Date"
+            rules={[
+              {
+                required: true,
+              },
+            ]}
+          >
+            <DatePicker className="w-full" format={"YYYY/MM/DD"} />
+          </Form.Item>
+
+          {/* <Form.Item name={["indicator", "isPublish"]} label="Is publish">
+          <Switch
+            checked={switch2}
+            onChange={(value) => setSwitch2(value)}
+            style={{ background: switch2 ? "blue" : "gray" }}
+          />
+        </Form.Item> */}
+
+          <ButtonStyle>
+            <button onClick={() => setIsModalOpen(false)}>cancel</button>
+            <button type="submit">Submit</button>
+          </ButtonStyle>
+        </FormStyle>
+      ) : (
+        <FormStyle
+          form={form}
+          layout="vertical"
+          name="nest-messages"
+          onFinish={onFinish}
+          onError={() => {}}
+          validateMessages={validateMessages}
+        >
+          {/* **************************** steper ****************************** */}
+          <>
+            <Steps current={current} items={items} />
+            <div style={contentStyle}>{steps[current].content}</div>
+            <div
+              style={{
+                marginTop: 24,
+              }}
+            >
+              {current < steps.length - 1 && (
+                <Button htmlType="submit" type="primary">
+                  Next
+                </Button>
+              )}
+              {current === steps.length - 1 && (
+                <Button
+                  type="primary"
+                  onClick={() => message.success("Processing complete!")}
+                >
+                  Done
+                </Button>
+              )}
+              {current > 0 && (
+                <Button
+                  style={{
+                    margin: "0 8px",
+                  }}
+                  onClick={() => prev()}
+                >
+                  Previous
+                </Button>
+              )}
+            </div>
+          </>
+          {/* ******************************** steper *************************** */}
+
+          {/* <ButtonStyle>
           <button onClick={() => setIsModalOpen(false)}>cancel</button>
           <button type="submit">Submit</button>
         </ButtonStyle> */}
-      </FormStyle>
+        </FormStyle>
+      )}
     </div>
   );
 };
