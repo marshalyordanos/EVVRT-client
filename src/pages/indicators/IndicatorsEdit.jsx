@@ -54,6 +54,28 @@ const IndicatorsEdit = ({
   const [sitePick, setSitePick] = useState(false);
   const [selectedSite, setSelectedsite] = useState(null);
   const [forms, setForms] = useState(null);
+  const first_time_donors =
+    Number(Form.useWatch(["indicator", "first_time_donors"], form)) || 0;
+  const repeat_donors =
+    Number(Form.useWatch(["indicator", "repeat_donors"], form)) || 0;
+  const student_donors =
+    Number(Form.useWatch(["indicator", "student_donors"], form)) || 0;
+  const government_employee_donors =
+    Number(Form.useWatch(["indicator", "government_employee_donors"], form)) ||
+    0;
+  const private_employee_donors =
+    Number(Form.useWatch(["indicator", "private_employee_donors"], form)) || 0;
+  const self_employed_donors =
+    Number(Form.useWatch(["indicator", "self_employed_donors"], form)) || 0;
+  const unemployed_donors =
+    Number(Form.useWatch(["indicator", "unemployed_donors"], form)) || 0;
+  const other_donors =
+    Number(Form.useWatch(["indicator", "other_donors"], form)) || 0;
+  const male_donors =
+    Number(Form.useWatch(["indicator", "male_donors"], form)) || 0;
+  const female_donors =
+    Number(Form.useWatch(["indicator", "female_donors"], form)) || 0;
+
   console.log("type", type);
   // *********************** steper****************************
   const { token } = theme.useToken();
@@ -181,12 +203,10 @@ const IndicatorsEdit = ({
         const data2 = await indicatorsService.saveIndicator({
           ...forms,
           indicators: datas.indicator,
+          next: current,
         });
-        console.lof("datas for save: ", data2);
-        // setIsModalOpen(false);
-        // searchData();
 
-        // setLoading(false);
+        next();
       } catch (err) {
         console.log(err);
       }
@@ -195,7 +215,6 @@ const IndicatorsEdit = ({
 
   const onFinish = (values) => {
     mode == "" ? onAdd(values) : onUpdate(values);
-    next();
   };
 
   const step_one = (
@@ -206,13 +225,51 @@ const IndicatorsEdit = ({
           className="flex-1 "
           name={["indicator", "total_blood_donations"]}
           label="Total number of blood donations "
-          rules={[
-            {
-              type: "number",
-              min: 0,
-              max: 99,
-            },
-          ]}
+          // rules={[
+          //   {
+          //     validator: (_, value) => {
+          //       const total = Number(value);
+          //       const work_group =
+          //         student_donors +
+          //         government_employee_donors +
+          //         private_employee_donors +
+          //         self_employed_donors +
+          //         unemployed_donors +
+          //         other_donors;
+          //       const total_sex = male_donors + female_donors;
+          //       console.log(
+          //         "total",
+          //         total,
+          //         first_time_donors,
+          //         repeat_donors,
+          //         work_group
+          //       );
+          //       if (!(total == first_time_donors + repeat_donors)) {
+          //         return Promise.reject(
+          //           new Error(
+          //             "total blood donations must be equal to the Summation of first time donors and repeat donors!"
+          //           )
+          //         );
+          //       }
+          //       // else if (!(total == total_sex)) {
+          //       //   return Promise.reject(
+          //       //     new Error(
+          //       //       "total blood donations must be equal to the Summation famle and male donors!"
+          //       //     )
+          //       //   );
+          //       // }
+          //       else if (!(total == work_group)) {
+          //         return Promise.reject(
+          //           new Error(
+          //             "total blood donations must be equal to the Summation for each work group!"
+          //           )
+          //         );
+          //       } else {
+          //         return Promise.resolve();
+          //       }
+          //     },
+          //   },
+          // ]}
         >
           <InputNumber
             className="border-gray-400 py-1 w-full"
@@ -227,13 +284,6 @@ const IndicatorsEdit = ({
           name={["indicator", "familyr_eplacement_donations"]}
           label="Total number of blood donations collected from family
 replacement"
-          rules={[
-            {
-              type: "number",
-              min: 0,
-              max: 99,
-            },
-          ]}
         >
           <InputNumber
             className="border-gray-400 py-1 w-full"
@@ -249,13 +299,6 @@ replacement"
           name={["indicator", "first_time_donors"]}
           label="Number of blood donations collected from 1st time
 donors."
-          rules={[
-            {
-              type: "number",
-              min: 0,
-              max: 99,
-            },
-          ]}
         >
           <InputNumber
             className="border-gray-400 py-1 w-full"
@@ -270,13 +313,6 @@ donors."
           name={["indicator", "repeat_donors"]}
           label="Number of blood donations collected from repeat
 donors."
-          rules={[
-            {
-              type: "number",
-              min: 0,
-              max: 99,
-            },
-          ]}
         >
           <InputNumber
             className="border-gray-400 py-1 w-full"
@@ -291,13 +327,6 @@ donors."
           className="flex-1"
           name={["indicator", "student_donors"]}
           label="Number of blood donations collected from Student."
-          rules={[
-            {
-              type: "number",
-              min: 0,
-              max: 99,
-            },
-          ]}
         >
           <InputNumber
             className="border-gray-400 py-1 w-full"
@@ -312,13 +341,6 @@ donors."
           name={["indicator", "government_employee_donors"]}
           label="Number of blood donations collected from
 Government Employee."
-          rules={[
-            {
-              type: "number",
-              min: 0,
-              max: 99,
-            },
-          ]}
         >
           <InputNumber
             className="border-gray-400 py-1 w-full"
@@ -334,13 +356,6 @@ Government Employee."
           name={["indicator", "private_employee_donors"]}
           label="Number of blood donations collected from Private
 Employee."
-          rules={[
-            {
-              type: "number",
-              min: 0,
-              max: 99,
-            },
-          ]}
         >
           <InputNumber
             className="border-gray-400 py-1 w-full"
@@ -354,13 +369,6 @@ Employee."
           className="flex-1"
           name={["indicator", "self_employed_donors"]}
           label="Number of blood donations collected from Selfemployed."
-          rules={[
-            {
-              type: "number",
-              min: 0,
-              max: 99,
-            },
-          ]}
         >
           <InputNumber
             className="border-gray-400 py-1 w-full"
@@ -375,13 +383,6 @@ Employee."
           className="flex-1"
           name={["indicator", "unemployed_donors"]}
           label="Number of blood donations collected from Unemployed"
-          rules={[
-            {
-              type: "number",
-              min: 0,
-              max: 99,
-            },
-          ]}
         >
           <InputNumber
             className="border-gray-400 py-1 w-full"
@@ -395,13 +396,6 @@ Employee."
           className="flex-1"
           name={["indicator", "other_donors"]}
           label="Number of blood donations collected from Others."
-          rules={[
-            {
-              type: "number",
-              min: 0,
-              max: 99,
-            },
-          ]}
         >
           <InputNumber
             className="border-gray-400 py-1 w-full"
@@ -421,13 +415,6 @@ Employee."
           className="flex-1"
           name={["indicator", "male_donors"]}
           label=". Number of blood donations collected from Male donor "
-          rules={[
-            {
-              type: "number",
-              min: 0,
-              max: 99,
-            },
-          ]}
         >
           <InputNumber
             className="border-gray-400 py-1 w-full"
@@ -442,13 +429,6 @@ Employee."
           name={["indicator", "female_donors"]}
           label="Number of blood donations collected from Female
 donor"
-          rules={[
-            {
-              type: "number",
-              min: 0,
-              max: 99,
-            },
-          ]}
         >
           <InputNumber
             className="border-gray-400 py-1 w-full"
@@ -465,13 +445,6 @@ donor"
           name={["indicator", "under18_donors"]}
           label="3. Number of blood donations collected from donor
 under 18 years."
-          rules={[
-            {
-              type: "number",
-              min: 0,
-              max: 99,
-            },
-          ]}
         >
           <InputNumber
             className="border-gray-400 py-1 w-full"
@@ -485,13 +458,6 @@ under 18 years."
           name={["indicator", "age18to24_donors"]}
           label="Number of blood donations collected from donor 18 -
 to- 24 years."
-          rules={[
-            {
-              type: "number",
-              min: 0,
-              max: 99,
-            },
-          ]}
         >
           <InputNumber
             className="border-gray-400 py-1 w-full"
@@ -507,13 +473,6 @@ to- 24 years."
           name={["indicator", "age25to34_donors"]}
           label="Number of blood donations collected from donor 25 -
 to- 34 years."
-          rules={[
-            {
-              type: "number",
-              min: 0,
-              max: 99,
-            },
-          ]}
         >
           <InputNumber
             className="border-gray-400 py-1 w-full"
@@ -527,13 +486,6 @@ to- 34 years."
           name={["indicator", "age35to44_donors"]}
           label=".Number of blood donations collected from donor 35 -
 to- 44 years."
-          rules={[
-            {
-              type: "number",
-              min: 0,
-              max: 99,
-            },
-          ]}
         >
           <InputNumber
             className="border-gray-400 py-1 w-full"
@@ -549,13 +501,6 @@ to- 44 years."
           name={["indicator", "age45to54_donors"]}
           label="Number of blood donations collected from donor 45 -
 to- 54 years"
-          rules={[
-            {
-              type: "number",
-              min: 0,
-              max: 99,
-            },
-          ]}
         >
           <InputNumber
             className="border-gray-400 py-1 w-full"
@@ -570,13 +515,6 @@ to- 54 years"
           name={["indicator", "age55to64_donors"]}
           label=".Number of blood donations collected from donor 55 -
 to- 64 years."
-          rules={[
-            {
-              type: "number",
-              min: 0,
-              max: 99,
-            },
-          ]}
         >
           <InputNumber
             className="border-gray-400 py-1 w-full"
@@ -592,13 +530,6 @@ to- 64 years."
           name={["indicator", "over65_donors"]}
           label="Number of blood donations collected from donors 65
 years or older."
-          rules={[
-            {
-              type: "number",
-              min: 0,
-              max: 99,
-            },
-          ]}
         >
           <InputNumber
             className="border-gray-400 py-1 w-full"
@@ -612,13 +543,6 @@ years or older."
           className="flex-1"
           name={["indicator", "apheresis_donations"]}
           label="Total number of apheresis donations collected."
-          rules={[
-            {
-              type: "number",
-              min: 0,
-              max: 99,
-            },
-          ]}
         >
           <InputNumber
             className="border-gray-400 py-1 w-full"
@@ -635,15 +559,8 @@ years or older."
       <FlexStyle>
         <Form.Item
           className="flex-1"
-          name={["indicator", "donations_fromcenter"]}
+          name={["indicator", "donations_fromCenter"]}
           label="Number of donations from center "
-          rules={[
-            {
-              type: "number",
-              min: 0,
-              max: 99,
-            },
-          ]}
         >
           <InputNumber
             className="border-gray-400 py-1 w-full"
@@ -657,13 +574,6 @@ years or older."
           className="flex-1"
           name={["indicator", "donations_from_mobile"]}
           label="Number of donations from mobile"
-          rules={[
-            {
-              type: "number",
-              min: 0,
-              max: 99,
-            },
-          ]}
         >
           <InputNumber
             className="border-gray-400 py-1 w-full"
@@ -678,13 +588,6 @@ years or older."
           className="flex-1"
           name={["indicator", "mobile_sessions_conducted"]}
           label="Total number of Mobile Session conducted"
-          rules={[
-            {
-              type: "number",
-              min: 0,
-              max: 99,
-            },
-          ]}
         >
           <InputNumber
             className="border-gray-400 py-1 w-full"
@@ -698,13 +601,6 @@ years or older."
           className="flex-1"
           name={["indicator", "active_blood_donor_clubs"]}
           label="Total Number of active blood donors Club"
-          rules={[
-            {
-              type: "number",
-              min: 0,
-              max: 99,
-            },
-          ]}
         >
           <InputNumber
             className="border-gray-400 py-1 w-full"
@@ -720,13 +616,6 @@ years or older."
           className="flex-1"
           name={["indicator", "adr_fainting"]}
           label="Total number of ADR Fainting occur"
-          rules={[
-            {
-              type: "number",
-              min: 0,
-              max: 99,
-            },
-          ]}
         >
           <InputNumber
             className="border-gray-400 py-1 w-full"
@@ -741,13 +630,6 @@ years or older."
           name={["indicator", "adr_fainting_withloss_of_consciousness"]}
           label="Total number of ADR Fainting with loss of
 Consciousness"
-          rules={[
-            {
-              type: "number",
-              min: 0,
-              max: 99,
-            },
-          ]}
         >
           <InputNumber
             className="border-gray-400 py-1 w-full"
@@ -763,13 +645,6 @@ Consciousness"
           name={["indicator", "adr_seizure"]}
           label="Total number of ADR Loss of Consciousness with
 Seizure"
-          rules={[
-            {
-              type: "number",
-              min: 0,
-              max: 99,
-            },
-          ]}
         >
           <InputNumber
             className="border-gray-400 py-1 w-full"
@@ -783,13 +658,6 @@ Seizure"
           className="flex-1"
           name={["indicator", "adr_technical_problem"]}
           label="Total number of ADR due to technical problem"
-          rules={[
-            {
-              type: "number",
-              min: 0,
-              max: 99,
-            },
-          ]}
         >
           <InputNumber
             className="border-gray-400 py-1 w-full"
@@ -805,13 +673,6 @@ Seizure"
           className="flex-1"
           name={["indicator", "donor_refusals"]}
           label="Total number of Donor Refusal "
-          rules={[
-            {
-              type: "number",
-              min: 0,
-              max: 99,
-            },
-          ]}
         >
           <InputNumber
             className="border-gray-400 py-1 w-full"
@@ -825,13 +686,6 @@ Seizure"
           className="flex-1"
           name={["indicator", "other_adrs"]}
           label="Total number of Others ADR"
-          rules={[
-            {
-              type: "number",
-              min: 0,
-              max: 99,
-            },
-          ]}
         >
           <InputNumber
             className="border-gray-400 py-1 w-full"
@@ -852,13 +706,6 @@ Seizure"
           name={["indicator", "permanent_deferrals_duetottis"]}
           label="Number of blood donors who were permanently
 deferred due to TTIs result"
-          rules={[
-            {
-              type: "number",
-              min: 0,
-              max: 99,
-            },
-          ]}
         >
           <InputNumber
             className="border-gray-400 py-1 w-full"
@@ -872,13 +719,6 @@ deferred due to TTIs result"
           className="flex-1"
           name={["indicator", "deferrals_by_lowweight"]}
           label="Number of deferrals by low weight / Under weight"
-          rules={[
-            {
-              type: "number",
-              min: 0,
-              max: 99,
-            },
-          ]}
         >
           <InputNumber
             className="border-gray-400 py-1 w-full"
@@ -893,13 +733,6 @@ deferred due to TTIs result"
           className="flex-1"
           name={["indicator", "deferrals_by_age"]}
           label="Number of deferrals by Age (under 18 or above 65)"
-          rules={[
-            {
-              type: "number",
-              min: 0,
-              max: 99,
-            },
-          ]}
         >
           <InputNumber
             className="border-gray-400 py-1 w-full"
@@ -913,13 +746,6 @@ deferred due to TTIs result"
           className="flex-1"
           name={["indicator", "deferrals_by_pregnancy_lactation"]}
           label="Number of deferrals by Pregnancy & Lactation"
-          rules={[
-            {
-              type: "number",
-              min: 0,
-              max: 99,
-            },
-          ]}
         >
           <InputNumber
             className="border-gray-400 py-1 w-full"
@@ -934,13 +760,6 @@ deferred due to TTIs result"
           className="flex-1"
           name={["indicator", "deferrals_by_blood_pressure"]}
           label="Number of deferrals by blood pressure "
-          rules={[
-            {
-              type: "number",
-              min: 0,
-              max: 99,
-            },
-          ]}
         >
           <InputNumber
             className="border-gray-400 py-1 w-full"
@@ -955,13 +774,6 @@ deferred due to TTIs result"
           name={["indicator", "deferrals_by_low_hemoglobin"]}
           label="Number of deferrals by low hemoglobin /
 Hematocrit"
-          rules={[
-            {
-              type: "number",
-              min: 0,
-              max: 99,
-            },
-          ]}
         >
           <InputNumber
             className="border-gray-400 py-1 w-full"
@@ -977,13 +789,6 @@ Hematocrit"
           name={["indicator", "deferrals_by_other_medical_conditions"]}
           label="Number of deferrals by other medical condition /
 Diseases"
-          rules={[
-            {
-              type: "number",
-              min: 0,
-              max: 99,
-            },
-          ]}
         >
           <InputNumber
             className="border-gray-400 py-1 w-full"
@@ -997,13 +802,6 @@ Diseases"
           className="flex-1"
           name={["indicator", "deferrals_by_high_risk_behavior"]}
           label="Number of deferrals by high-risk behavior"
-          rules={[
-            {
-              type: "number",
-              min: 0,
-              max: 99,
-            },
-          ]}
         >
           <InputNumber
             className="border-gray-400 py-1 w-full"
@@ -1018,13 +816,6 @@ Diseases"
           className="flex-1"
           name={["indicator", "deferrals_by_travel_history"]}
           label="Number of deferrals by travel history"
-          rules={[
-            {
-              type: "number",
-              min: 0,
-              max: 99,
-            },
-          ]}
         >
           <InputNumber
             className="border-gray-400 py-1 w-full"
@@ -1038,13 +829,6 @@ Diseases"
           className="flex-1"
           name={["indicator", "deferrals_by_other_reasons"]}
           label="Number of deferrals by other reason"
-          rules={[
-            {
-              type: "number",
-              min: 0,
-              max: 99,
-            },
-          ]}
         >
           <InputNumber
             className="border-gray-400 py-1 w-full"
@@ -1091,13 +875,6 @@ positive for TTIs?"
           className="flex-1"
           name={["indicator", "pre_donation_information_given"]}
           label="Number of donors given pre-donation information."
-          rules={[
-            {
-              type: "number",
-              min: 0,
-              max: 99,
-            },
-          ]}
         >
           <InputNumber
             className="border-gray-400 py-1 w-full"
@@ -1112,13 +889,6 @@ positive for TTIs?"
           name={["indicator", "pre_donation_counselling"]}
           label="Total number of donors presenting for pre-donation
 counselling."
-          rules={[
-            {
-              type: "number",
-              min: 0,
-              max: 99,
-            },
-          ]}
         >
           <InputNumber
             className="border-gray-400 py-1 w-full"
@@ -1135,13 +905,6 @@ counselling."
           name={["indicator", "post_donation_counselling_service"]}
           label="Total number of donors receiving post-donation
 counselling service"
-          rules={[
-            {
-              type: "number",
-              min: 0,
-              max: 99,
-            },
-          ]}
         >
           <InputNumber
             className="border-gray-400 py-1 w-full"
@@ -1156,13 +919,6 @@ counselling service"
           name={["indicator", "post_donation_counselling_from_mobile"]}
           label="Number of donors receiving post-donation
 counselling service from Mobile site"
-          rules={[
-            {
-              type: "number",
-              min: 0,
-              max: 99,
-            },
-          ]}
         >
           <InputNumber
             className="border-gray-400 py-1 w-full"
@@ -1178,13 +934,6 @@ counselling service from Mobile site"
           name={["indicator", "post_donation_counselling_from_center"]}
           label="Number of donors receiving post-donation
 counselling service from Center. "
-          rules={[
-            {
-              type: "number",
-              min: 0,
-              max: 99,
-            },
-          ]}
         >
           <InputNumber
             className="border-gray-400 py-1 w-full"
@@ -1199,13 +948,6 @@ counselling service from Center. "
           name={["indicator", "non_reactive_donors_receiving_pdc"]}
           label="Number of Non-Reactive donors who receive PDC
 service."
-          rules={[
-            {
-              type: "number",
-              min: 0,
-              max: 99,
-            },
-          ]}
         >
           <InputNumber
             className="border-gray-400 py-1 w-full"
@@ -1222,13 +964,6 @@ service."
           name={["indicator", "reactive_donors_receiving_pdc"]}
           label="Number of Reactive donors who receive PDC
 service. "
-          rules={[
-            {
-              type: "number",
-              min: 0,
-              max: 99,
-            },
-          ]}
         >
           <InputNumber
             className="border-gray-400 py-1 w-full"
@@ -1243,13 +978,6 @@ service. "
           name={["indicator", "referred_reactive_donors_receiving_pdc"]}
           label="Number of referred donors that was reactive and
 receive PDC service. "
-          rules={[
-            {
-              type: "number",
-              min: 0,
-              max: 99,
-            },
-          ]}
         >
           <InputNumber
             className="border-gray-400 py-1 w-full"
