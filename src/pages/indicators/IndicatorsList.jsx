@@ -24,6 +24,12 @@ import { FiEdit } from "react-icons/fi";
 import { IoPulseOutline, IoTrashOutline } from "react-icons/io5";
 import { IoMdAdd } from "react-icons/io";
 
+const options = {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+};
+
 const IndicatorsList = () => {
   const [indicatorsData, setIndicatorsData] = useState([]);
   const [total, setTotal] = useState();
@@ -173,12 +179,24 @@ const IndicatorsList = () => {
       title: "Due date",
       dataIndex: "dueDate",
       sorter: true,
+      render: (text, record) => {
+        return (
+          <p>
+            {new Date(record?.dueDate).toLocaleDateString("en-US", options)}
+          </p>
+        );
+      },
     },
 
     {
       title: "Date",
       dataIndex: "date",
       sorter: true,
+      render: (text, record) => {
+        return (
+          <p>{new Date(record?.date).toLocaleDateString("en-US", options)}</p>
+        );
+      },
     },
 
     {
@@ -256,14 +274,15 @@ const IndicatorsList = () => {
       )}
 
       <div className="flex flex-row gap-6 my-8 justify-between items-center">
-        <SearchInputStyle>
+        {/* <SearchInputStyle>
           <Input
             onChange={searchHandler}
             placeholder="Search"
             value={searchText}
             allowClear
           />
-        </SearchInputStyle>
+        </SearchInputStyle> */}
+        <div></div>
         <div className="header_right flex gap-3">
           <div className="flex bg-gray-300 py-2 px-4 rounded-full w-[200px] gap-2">
             <div className="flex justify-center items-center">
@@ -272,7 +291,7 @@ const IndicatorsList = () => {
               </p>
             </div>
             <div className="flex justify-center items-center">
-              <p className="text-lg leading-4">Number of site</p>
+              <p className="text-lg leading-4">Number of Indicators</p>
             </div>
           </div>
           <div
@@ -289,7 +308,7 @@ const IndicatorsList = () => {
               </div>
             </div>
             <div className="flex justify-center items-center">
-              <p className="text-lg leading-4">Add New Site</p>
+              <p className="text-lg leading-4">Add New Indicators</p>
             </div>
           </div>
         </div>

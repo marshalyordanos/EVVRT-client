@@ -268,7 +268,7 @@ const RegionsList = () => {
               </p>
             </div>
             <div className="flex justify-center items-center">
-              <p className="text-lg leading-4">Number of site</p>
+              <p className="text-lg leading-4">Number of Region</p>
             </div>
           </div>
           <div
@@ -284,7 +284,7 @@ const RegionsList = () => {
               </div>
             </div>
             <div className="flex justify-center items-center">
-              <p className="text-lg leading-4">Add New Site</p>
+              <p className="text-lg leading-4">Add New Region</p>
             </div>
           </div>
         </div>

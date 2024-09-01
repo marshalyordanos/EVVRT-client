@@ -1,165 +1,137 @@
+import React, { useEffect, useRef, useState } from "react";
+import { useSearchParams } from "react-router-dom";
+import usersService from "./UsersService";
+import CommonTable from "../../components/commons/CommonTable";
+import {
+  ButtonStyle,
+  SearchInputStyle,
+} from "../../components/commons/CommonStyles";
+import { Divider, Input } from "antd";
+import { searchUsers, updateUsersState, usersSearchText } from "./UsersRedux"; //** */
+import { useDispatch, useSelector } from "react-redux"; /*** */
 
-    import React, { useEffect, useRef, useState } from 'react'
-    import { useSearchParams } from 'react-router-dom'
-    import usersService from './UsersService';
-    import CommonTable from '../../components/commons/CommonTable';
-    import { ButtonStyle, SearchInputStyle } from '../../components/commons/CommonStyles';
-    import { Divider, Input } from 'antd';
-    import { searchUsers, updateUsersState, usersSearchText } from './UsersRedux';//** */
-    import { useDispatch, useSelector } from 'react-redux'; /*** */
+const UsersPick = ({ setIsModalOpen, selectHandler }) => {
+  const [usersData, setUsersData] = useState([]);
+  const [total, setTotal] = useState();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const dispatch = useDispatch(); /*** */
+  const searchText = useSelector(usersSearchText); //** */
 
-    
-    const UsersPick = ({setIsModalOpen,selectHandler}) => {
-    const [usersData, setUsersData] = useState([])
-    const [total, setTotal] = useState()
-    const [searchParams,setSearchParams] = useSearchParams()
-    const dispatch = useDispatch(); /*** */
-    const searchText = useSelector(usersSearchText); //** */
-    
-    
-    const [loading, setLoading] = useState();
-    const [usersSelection, setUsersSelection] = useState([])
-    const delayTimerRef = useRef(null);
-    
-    const getPaginationInfo = () => {
+  const [loading, setLoading] = useState();
+  const [usersSelection, setUsersSelection] = useState([]);
+  const delayTimerRef = useRef(null);
 
-        return [searchParams.get('page') || 1, searchParams.get('limit') || 5]
+  const getPaginationInfo = () => {
+    return [searchParams.get("page") || 1, searchParams.get("limit") || 5];
+  };
+
+  useEffect(() => {
+    const [page, limit] = getPaginationInfo();
+    dispatch(updateUsersState({ page: page, limit: limit }));
+
+    searchData();
+  }, []);
+
+  async function searchData() {
+    try {
+      setLoading(true);
+      const { payload } = await dispatch(searchUsers());
+      setUsersData(payload.data);
+      setTotal(payload.total);
+      setLoading(false);
+    } catch (err) {
+      setLoading(false);
     }
+  }
+  const searchHandler = (e) => {
+    const { value } = e.target;
+    const [page, limit] = getPaginationInfo();
 
+    dispatch(updateUsersState({ page: page, limit: limit, searchText: value }));
+    clearTimeout(delayTimerRef.current);
+    delayTimerRef.current = setTimeout(() => {
+      searchData();
+    }, 500);
+  };
 
-    useEffect(() => {
-        const [page, limit] = getPaginationInfo();
-        dispatch(updateUsersState({ page: page, limit: limit }))
+  const handlePagination = (page, pageSize) => {
+    // setSearchParams({page:page,limit:pageSize})
+    dispatch(updateUsersState({ page: page, limit: pageSize }));
 
-        searchData();
-    }, [])
+    searchData();
+  };
 
-    async function searchData() {
-        try {
-            setLoading(true)
-            const { payload } = await dispatch(searchUsers());
-            setUsersData(payload.data)
-            setTotal(payload.total)
-            setLoading(false)
-        } catch (err) {
-            setLoading(false)
-        }
-    }
-    const searchHandler = (e) => {
-        const { value } = e.target;
-        const [page, limit] = getPaginationInfo();
+  const columns = [
+    {
+      title: "username",
+      dataIndex: "username",
+    },
 
-        dispatch(updateUsersState({ page: page, limit: limit, searchText: value }))
-        clearTimeout(delayTimerRef.current);
-        delayTimerRef.current = setTimeout(() => {
+    {
+      title: "password",
+      dataIndex: "password",
+    },
 
+    {
+      title: "email",
+      dataIndex: "email",
+    },
 
-            searchData()
-        }, 500);
+    {
+      title: "First Name",
+      dataIndex: "firstName",
+    },
 
+    {
+      title: "lastname",
+      dataIndex: "lastName",
+    },
 
-    }
+    {
+      title: "Phone Number",
+      dataIndex: "phoneNumber",
+    },
 
-    const handlePagination = (page, pageSize) => {
-        
-        // setSearchParams({page:page,limit:pageSize})
-        dispatch(updateUsersState({ page: page, limit: pageSize }))
+    {
+      title: "role",
+      dataIndex: "role",
+    },
+  ];
 
-        searchData()
-    }
-    
-    
-     const columns = [
-         
-    
-     
-            {
-                title: 'username',
-                dataIndex: 'username',
+  return (
+    <div>
+      <SearchInputStyle>
+        <Input
+          onChange={searchHandler}
+          placeholder="Search"
+          value={searchText}
+          allowClear
+        />
+      </SearchInputStyle>
 
-            },
-             
-            {
-                title: 'password',
-                dataIndex: 'password',
+      <CommonTable
+        rowSelectionType={"radio"}
+        data={usersData}
+        columns={columns}
+        setSelection={setUsersSelection}
+        handlePagination={handlePagination}
+        total={total}
+        loadding={loading}
+      />
+      <Divider style={{ margin: 15 }} />
 
-            },
-             
-            {
-                title: 'email',
-                dataIndex: 'email',
-
-            },
-             
-            {
-                title: 'First Name',
-                dataIndex: 'firstName',
-
-            },
-             
-            {
-                title: 'lastname',
-                dataIndex: 'lastName',
-
-            },
-             
-            {
-                title: 'Phone Number',
-                dataIndex: 'phoneNumber',
-
-            },
-             
-            {
-                title: 'role',
-                dataIndex: 'role',
-
-            },
-             
-          
-            
-         
-         ];
-    
-    
-    
-    
-    return (
-
-<div >
-                <SearchInputStyle>
-                    <Input onChange={searchHandler}
-                        placeholder="Search"
-                        value={searchText}
-                        allowClear />
-                </SearchInputStyle>
-
-
-    <CommonTable
-                rowSelectionType={"radio"}
-                data={usersData}
-                columns={columns}
-                setSelection={setUsersSelection}
-                handlePagination={handlePagination}
-                total={total}
-                loadding={loading}
-
-            />
-            <Divider style={{margin:15}}/>
-
-<ButtonStyle>
-     <button    onClick={()=>setIsModalOpen(false)} >
-        cancel
-      </button>
-      <button disabled={usersSelection.length==0} className={usersSelection.length>0?'':'disable'} onClick={()=>selectHandler(usersSelection[0])}>
-        Return
-      </button>
-     </ButtonStyle>     
-
+      <ButtonStyle>
+        <button onClick={() => setIsModalOpen(false)}>cancel</button>
+        <button
+          disabled={usersSelection.length == 0}
+          className={usersSelection.length > 0 ? "" : "disable"}
+          onClick={() => selectHandler(usersSelection[0])}
+        >
+          Sumbit
+        </button>
+      </ButtonStyle>
     </div>
-  )
-}
-    
-    
+  );
+};
 
-    export default UsersPick
-    
+export default UsersPick;

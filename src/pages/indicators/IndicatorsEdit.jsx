@@ -81,7 +81,10 @@ const IndicatorsEdit = ({
   const { token } = theme.useToken();
   const [current, setCurrent] = useState(0);
   const next = () => {
-    setCurrent(current + 1);
+    // message.info(current);
+    if (current > 14) {
+      setCurrent(current + 1);
+    }
   };
   const prev = () => {
     setCurrent(current - 1);
@@ -150,7 +153,11 @@ const IndicatorsEdit = ({
       // setLoading(true);
       console.log("datas", datas);
 
-      const data = await indicatorsService.createIndicator(datas.form);
+      const data = await indicatorsService.createIndicator({
+        ...datas.form,
+        date: forms?.date,
+        dueDate: forms?.dueDate,
+      });
 
       setIsModalOpen(false);
       searchData();
@@ -183,9 +190,16 @@ const IndicatorsEdit = ({
     if (type == "form") {
       try {
         // setLoading(true);
-        console.log("datas", datas);
+        console.log("datas", forms);
 
-        const data = await indicatorsService.updateIndicator(datas.form, mode);
+        const data = await indicatorsService.updateIndicator(
+          {
+            ...datas.form,
+            date: forms?.date,
+            dueDate: forms?.dueDate,
+          },
+          mode
+        );
 
         setIsModalOpen(false);
         searchData();
@@ -627,7 +641,7 @@ years or older."
 
         <Form.Item
           className="flex-1"
-          name={["indicator", "adr_fainting_withloss_of_consciousness"]}
+          name={["indicator", "adr_fainting_withLoss_of_consciousness"]}
           label="Total number of ADR Fainting with loss of
 Consciousness"
         >
@@ -703,7 +717,7 @@ Seizure"
       <FlexStyle>
         <Form.Item
           className="flex-1"
-          name={["indicator", "permanent_deferrals_duetottis"]}
+          name={["indicator", "permanent_deferrals_dueToTtis"]}
           label="Number of blood donors who were permanently
 deferred due to TTIs result"
         >
@@ -717,7 +731,7 @@ deferred due to TTIs result"
 
         <Form.Item
           className="flex-1"
-          name={["indicator", "deferrals_by_lowweight"]}
+          name={["indicator", "deferrals_by_low_weight"]}
           label="Number of deferrals by low weight / Under weight"
         >
           <InputNumber
@@ -1445,7 +1459,7 @@ Infectious Disease"
 
         <Form.Item
           className="flex-1"
-          name={["indicator", "requested_bplus_wbcrc"]}
+          name={["indicator", "requested_bplus_wbCrc"]}
           label="Number of B+ve WB & CRC requested by Health facility"
         >
           <InputNumber
@@ -2035,7 +2049,7 @@ blood transfusion"
 
         <Form.Item
           className="flex-1"
-          name={["indicator", "redcells_transfused"]}
+          name={["indicator", "redCells_transfused"]}
           label="Number of units of Red cells transfused"
         >
           <InputNumber
@@ -2121,7 +2135,7 @@ due to other allo-antibody"
 
         <Form.Item
           className="flex-1"
-          name={["indicator", "nonimmunological_hemolysis"]}
+          name={["indicator", "nonImmunological_hemolysis"]}
           label="Number of non-immunological hemolysis"
         >
           <InputNumber
@@ -2182,7 +2196,7 @@ due to other allo-antibody"
 
         <Form.Item
           className="flex-1"
-          name={["indicator", "graft_versushost_disease"]}
+          name={["indicator", "graft_versusHost_disease"]}
           label="Number of grafts versus host disease"
         >
           <InputNumber
@@ -2519,6 +2533,15 @@ overload"
     key: item.title,
     title: item.title,
   }));
+
+  const onChangeDate = (date, dateString) => {
+    console.log(date, dateString);
+    setForms({ ...forms, date: dateString });
+  };
+  const onChangeDueDate = (date, dateString) => {
+    console.log(date, dateString);
+    setForms({ ...forms, dueDate: dateString });
+  };
   return (
     <div>
       {/*******  picks **********/}
@@ -2589,7 +2612,7 @@ overload"
               },
             ]}
           >
-            <DatePicker className="w-full" format={"YYYY/MM/DD"} />
+            <DatePicker onChange={onChangeDueDate} />
           </Form.Item>
 
           <Form.Item
@@ -2602,7 +2625,7 @@ overload"
               },
             ]}
           >
-            <DatePicker className="w-full" format={"YYYY/MM/DD"} />
+            <DatePicker onChange={onChangeDate} />
           </Form.Item>
 
           {/* <Form.Item name={["indicator", "isPublish"]} label="Is publish">
@@ -2643,6 +2666,7 @@ overload"
               )}
               {current === steps.length - 1 && (
                 <Button
+                  htmlType="submit"
                   type="primary"
                   onClick={() => message.success("Processing complete!")}
                 >

@@ -15,6 +15,9 @@ import { setCredential } from "./redux/auth/authSlice";
 import authService from "./api/auth.service";
 import SettingRoutting from "./setting-routing";
 import IndicatorsList from "./pages/indicators/IndicatorsList";
+import Home from "./pages/Home";
+import AdminDashboard from "./pages/AdminDashboard";
+import SettingPage from "./pages/SettingPage";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -36,10 +39,15 @@ function App() {
               path="/"
               element={<Navigate to="/blood/dashboard" replace={true} />}
             />
+            <Route path="/blood/dashboard" element={<Home />} />
+
             <Route path="/users" element={<UsersList />} />
             <Route path="/sites" element={<SitesList />} />
             <Route path="/regions" element={<RegionsList />} />
             <Route path="/indicators" element={<IndicatorsList />} />
+
+            <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/report-setting" element={<SettingPage />} />
 
             <Route path="/setting/*" element={<SettingRoutting />} />
 

@@ -48,17 +48,45 @@ const Navbar = () => {
         setOpen={setOpenDrawer}
       >
         <div className="links_small">
+          {" "}
           <li>
-            <NavLink to="/">Admin Report</NavLink>{" "}
+            <NavLink to="/">Home</NavLink>{" "}
           </li>
+          {/* {user?.user.role == "admin" && ( */}
           <li>
-            <NavLink to="/">Branch</NavLink>{" "}
+            <NavLink to="/admin">Admin Report</NavLink>{" "}
           </li>
+          {/* )} */}
           <li>
-            <NavLink to="/users">User</NavLink>{" "}
+            <NavLink to="/indicators">Indicators</NavLink>{" "}
           </li>
+          {user?.user.role == "admin" && (
+            <li>
+              <NavLink to="/users">User</NavLink>{" "}
+            </li>
+          )}
+          {user?.user.role == "admin" && (
+            <li>
+              <NavLink to="/regions">Region</NavLink>{" "}
+            </li>
+          )}
           <li>
-            <NavLink to="/setting/profile">Setting</NavLink>{" "}
+            <NavLink to="/sites">Branch</NavLink>{" "}
+          </li>
+          {user?.user.role == "admin" && (
+            <li>
+              <NavLink to="/">Setting</NavLink>{" "}
+            </li>
+          )}
+          <li>
+            <button
+              className="logut_link"
+              onClick={() => {
+                setIsModalOpen(true);
+              }}
+            >
+              Log out
+            </button>
           </li>
         </div>
         <div className="button_con">
@@ -71,23 +99,34 @@ const Navbar = () => {
         {user && (
           <div className="links">
             <li>
-              <NavLink to="/">Admin Report</NavLink>{" "}
+              <NavLink to="/">Home</NavLink>{" "}
             </li>
+            {/* {user?.user.role == "admin" && ( */}
+            <li>
+              <NavLink to="/admin">Admin Report</NavLink>{" "}
+            </li>
+            {/* )} */}
             <li>
               <NavLink to="/indicators">Indicators</NavLink>{" "}
             </li>
+            {user?.user.role == "admin" && (
+              <li>
+                <NavLink to="/users">User</NavLink>{" "}
+              </li>
+            )}
+            {user?.user.role == "admin" && (
+              <li>
+                <NavLink to="/regions">Region</NavLink>{" "}
+              </li>
+            )}
             <li>
-              <NavLink to="/users">User</NavLink>{" "}
+              <NavLink to="/sites">Branch</NavLink>{" "}
             </li>
-            <li>
-              <NavLink to="/regions">Region</NavLink>{" "}
-            </li>
-            <li>
-              <NavLink to="/sites">Site</NavLink>{" "}
-            </li>
-            <li>
-              <NavLink to="/setting/profile">Setting</NavLink>{" "}
-            </li>
+            {user?.user.role == "admin" && (
+              <li>
+                <NavLink to="/report-setting">Setting</NavLink>{" "}
+              </li>
+            )}
             <li>
               <button
                 className="logut_link"
@@ -102,7 +141,12 @@ const Navbar = () => {
         )}
 
         {user ? (
-          <div className="button_con">
+          <div
+            onClick={() => {
+              navigate("/setting/profile");
+            }}
+            className="button_con"
+          >
             <FaRegUserCircle size={30} color="white" />
             <button>{user?.user.username}</button>
           </div>

@@ -18,6 +18,7 @@ import { searchSites, updateSitesState, sitesSearchText } from "./SitesRedux";
 import { IoMdAdd } from "react-icons/io";
 import { IoTrashOutline } from "react-icons/io5";
 import { FiEdit } from "react-icons/fi";
+import { selectCurrentUser } from "../../redux/auth/authSlice";
 
 const SitesList = () => {
   const [sitesData, setSitesData] = useState([]);
@@ -34,6 +35,7 @@ const SitesList = () => {
 
   const delayTimerRef = useRef(null);
   const dispatch = useDispatch();
+  const user = useSelector(selectCurrentUser);
 
   const getPaginationInfo = () => {
     return [searchParams.get("page") || 1, searchParams.get("limit") || 5];
@@ -173,13 +175,7 @@ const SitesList = () => {
       title: "Coordinator",
       dataIndex: "coordinatorId",
       render: (text, recored) => {
-        return (
-          <p>
-            {recored?.coordinatorId.firstName +
-              " " +
-              recored?.coordinatorId.lastName}
-          </p>
-        );
+        return <p>{recored?.coordinatorId.username}</p>;
       },
       sorter: true,
     },
@@ -198,6 +194,7 @@ const SitesList = () => {
         return (
           <div className="flex g-2">
             <Button
+              disabled={user?.user.role != "admin"}
               type="text"
               style={{ border: "1px solid ligthgray", width: 50 }}
               icon={<FiEdit size={20} />}
@@ -205,10 +202,12 @@ const SitesList = () => {
                 setModeID(recored._id);
                 setIsModalOpen(true);
               }}
+              dis
             ></Button>
             <di className="mx-1"></di>
             <Button
               type="text"
+              disabled={user?.user.role != "admin"}
               icon={<IoTrashOutline size={20} />}
               style={{ border: "1px solid ligthgray", width: 50 }}
               onClick={() => {
@@ -273,7 +272,7 @@ const SitesList = () => {
               </p>
             </div>
             <div className="flex justify-center items-center">
-              <p className="text-lg leading-4">Number of site</p>
+              <p className="text-lg leading-4">Number of Branch</p>
             </div>
           </div>
           <div
@@ -289,7 +288,7 @@ const SitesList = () => {
               </div>
             </div>
             <div className="flex justify-center items-center">
-              <p className="text-lg leading-4">Add New Site</p>
+              <p className="text-lg leading-4">Add New Branch</p>
             </div>
           </div>
         </div>

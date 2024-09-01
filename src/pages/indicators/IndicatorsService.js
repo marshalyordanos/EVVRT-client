@@ -26,7 +26,29 @@ class IndicatorsService {
                 return response.data.data;
             });
     }
-
+    getHomeReport(type,siteId,regionId) {
+        let url = `/indicators/home?type=${type}`
+        if(siteId){
+            url = url `&siteId=${siteId}`
+        }
+        if(regionId){
+            url = url `&regionId=${regionId}`
+        }
+        return api
+            .get(url )
+            .then(response => {
+                return response.data;
+            });
+    }
+    getAdminReport(toDate,fromDate,regionId) {
+        let url = `/indicators/report?fromDate=${fromDate}&toDate=${toDate}&regionId=${regionId}`
+        
+        return api
+            .get(url )
+            .then(response => {
+                return response.data;
+            });
+    }
     searchIndicator({page, limit,searchText=null,sort=null,order}) {
         let url = `/indicators?page=${page}&limit=${limit}`
         if(sort){
@@ -42,7 +64,7 @@ class IndicatorsService {
         return api
             .get(url)
             .then(response => {
-                return {data:response.data.forms,total:response.data.total};
+                return {data:response.data.forms,total:response.data.totalForms};
             });
     }
 
@@ -53,6 +75,7 @@ class IndicatorsService {
                 return response.data;
             });
     }
+   
 
 
     deleteIndicator( id) {
