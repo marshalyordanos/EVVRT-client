@@ -82,7 +82,7 @@ const IndicatorsEdit = ({
   const [current, setCurrent] = useState(0);
   const next = () => {
     // message.info(current);
-    if (current > 14) {
+    if (current < 14) {
       setCurrent(current + 1);
     }
   };
