@@ -106,7 +106,7 @@ const SitesPick = ({ setIsModalOpen, selectHandler }) => {
           className={sitesSelection.length > 0 ? "" : "disable"}
           onClick={() => selectHandler(sitesSelection[0])}
         >
-          Sumbit
+          Submit
         </button>
       </ButtonStyle>
     </div>

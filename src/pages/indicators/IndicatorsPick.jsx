@@ -886,7 +886,7 @@ const IndicatorsPick = ({ setIsModalOpen, selectHandler }) => {
           className={indicatorsSelection.length > 0 ? "" : "disable"}
           onClick={() => selectHandler(indicatorsSelection[0])}
         >
-          Sumbit
+          Submit
         </button>
       </ButtonStyle>
     </div>

@@ -5,6 +5,7 @@ import { searchRegions } from "./regions/RegionsRedux";
 import indicatorsService from "./indicators/IndicatorsService";
 import { useDispatch } from "react-redux";
 import dayjs from "dayjs";
+import AdminPrintReport from "./report/AdminPrintReport";
 const { RangePicker } = DatePicker;
 const { Option } = Select;
 const dateFormat = "YYYY-MM-DD";
@@ -142,9 +143,15 @@ const AdminDashboard = () => {
     searchReport(forms.toDate, forms.formDate, val, regionsData);
   };
   console.log("cols: ", columns);
-
+  const reportGenerator = async () => {
+    console.log("======-------",forms)
+    AdminPrintReport(data, forms.formDate, forms.toDate);
+    message.success("Report printed successfully!");
+    
+  };
   return (
     <TableStyle className="gap-14  max-w-[1200px] m-5 md:mx-auto">
+      <div className="flex justify-between items-center">
       <div className="flex gap-10 my-5">
         {regionsData?.length != 0 && (
           <Select
@@ -166,6 +173,15 @@ const AdminDashboard = () => {
           // ]}
           onChange={onChangeFromDate}
         />
+      </div>
+      <div className="flex  gap-4">
+        <button 
+         onClick={() => reportGenerator("print")}
+        className="bg-red-700 text-white py-1 px-8 rounded-lg">Print</button>
+        <button className="bg-red-700 text-white py-1 px-8 rounded-lg">Get Exel</button>
+
+      </div>
+     
       </div>
       <div className="w-full overflow-x-auto">
         <Table
