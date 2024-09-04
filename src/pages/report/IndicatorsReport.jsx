@@ -2,17 +2,10 @@ import React from 'react'
 import handlePrint from './Print';
 import { indicators } from '../../utils/indicators';
 
-const AdminPrintReport = (report, data,startDate, endDate,regionData,regionId) => {
+const IndicatorsReports = (data) => {
     
-    const formattedStartDateObject = new Date(startDate);
-    const formattedEndDateObject = new Date(endDate);
-    
+const report = Object.keys(data).map(key=>({name:key,value:data[key]}))
 
-
-  
-    const formattedStartDate = formattedStartDateObject.toISOString();
-    const formattedEndDate = formattedEndDateObject.toISOString();
-    // const values = data.map((d,i)=>`<td>${item[`value${i+1}`]}</td>`).join("")
     const reportList = report
     .map(
       (item, index) =>
@@ -21,8 +14,8 @@ const AdminPrintReport = (report, data,startDate, endDate,regionData,regionId) =
           <tr class="data">
              
               <td>${indicators[item?.name]}</td>
-              ${ data.map((d,i)=>`<td>${item[`value${i+1}`]}</td>`).join("")}
-              <td>${item.total}</td>
+            
+              <td>${item.value || 0}</td>
 
 
                
@@ -33,34 +26,7 @@ const AdminPrintReport = (report, data,startDate, endDate,regionData,regionId) =
     )
     .join("");
 
- const header = ()=>{
-  const reg = regionData.find((region) => region._id == regionId);
-  let col = ""
-  
-  let num = 1
-  if (data.length != 0) {
-    data.forEach((rep, index) => {
-      col = col+ `<th>${rep.siteName}</th>`
-      num  +=1
-      
-    });
-    col = col+ `<th>Total</th>`
-
-    
-  }
-  console.log("*****",report,data)
-  
-  const head = `<tr>
-  <th rowspan="2"> Indicators</th>
-    <th colspan="${num}">${reg?.name} </th>
-  </tr>
-  <tr>
-  ${col}</tr>
-  `
-return head
-
- }
-    
+ 
     const printContent = `
     <html>
     <head>
@@ -157,19 +123,16 @@ return head
            
             <table class="borderstyle">
     <tr  class="borderstyle"><h1 class="print-header"> Report</h1></tr>
-  <tr class="borderstyle">
-  <td class="borderstyle" id="dateArrange"><p>From: ${
-    formattedStartDate.substring(0,10)
-  }</p><p id="endDate">To: ${formattedEndDate.substring(0,10)}</p></td>
-
-  </tr>
 
 </table>
 
   
     <table>
         
-   ${header()}
+   <tr>
+   <th> Indicators </th>
+   <th> values </th>
+   </tr>
    ${reportList}
  
  </tr>
@@ -186,4 +149,4 @@ return head
 return handlePrint(printContent);
 }
 
-export default AdminPrintReport
+export default IndicatorsReports

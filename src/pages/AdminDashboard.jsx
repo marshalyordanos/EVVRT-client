@@ -1,4 +1,4 @@
-import { DatePicker, Empty, Select, Table } from "antd";
+import { DatePicker, Empty, Select, Table, message } from "antd";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { searchRegions } from "./regions/RegionsRedux";
@@ -6,6 +6,7 @@ import indicatorsService from "./indicators/IndicatorsService";
 import { useDispatch } from "react-redux";
 import dayjs from "dayjs";
 import AdminPrintReport from "./report/AdminPrintReport";
+import { indicators } from "../utils/indicators";
 const { RangePicker } = DatePicker;
 const { Option } = Select;
 const dateFormat = "YYYY-MM-DD";
@@ -56,7 +57,7 @@ const AdminDashboard = () => {
       setRegionsData(payload.data);
 
       if (payload.data?.length != 0) {
-        setForms({ ...forms, resregionId: payload.data[0]._id });
+        setForms({ ...forms, regionId: payload.data[0]._id });
         searchReport(
           forms.toDate,
           forms.formDate,
@@ -93,9 +94,9 @@ const AdminDashboard = () => {
       {
         title: "Indicators",
         dataIndex: "name",
-        // render: (text, recored) => {
-        //   return <p>some value you need</p>;
-        // },
+        render: (text, recored) => {
+          return <p>{indicators[recored?.name]}</p>;
+        },
         sorter: false,
         width: 300,
       },
@@ -104,7 +105,7 @@ const AdminDashboard = () => {
       title: reg?.name,
       children: [],
     };
-    if (res != 0) {
+    if (res.length != 0) {
       res.forEach((rep, index) => {
         col.children.push({
           title: rep.siteName,
@@ -134,8 +135,13 @@ const AdminDashboard = () => {
   };
   const onChangeFromDate = (date, dateString) => {
     console.log(date, dateString);
-    // setForms({ ...forms, formDate: dateString });
-    searchReport(dateString[1], dateString[0], forms.regionId, regionsData);
+    if (dateString[0] == "" && dateString[1] == "") {
+      setForms({ ...forms, toDate: "9999-09-03", formDate: "1970-09-03" });
+      searchReport( "9999-09-03",  "1970-09-03", forms.regionId, regionsData);
+    } else {
+      setForms({ ...forms, formDate: dateString[1], toDate: dateString[1] });
+      searchReport(dateString[1], dateString[0], forms.regionId, regionsData);
+    }
   };
   const onRegionChange = (val) => {
     console.log(val);
@@ -144,44 +150,52 @@ const AdminDashboard = () => {
   };
   console.log("cols: ", columns);
   const reportGenerator = async () => {
-    console.log("======-------",forms)
-    AdminPrintReport(data, forms.formDate, forms.toDate);
+    console.log("======-------", forms);
+    AdminPrintReport(
+      data,
+      reportData,
+      forms.formDate,
+      forms.toDate,
+      regionsData,
+      forms.regionId
+    );
     message.success("Report printed successfully!");
-    
   };
   return (
     <TableStyle className="gap-14  max-w-[1200px] m-5 md:mx-auto">
       <div className="flex justify-between items-center">
-      <div className="flex gap-10 my-5">
-        {regionsData?.length != 0 && (
-          <Select
-            onChange={onRegionChange}
-            className="border-gray-400 w-[300px]"
-            placeholder="select your role"
-            defaultValue={regionsData && regionsData[0]?._id}
+        <div className="flex gap-10 my-5">
+          {regionsData?.length != 0 && (
+            <Select
+              onChange={onRegionChange}
+              className="border-gray-400 w-[300px]"
+              placeholder="select your role"
+              defaultValue={regionsData && regionsData[0]?._id}
+            >
+              {regionsData?.map((region) => (
+                <Option value={region._id}>{region.name}</Option>
+              ))}
+            </Select>
+          )}
+          <RangePicker
+            // defaultValue={[
+            //   dayjs("2019-09-03", dateFormat),
+            //   dayjs("2019-11-22", dateFormat),
+            // ]}
+            onChange={onChangeFromDate}
+          />
+        </div>
+        <div className="flex  gap-4">
+          <button
+            onClick={() => reportGenerator("print")}
+            className="bg-red-700 text-white py-1 px-8 rounded-lg mr-8"
           >
-            {regionsData?.map((region) => (
-              <Option value={region._id}>{region.name}</Option>
-            ))}
-            <Option value={"lucy"}>{"region.name"}</Option>
-          </Select>
-        )}
-        <RangePicker
-          // defaultValue={[
-          //   dayjs("2019-09-03", dateFormat),
-          //   dayjs("2019-11-22", dateFormat),
-          // ]}
-          onChange={onChangeFromDate}
-        />
-      </div>
-      <div className="flex  gap-4">
-        <button 
-         onClick={() => reportGenerator("print")}
-        className="bg-red-700 text-white py-1 px-8 rounded-lg">Print</button>
-        <button className="bg-red-700 text-white py-1 px-8 rounded-lg">Get Exel</button>
-
-      </div>
-     
+            Print
+          </button>
+          {/* <button className="bg-red-700 text-white py-1 px-8 rounded-lg">
+            Get Exel
+          </button> */}
+        </div>
       </div>
       <div className="w-full overflow-x-auto">
         <Table

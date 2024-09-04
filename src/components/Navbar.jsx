@@ -9,7 +9,7 @@ import AppDrawer from "./ui/AppDrawer";
 import { useDispatch, useSelector } from "react-redux";
 import { logout, selectCurrentUser } from "../redux/auth/authSlice";
 import { FaLongArrowAltLeft } from "react-icons/fa";
-import { Modal } from "antd";
+import { Dropdown, Modal, Space } from "antd";
 import { ButtonStyle } from "./commons/CommonStyles";
 
 const Navbar = () => {
@@ -18,6 +18,24 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const user = useSelector(selectCurrentUser);
   console.log("user", user);
+  const items = [
+    {
+      label: <NavLink to="/setting/profile">Profile</NavLink>,
+      key: '0',
+    },
+    {
+      label: <button
+      className="logut_link"
+      onClick={() => {
+        setIsModalOpen(true);
+      }}
+    >
+      Log out
+    </button>,
+      key: '1',
+    },
+   
+  ];
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
     setIsModalOpen(true);
@@ -52,11 +70,11 @@ const Navbar = () => {
           <li>
             <NavLink to="/">Home</NavLink>{" "}
           </li>
-          {/* {user?.user.role == "admin" && ( */}
+          {(user?.user.role == "admin" || user?.user.role =="regional_manager") && (
           <li>
             <NavLink to="/admin">Admin Report</NavLink>{" "}
           </li>
-          {/* )} */}
+          )}
           <li>
             <NavLink to="/indicators">Indicators</NavLink>{" "}
           </li>
@@ -70,9 +88,12 @@ const Navbar = () => {
               <NavLink to="/regions">Region</NavLink>{" "}
             </li>
           )}
+            {(user?.user.role == "admin" || user?.user.role =="regional_manager") && (
+
           <li>
             <NavLink to="/sites">Branch</NavLink>{" "}
           </li>
+            )}
           {user?.user.role == "admin" && (
             <li>
               <NavLink to="/">Setting</NavLink>{" "}
@@ -101,11 +122,11 @@ const Navbar = () => {
             <li>
               <NavLink to="/">Home</NavLink>{" "}
             </li>
-            {/* {user?.user.role == "admin" && ( */}
+            {(user?.user.role == "admin" || user?.user.role =="regional_manager") && (
             <li>
               <NavLink to="/admin">Admin Report</NavLink>{" "}
             </li>
-            {/* )} */}
+            )}
             <li>
               <NavLink to="/indicators">Indicators</NavLink>{" "}
             </li>
@@ -119,37 +140,40 @@ const Navbar = () => {
                 <NavLink to="/regions">Region</NavLink>{" "}
               </li>
             )}
+            {(user?.user.role == "admin" || user?.user.role =="regional_manager") && (
+
             <li>
               <NavLink to="/sites">Branch</NavLink>{" "}
             </li>
+            )}
             {user?.user.role == "admin" && (
               <li>
                 <NavLink to="/report-setting">Setting</NavLink>{" "}
               </li>
             )}
-            <li>
-              <button
-                className="logut_link"
-                onClick={() => {
-                  setIsModalOpen(true);
-                }}
-              >
-                Log out
-              </button>
-            </li>
+          
           </div>
         )}
 
         {user ? (
-          <div
-            onClick={() => {
-              navigate("/setting/profile");
-            }}
+          <div>
+             <Dropdown
+    menu={{
+      items,
+    }}
+    trigger={['click']}
+  >
+   <div
+           
             className="button_con"
           >
             <FaRegUserCircle size={30} color="white" />
             <button>{user?.user.username}</button>
           </div>
+  </Dropdown>
+  
+          </div>
+         
         ) : (
           <div className="button_con">
             <FaLongArrowAltLeft size={20} color="white" />
