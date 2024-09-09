@@ -24,6 +24,7 @@ import { FiEdit } from "react-icons/fi";
 import { IoPulseOutline, IoTrashOutline } from "react-icons/io5";
 import { IoMdAdd } from "react-icons/io";
 import IndicatorsReports from "../report/IndicatorsReport";
+import { selectCurrentUser } from "../../redux/auth/authSlice";
 
 const options = {
   year: "numeric",
@@ -34,6 +35,7 @@ const options = {
 const IndicatorsList = () => {
   const [indicatorsData, setIndicatorsData] = useState([]);
   const [total, setTotal] = useState();
+  const user = useSelector(selectCurrentUser);
 
   const searchText = useSelector(indicatorsSearchText);
   const [loading, setLoading] = useState();
@@ -167,11 +169,7 @@ const IndicatorsList = () => {
   ];
 
   const reportGenerator = async (data) => {
-
-    IndicatorsReports(
-      data
-     
-    );
+    IndicatorsReports(data);
     message.success("Report printed successfully!");
   };
   const columns = [
@@ -241,13 +239,13 @@ const IndicatorsList = () => {
                 setIsModalOpen(true);
               }}
             ></Button>
-             <di className="mx-1"></di>
-             <button
-            onClick={() => reportGenerator(recored?.indicators)}
-            className="bg-red-700 text-white py-[2px] px-4 rounded-lg mr-8"
-          >
-            Print
-          </button>
+            <di className="mx-1"></di>
+            <button
+              onClick={() => reportGenerator(recored?.indicators)}
+              className="bg-red-700 text-white py-[2px] px-4 rounded-lg mr-8"
+            >
+              Print
+            </button>
           </div>
         );
       },
@@ -310,23 +308,25 @@ const IndicatorsList = () => {
               <p className="text-lg leading-4">Number of Indicators</p>
             </div>
           </div>
-          <div
-            onClick={() => {
-              setModeID("");
-              setType("form");
-              setIsModalOpen(true);
-            }}
-            className="flex bg-gray-300 py-2 px-4 rounded-full w-[200px] gap-2"
-          >
-            <div className="flex justify-center items-center">
-              <div className="bg-gray-600 text-white py-2 px-7 rounded-full text-xl">
-                <IoMdAdd size={30} />
+          {user?.user?.role == "admin" && (
+            <div
+              onClick={() => {
+                setModeID("");
+                setType("form");
+                setIsModalOpen(true);
+              }}
+              className="flex bg-gray-300 py-2 px-4 rounded-full w-[200px] gap-2"
+            >
+              <div className="flex justify-center items-center">
+                <div className="bg-gray-600 text-white py-2 px-7 rounded-full text-xl">
+                  <IoMdAdd size={30} />
+                </div>
+              </div>
+              <div className="flex justify-center items-center">
+                <p className="text-lg leading-4">Add New Indicators</p>
               </div>
             </div>
-            <div className="flex justify-center items-center">
-              <p className="text-lg leading-4">Add New Indicators</p>
-            </div>
-          </div>
+          )}
         </div>
       </div>
 

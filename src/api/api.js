@@ -9,7 +9,7 @@ const handleErrorResponse = (errorMessage) => {
 };
 
 const instance = axios.create({
-  baseURL: "https://ebtbs.onrender.com/api",
+  baseURL: "http://localhost:8000/api",
   headers: {
     "Content-Type": "application/json",
   },
