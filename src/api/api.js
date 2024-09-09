@@ -9,7 +9,7 @@ const handleErrorResponse = (errorMessage) => {
 };
 
 const instance = axios.create({
-  baseURL: "http://localhost:8000/api",
+  baseURL: "https://ebtbs.onrender.com/api",
   headers: {
     "Content-Type": "application/json",
   },
@@ -44,11 +44,12 @@ const setup = (store) => {
       const originalConfig = err.config;
 
       console.log("ppppppppppppppp0000000pppp-----top", err.response);
-      if(err?.response?.data?.message=="invalid authentication " && err?.response?.status==401){
-      TokenService.removeUser();
-      dispatch(logout())
-
-
+      if (
+        err?.response?.data?.message == "invalid authentication " &&
+        err?.response?.status == 401
+      ) {
+        TokenService.removeUser();
+        dispatch(logout());
       }
 
       if (err.code == "ERR_NETWORK") {
