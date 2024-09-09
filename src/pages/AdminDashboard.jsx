@@ -53,6 +53,7 @@ const AdminDashboard = () => {
 
   async function searchData() {
     try {
+      setLoading(true);
       const { payload } = await dispatch(searchRegions());
       setRegionsData(payload.data);
 
@@ -65,8 +66,10 @@ const AdminDashboard = () => {
           payload.data
         );
       }
+      setLoading(false);
     } catch (err) {
       console.log(err);
+      setLoading(false);
     }
   }
   async function searchReport(toDate, formDate, regionId, reg) {
@@ -137,7 +140,7 @@ const AdminDashboard = () => {
     console.log(date, dateString);
     if (dateString[0] == "" && dateString[1] == "") {
       setForms({ ...forms, toDate: "9999-09-03", formDate: "1970-09-03" });
-      searchReport( "9999-09-03",  "1970-09-03", forms.regionId, regionsData);
+      searchReport("9999-09-03", "1970-09-03", forms.regionId, regionsData);
     } else {
       setForms({ ...forms, formDate: dateString[1], toDate: dateString[1] });
       searchReport(dateString[1], dateString[0], forms.regionId, regionsData);
