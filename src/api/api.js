@@ -33,7 +33,7 @@ const setup = (store) => {
     }
   );
 
-  // const { dispatch } = store;
+  const { dispatch } = store;
 
   instance.interceptors.response.use(
     (res) => {
@@ -43,7 +43,13 @@ const setup = (store) => {
     async (err) => {
       const originalConfig = err.config;
 
-      console.log("ppppppppppppppp0000000pppp-----top", err);
+      console.log("ppppppppppppppp0000000pppp-----top", err.response);
+      if(err?.response?.data?.message=="invalid authentication " && err?.response?.status==401){
+      TokenService.removeUser();
+      dispatch(logout())
+
+
+      }
 
       if (err.code == "ERR_NETWORK") {
         message.info("the server is down retry after some time!");

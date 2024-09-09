@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import indicatorsService from "./indicators/IndicatorsService";
+import { indicators } from "../utils/indicators";
 
 const Home = () => {
   const [data, setData] = useState([]);
@@ -37,7 +38,7 @@ const Card = ({ num, title }) => {
   return (
     <div className="bg-gray-300 w-[300px] h-48 rounded-xl">
       <p className="text-5xl text-center pt-7">{num}</p>
-      <p className="text-xl text-center pt-1">{title}</p>
+      <p className="text-xl text-center pt-1 mx-1">{indicators[title]}</p>
     </div>
   );
 };

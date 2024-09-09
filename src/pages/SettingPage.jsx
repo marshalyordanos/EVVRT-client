@@ -1,4 +1,4 @@
-import { InputNumber } from "antd";
+import { InputNumber, message } from "antd";
 import React, { useEffect, useState } from "react";
 import instance from "../api/api";
 
@@ -10,16 +10,19 @@ const SettingPage = () => {
   const onChange = (value) => {
     console.log("changed", value);
     setDate(value);
-    updateSetting(value, dueDate);
+    // updateSetting(value, dueDate);
   };
   const onChangeTwo = (value) => {
     console.log("changed", value);
     setDueDate(value);
-    updateSetting(date, value);
+    // updateSetting(date, value);
   };
   useEffect(() => {
     feactSetting();
   }, []);
+  const onSave = () => {
+    updateSetting(date, dueDate);
+  };
   const feactSetting = async () => {
     try {
       const setting = await instance.get("/setting");
@@ -35,6 +38,7 @@ const SettingPage = () => {
     try {
       const setting = await instance.post("/setting", { date, dueDate });
       console.log("setting", setting.data);
+      message.success("updated successfully");
     } catch (error) {
       console.log(error);
     }
@@ -59,6 +63,14 @@ const SettingPage = () => {
           )}
           {!dueDate && <InputNumber onChange={onChangeTwo} />}
         </div>
+      </div>
+      <div>
+        <button
+          className="bg-red-700 text-white py-2 px-10 my-3 mx-10"
+          onClick={() => updateSetting(date, dueDate)}
+        >
+          Save
+        </button>
       </div>
       {/* {JSON.stringify(form)} */}
     </div>

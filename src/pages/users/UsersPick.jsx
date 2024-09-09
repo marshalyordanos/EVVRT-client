@@ -127,7 +127,7 @@ const UsersPick = ({ setIsModalOpen, selectHandler }) => {
           className={usersSelection.length > 0 ? "" : "disable"}
           onClick={() => selectHandler(usersSelection[0])}
         >
-          Sumbit
+          Submit
         </button>
       </ButtonStyle>
     </div>

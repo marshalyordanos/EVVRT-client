@@ -22,7 +22,7 @@ const Login = () => {
       //   setErr("");
       // }
 
-      navigate("/users");
+      navigate("/blood/dashboard");
       setLoading(false);
     } catch (error) {
       setLoading(false);

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import CommonTable from "../../components/commons/CommonTable";
 import { MoreOutlined, ReloadOutlined } from "@ant-design/icons";
-import { Button, Dropdown, Input, Modal } from "antd";
+import { Button, Dropdown, Input, Modal, message } from "antd";
 import styled from "styled-components";
 import CommonModal from "../../components/commons/CommonModel";
 import { FaCirclePlus } from "react-icons/fa6";
@@ -23,6 +23,7 @@ import {
 import { FiEdit } from "react-icons/fi";
 import { IoPulseOutline, IoTrashOutline } from "react-icons/io5";
 import { IoMdAdd } from "react-icons/io";
+import IndicatorsReports from "../report/IndicatorsReport";
 
 const options = {
   year: "numeric",
@@ -165,6 +166,14 @@ const IndicatorsList = () => {
     },
   ];
 
+  const reportGenerator = async (data) => {
+
+    IndicatorsReports(
+      data
+     
+    );
+    message.success("Report printed successfully!");
+  };
   const columns = [
     {
       title: "siteid",
@@ -209,7 +218,7 @@ const IndicatorsList = () => {
     {
       title: "Action",
       dataIndex: "action",
-      render: (_, recored) => {
+      render: (text, recored) => {
         return (
           <div className="flex g-2">
             <Button
@@ -232,6 +241,13 @@ const IndicatorsList = () => {
                 setIsModalOpen(true);
               }}
             ></Button>
+             <di className="mx-1"></di>
+             <button
+            onClick={() => reportGenerator(recored?.indicators)}
+            className="bg-red-700 text-white py-[2px] px-4 rounded-lg mr-8"
+          >
+            Print
+          </button>
           </div>
         );
       },

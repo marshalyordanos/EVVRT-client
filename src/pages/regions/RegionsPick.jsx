@@ -106,7 +106,7 @@ const RegionsPick = ({ setIsModalOpen, selectHandler }) => {
           className={regionsSelection.length > 0 ? "" : "disable"}
           onClick={() => selectHandler(regionsSelection[0])}
         >
-          Sumbit
+          Submit
         </button>
       </ButtonStyle>
     </div>
