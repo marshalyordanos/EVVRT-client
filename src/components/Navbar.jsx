@@ -54,18 +54,18 @@ const Navbar = () => {
           </li>
           {/* {user?.user.role == "admin" && ( */}
           <li>
-            <NavLink to="/admin">Admin Report</NavLink>{" "}
+            <NavLink to="/admin">Report</NavLink>{" "}
           </li>
           {/* )} */}
           <li>
             <NavLink to="/indicators">Indicators</NavLink>{" "}
           </li>
-          {user?.user.role == "admin" && (
+          {user?.user?.role == "admin" && (
             <li>
               <NavLink to="/users">User</NavLink>{" "}
             </li>
           )}
-          {user?.user.role == "admin" && (
+          {user?.user?.role == "admin" && (
             <li>
               <NavLink to="/regions">Region</NavLink>{" "}
             </li>
@@ -73,7 +73,7 @@ const Navbar = () => {
           <li>
             <NavLink to="/sites">Branch</NavLink>{" "}
           </li>
-          {user?.user.role == "admin" && (
+          {user?.user?.role == "admin" && (
             <li>
               <NavLink to="/">Setting</NavLink>{" "}
             </li>
@@ -103,18 +103,18 @@ const Navbar = () => {
             </li>
             {/* {user?.user.role == "admin" && ( */}
             <li>
-              <NavLink to="/admin">Admin Report</NavLink>{" "}
+              <NavLink to="/admin">Report</NavLink>{" "}
             </li>
             {/* )} */}
             <li>
               <NavLink to="/indicators">Indicators</NavLink>{" "}
             </li>
-            {user?.user.role == "admin" && (
+            {user?.user?.role == "admin" && (
               <li>
                 <NavLink to="/users">User</NavLink>{" "}
               </li>
             )}
-            {user?.user.role == "admin" && (
+            {user?.user?.role == "admin" && (
               <li>
                 <NavLink to="/regions">Region</NavLink>{" "}
               </li>
@@ -122,7 +122,7 @@ const Navbar = () => {
             <li>
               <NavLink to="/sites">Branch</NavLink>{" "}
             </li>
-            {user?.user.role == "admin" && (
+            {user?.user?.role == "admin" && (
               <li>
                 <NavLink to="/report-setting">Setting</NavLink>{" "}
               </li>
@@ -148,7 +148,7 @@ const Navbar = () => {
             className="button_con"
           >
             <FaRegUserCircle size={30} color="white" />
-            <button>{user?.user.username}</button>
+            <button>{user?.user?.username}</button>
           </div>
         ) : (
           <div className="button_con">
