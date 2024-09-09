@@ -83,11 +83,11 @@ const Login = () => {
             Forget Password
           </Link> */}
 
-          <Form.Item>
+          {/* <Form.Item>
             <Button className="button-style" type="primary" htmlType="submit">
               Submit
             </Button>
-          </Form.Item>
+          </Form.Item> */}
         </Form>
       </div>
       <div className="image_con">
