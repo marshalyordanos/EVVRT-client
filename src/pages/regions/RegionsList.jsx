@@ -180,7 +180,7 @@ const RegionsList = () => {
       render: (_, recored) => {
         return (
           <p>
-            {recored?.managerId.firstName + " " + recored?.managerId.lastName}
+            {recored?.managerId?.firstName + " " + recored?.managerId?.lastName}
           </p>
         );
       },

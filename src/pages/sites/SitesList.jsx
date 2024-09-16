@@ -175,7 +175,7 @@ const SitesList = () => {
       title: "Coordinator",
       dataIndex: "coordinatorId",
       render: (text, recored) => {
-        return <p>{recored?.coordinatorId.username}</p>;
+        return <p>{recored?.coordinatorId?.username}</p>;
       },
       sorter: true,
     },
