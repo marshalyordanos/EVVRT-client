@@ -55,10 +55,11 @@ const RegionsEdit = ({
     const featchData = async () => {
       try {
         const data = await regionsService.getRegion(mode);
+        console.log("region edit data: ",data)
         form.setFieldsValue({
           region: {
-            ...data,
-            managerId: data?.managerId._id,
+            name:data?.name,
+            managerId: data?.managerId?._id,
             updatedAt: dayjs(data.updatedAt),
           },
         });

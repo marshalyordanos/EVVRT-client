@@ -71,8 +71,8 @@ const Navbar = () => {
           <li>
             <NavLink to="/">Home</NavLink>{" "}
           </li>
-          {(user?.user.role == "admin" ||
-            user?.user.role == "regional_manager") && (
+          {(user?.user?.role == "admin" ||
+            user?.user?.role == "regional_manager") && (
             <li>
               <NavLink to="/admin">Report</NavLink>{" "}
             </li>
@@ -90,13 +90,13 @@ const Navbar = () => {
               <NavLink to="/regions">Region</NavLink>{" "}
             </li>
           )}
-          {(user?.user.role == "admin" ||
-            user?.user.role == "regional_manager") && (
+          {(user?.user?.role == "admin" ||
+            user?.user?.role == "regional_manager") && (
             <li>
               <NavLink to="/sites">Branch</NavLink>{" "}
             </li>
           )}
-          {user?.user.role == "admin" && (
+          {user?.user?.role == "admin" && (
             <li>
               <NavLink to="/">Setting</NavLink>{" "}
             </li>
@@ -124,8 +124,8 @@ const Navbar = () => {
             <li>
               <NavLink to="/">Home</NavLink>{" "}
             </li>
-            {(user?.user.role == "admin" ||
-              user?.user.role == "regional_manager") && (
+            {(user?.user?.role == "admin" ||
+              user?.user?.role == "regional_manager") && (
               <li>
                 <NavLink to="/admin">Report</NavLink>{" "}
               </li>
@@ -143,13 +143,13 @@ const Navbar = () => {
                 <NavLink to="/regions">Region</NavLink>{" "}
               </li>
             )}
-            {(user?.user.role == "admin" ||
-              user?.user.role == "regional_manager") && (
+            {(user?.user?.role == "admin" ||
+              user?.user?.role == "regional_manager") && (
               <li>
                 <NavLink to="/sites">Branch</NavLink>{" "}
               </li>
             )}
-            {user?.user.role == "admin" && (
+            {user?.user?.role == "admin" && (
               <li>
                 <NavLink to="/report-setting">Setting</NavLink>{" "}
               </li>
