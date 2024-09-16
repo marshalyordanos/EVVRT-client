@@ -21,20 +21,21 @@ const Navbar = () => {
   const items = [
     {
       label: <NavLink to="/setting/profile">Profile</NavLink>,
-      key: '0',
+      key: "0",
     },
     {
-      label: <button
-      className="logut_link"
-      onClick={() => {
-        setIsModalOpen(true);
-      }}
-    >
-      Log out
-    </button>,
-      key: '1',
+      label: (
+        <button
+          className="logut_link"
+          onClick={() => {
+            setIsModalOpen(true);
+          }}
+        >
+          Log out
+        </button>
+      ),
+      key: "1",
     },
-   
   ];
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
@@ -70,30 +71,31 @@ const Navbar = () => {
           <li>
             <NavLink to="/">Home</NavLink>{" "}
           </li>
-          {(user?.user.role == "admin" || user?.user.role =="regional_manager") && (
-          <li>
-            <NavLink to="/admin">Admin Report</NavLink>{" "}
-          </li>
+          {(user?.user.role == "admin" ||
+            user?.user.role == "regional_manager") && (
+            <li>
+              <NavLink to="/admin">Report</NavLink>{" "}
+            </li>
           )}
           <li>
             <NavLink to="/indicators">Indicators</NavLink>{" "}
           </li>
-          {user?.user.role == "admin" && (
+          {user?.user?.role == "admin" && (
             <li>
               <NavLink to="/users">User</NavLink>{" "}
             </li>
           )}
-          {user?.user.role == "admin" && (
+          {user?.user?.role == "admin" && (
             <li>
               <NavLink to="/regions">Region</NavLink>{" "}
             </li>
           )}
-            {(user?.user.role == "admin" || user?.user.role =="regional_manager") && (
-
-          <li>
-            <NavLink to="/sites">Branch</NavLink>{" "}
-          </li>
-            )}
+          {(user?.user.role == "admin" ||
+            user?.user.role == "regional_manager") && (
+            <li>
+              <NavLink to="/sites">Branch</NavLink>{" "}
+            </li>
+          )}
           {user?.user.role == "admin" && (
             <li>
               <NavLink to="/">Setting</NavLink>{" "}
@@ -122,58 +124,53 @@ const Navbar = () => {
             <li>
               <NavLink to="/">Home</NavLink>{" "}
             </li>
-            {(user?.user.role == "admin" || user?.user.role =="regional_manager") && (
-            <li>
-              <NavLink to="/admin">Admin Report</NavLink>{" "}
-            </li>
+            {(user?.user.role == "admin" ||
+              user?.user.role == "regional_manager") && (
+              <li>
+                <NavLink to="/admin">Report</NavLink>{" "}
+              </li>
             )}
             <li>
               <NavLink to="/indicators">Indicators</NavLink>{" "}
             </li>
-            {user?.user.role == "admin" && (
+            {user?.user?.role == "admin" && (
               <li>
                 <NavLink to="/users">User</NavLink>{" "}
               </li>
             )}
-            {user?.user.role == "admin" && (
+            {user?.user?.role == "admin" && (
               <li>
                 <NavLink to="/regions">Region</NavLink>{" "}
               </li>
             )}
-            {(user?.user.role == "admin" || user?.user.role =="regional_manager") && (
-
-            <li>
-              <NavLink to="/sites">Branch</NavLink>{" "}
-            </li>
+            {(user?.user.role == "admin" ||
+              user?.user.role == "regional_manager") && (
+              <li>
+                <NavLink to="/sites">Branch</NavLink>{" "}
+              </li>
             )}
             {user?.user.role == "admin" && (
               <li>
                 <NavLink to="/report-setting">Setting</NavLink>{" "}
               </li>
             )}
-          
           </div>
         )}
 
         {user ? (
           <div>
-             <Dropdown
-    menu={{
-      items,
-    }}
-    trigger={['click']}
-  >
-   <div
-           
-            className="button_con"
-          >
-            <FaRegUserCircle size={30} color="white" />
-            <button>{user?.user.username}</button>
+            <Dropdown
+              menu={{
+                items,
+              }}
+              trigger={["click"]}
+            >
+              <div className="button_con">
+                <FaRegUserCircle size={30} color="white" />
+                <button>{user?.user?.username}</button>
+              </div>
+            </Dropdown>
           </div>
-  </Dropdown>
-  
-          </div>
-         
         ) : (
           <div className="button_con">
             <FaLongArrowAltLeft size={20} color="white" />

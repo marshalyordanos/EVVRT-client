@@ -72,7 +72,7 @@ const Login = () => {
           >
             <Input.Password placeholder="password" className="input-style " />
           </Form.Item>
-          <Link
+          {/* <Link
             style={{
               textDecoration: "underline",
               margin: "10px 10px",
@@ -81,7 +81,7 @@ const Login = () => {
             to={"/"}
           >
             Forget Password
-          </Link>
+          </Link> */}
 
           <Form.Item>
             <Button className="button-style" type="primary" htmlType="submit">

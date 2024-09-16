@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from "react";
 import indicatorsService from "./indicators/IndicatorsService";
 import { indicators } from "../utils/indicators";
+import styled from "styled-components";
+import { Empty, Spin } from "antd";
 
 const Home = () => {
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     searchReport();
   }, []);
   async function searchReport(type, siteId, regionId) {
     try {
+      setLoading(true);
       const res = await indicatorsService.getHomeReport(
         "all",
         siteId,
@@ -21,15 +26,27 @@ const Home = () => {
       }));
       console.log(x);
       setData(x);
+      setLoading(false);
     } catch (err) {
+      setLoading(false);
       console.log(err);
     }
   }
   return (
     <div className="flex flex-wrap justify-center gap-12 max-w-[1200px] m-5 md:mx-auto">
-      {data.map((d) => (
-        <Card num={d?.val} title={d?.name} />
-      ))}
+      {loading ? (
+        <SpinContainer className="spin_con flex justify-center items-center">
+          <Spin size="large" />
+        </SpinContainer>
+      ) : (
+        <>
+          {data.length == 0 ? (
+            <Empty />
+          ) : (
+            data.map((d) => <Card num={d?.val} title={d?.name} />)
+          )}
+        </>
+      )}
     </div>
   );
 };
@@ -42,5 +59,11 @@ const Card = ({ num, title }) => {
     </div>
   );
 };
+const SpinContainer = styled.div`
+  height: calc(100vh - 200px);
+  .ant-spin-dot-item {
+    background-color: #be0a0a;
+  }
+`;
 
 export default Home;
