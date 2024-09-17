@@ -18,6 +18,7 @@ import IndicatorsList from "./pages/indicators/IndicatorsList";
 import Home from "./pages/Home";
 import AdminDashboard from "./pages/AdminDashboard";
 import SettingPage from "./pages/SettingPage";
+import IndicatorsDetail from "./pages/indicators/IndicatorsDetails";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -45,6 +46,8 @@ function App() {
             <Route path="/sites" element={<SitesList />} />
             <Route path="/regions" element={<RegionsList />} />
             <Route path="/indicators" element={<IndicatorsList />} />
+            <Route path="/indicators/:id" element={<IndicatorsDetail />} />
+
 
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/report-setting" element={<SettingPage />} />

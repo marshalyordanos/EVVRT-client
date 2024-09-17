@@ -2,8 +2,15 @@ import React from 'react'
 import handlePrint from './Print';
 import { indicators } from '../../utils/indicators';
 
-const IndicatorsReports = (data) => {
-    
+const IndicatorsReports = (data,username) => {
+    const getCurrentDate = () => {
+        const now = new Date();
+        const day = String(now.getDate()).padStart(2, '0');
+        const month = String(now.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+        const year = now.getFullYear();
+        
+        return `${day}/${month}/${year}`;
+      };
 const report = Object.keys(data).map(key=>({name:key,value:data[key]}))
 
     const reportList = report
@@ -120,6 +127,11 @@ const report = Object.keys(data).map(key=>({name:key,value:data[key]}))
     </head>
     <body>
         <div class="container">
+
+        <table class="borderstyle">
+        <tr  class="borderstyle" style=""> <span class="firstrow">   <img width="150" style="padding-right: 10px;padding-bottom:20px;" height="auto" src="/main-logo.png" class="logo" alt="GMCLOGO"/>
+       
+    </table>
            
             <table class="borderstyle">
     <tr  class="borderstyle"><h1 class="print-header"> Report</h1></tr>
@@ -138,6 +150,14 @@ const report = Object.keys(data).map(key=>({name:key,value:data[key]}))
  </tr>
 
    </table>
+   <table class="borderstyle">
+       
+   <tr class="borderstyle">
+       <td class="borderstyle">Printed By: ${username}</td>
+       <td class="borderstyle">Printed Date:${getCurrentDate()}</td>
+   </tr>
+  
+</table>
   </div>
  
 </div>

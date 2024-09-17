@@ -5,10 +5,10 @@ import { Button, Dropdown, Input, Modal, message } from "antd";
 import styled from "styled-components";
 import CommonModal from "../../components/commons/CommonModel";
 import { FaCirclePlus } from "react-icons/fa6";
-
+import { GrView } from "react-icons/gr";
 import indicatorsService from "./IndicatorsService";
 import IndicatorsEdit from "./IndicatorsEdit";
-import { NavLink, useSearchParams } from "react-router-dom";
+import { NavLink, useNavigate, useSearchParams } from "react-router-dom";
 import {
   HeaderStyle,
   SearchInputStyle,
@@ -25,6 +25,7 @@ import { IoPulseOutline, IoTrashOutline } from "react-icons/io5";
 import { IoMdAdd } from "react-icons/io";
 import IndicatorsReports from "../report/IndicatorsReport";
 import { selectCurrentUser } from "../../redux/auth/authSlice";
+import ExcelExportIndicators from "../../utils/ExcelExportIndicators";
 
 const options = {
   year: "numeric",
@@ -49,6 +50,7 @@ const IndicatorsList = () => {
 
   const delayTimerRef = useRef(null);
   const dispatch = useDispatch();
+  const navigate = useNavigate()
 
   const getPaginationInfo = () => {
     return [searchParams.get("page") || 1, searchParams.get("limit") || 5];
@@ -169,7 +171,7 @@ const IndicatorsList = () => {
   ];
 
   const reportGenerator = async (data) => {
-    IndicatorsReports(data);
+    IndicatorsReports(data, (user?.user?.firstName + " "+user?.user?.lastName));
     message.success("Report printed successfully!");
   };
   const columns = [
@@ -219,6 +221,17 @@ const IndicatorsList = () => {
       render: (text, recored) => {
         return (
           <div className="flex g-2">
+             <Button
+              type="text"
+              style={{ border: "1px solid ligthgray", width: 50 }}
+              icon={<GrView size={20} />}
+              onClick={() => {
+    const report = Object.keys(recored?.indicators).map(key=>({name:key,value:recored?.indicators[key]}))
+
+               navigate('/indicators/'+recored.id,{ state: {recored,data:report} })
+              }}
+            ></Button>
+            <di className="mx-1"></di>
             <Button
               type="text"
               style={{ border: "1px solid ligthgray", width: 50 }}
@@ -232,20 +245,24 @@ const IndicatorsList = () => {
             <di className="mx-1"></di>
             <Button
               type="text"
+              className="bg-gray-100"
               icon={<FaCirclePlus style={{ fontSize: 20 }} />}
               onClick={() => {
                 setModeID(recored.id);
                 setType("indicator");
                 setIsModalOpen(true);
               }}
-            ></Button>
+            >
+              Add Indicators
+            </Button>
             <di className="mx-1"></di>
             <button
               onClick={() => reportGenerator(recored?.indicators)}
-              className="bg-red-700 text-white py-[2px] px-4 rounded-lg mr-8"
+              className="bg-red-700 text-white py-[1px] px-4 text-sm rounded-lg mr-2"
             >
               Print
             </button>
+            <ExcelExportIndicators data={recored}/>
           </div>
         );
       },

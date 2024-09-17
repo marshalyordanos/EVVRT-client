@@ -62,7 +62,6 @@ const SitesEdit = ({
           site: {
             ...data,
             coordinatorId: data?.coordinatorId?._id,
-            coordinatorId: data?.coordinatorId?._id,
             regionId:data?.regionId?._id,
             updatedAt: dayjs(data.updatedAt),
           },

@@ -3,17 +3,22 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { searchRegions } from "./regions/RegionsRedux";
 import indicatorsService from "./indicators/IndicatorsService";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import dayjs from "dayjs";
 import AdminPrintReport from "./report/AdminPrintReport";
 import { indicators } from "../utils/indicators";
+import ExcelExport from "../utils/ExcelExport";
+import { selectCurrentUser } from "../redux/auth/authSlice";
 const { RangePicker } = DatePicker;
 const { Option } = Select;
+
 const dateFormat = "YYYY-MM-DD";
 const AdminDashboard = () => {
   const [loading, setLoading] = useState("false");
   const [regionsData, setRegionsData] = useState([]);
   const [reportData, setReportData] = useState([]);
+  
+  const user = useSelector(selectCurrentUser);
 
   const [columns, setColumns] = useState();
 
@@ -160,7 +165,8 @@ const AdminDashboard = () => {
       forms.formDate,
       forms.toDate,
       regionsData,
-      forms.regionId
+      forms.regionId,
+      (user?.user?.firstName + " "+user?.user?.lastName)
     );
     message.success("Report printed successfully!");
   };
@@ -188,7 +194,11 @@ const AdminDashboard = () => {
             onChange={onChangeFromDate}
           />
         </div>
-        <div className="flex  gap-4">
+        <div className="flex  gap-2">
+        
+       <div>
+      <ExcelExport  regionId={forms.regionId} regionsData={regionsData} formDate={ forms.formDate} toDate={forms.toDate}  data={data} reportData={reportData} fileName="employees" />
+    </div>
           <button
             onClick={() => reportGenerator("print")}
             className="bg-red-700 text-white py-1 px-8 rounded-lg mr-8"

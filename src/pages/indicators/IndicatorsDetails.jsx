@@ -1,21 +1,57 @@
 
-    import { Divider } from 'antd'
+    import { Divider, Empty, Table } from 'antd'
     import React from 'react'
     import { useLocation } from 'react-router-dom'
     import styled from 'styled-components'
+import { indicators } from '../../utils/indicators'
 
 
     
     const IndicatorsDetail = () => {
     const {state} = useLocation();
+
+    console.log("state",state.data)
+    const cols = [
+        {
+          title: "Indicators",
+          dataIndex: "name",
+          render: (text, recored) => {
+            return <p>{indicators[recored?.name]}</p>;
+          },
+          sorter: false,
+          width: 300,
+        }, {
+            title: "value",
+            dataIndex: "value",
+           
+            sorter: false,
+            width: 300,
+          },
+      ];
     return (
     <DetailStyle>
-        <h1>User Detail</h1>
+        {/* <h1>User Detail</h1> */}
         <Divider  style={{margin:'15px 0 25px 0'}} />
 
     
+        <div className="w-full overflow-x-auto">
+        <Table
+          scroll={{
+            x: 700,
+          }}
+        //   loading={loading}
+          rowKey={"_id"}
+          locale={{
+            emptyText: <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />,
+          }}
+          columns={cols}
+          dataSource={state?.data}
+          pagination={false}
+          className=" text-base"
+        />
+      </div>
     
-    
+{/*     
                 <div className='detail_child'>
                 <p className='detail_key'>siteid:</p>
                 <p className='detail_value'>{state?.siteid}</p>  
@@ -785,7 +821,7 @@
                 <p className='detail_key'>blood_bag_stock_out_days:</p>
                 <p className='detail_value'>{state?.blood_bag_stock_out_days}</p>  
             </div>
-            
+             */}
 
     </DetailStyle>
   )
