@@ -26,6 +26,7 @@ import { IoMdAdd } from "react-icons/io";
 import IndicatorsReports from "../report/IndicatorsReport";
 import { selectCurrentUser } from "../../redux/auth/authSlice";
 import ExcelExportIndicators from "../../utils/ExcelExportIndicators";
+import FileInput from "../../utils/ExcelImport";
 
 const options = {
   year: "numeric",
@@ -50,7 +51,7 @@ const IndicatorsList = () => {
 
   const delayTimerRef = useRef(null);
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const getPaginationInfo = () => {
     return [searchParams.get("page") || 1, searchParams.get("limit") || 5];
@@ -171,7 +172,7 @@ const IndicatorsList = () => {
   ];
 
   const reportGenerator = async (data) => {
-    IndicatorsReports(data, (user?.user?.firstName + " "+user?.user?.lastName));
+    IndicatorsReports(data, user?.user?.firstName + " " + user?.user?.lastName);
     message.success("Report printed successfully!");
   };
   const columns = [
@@ -221,14 +222,19 @@ const IndicatorsList = () => {
       render: (text, recored) => {
         return (
           <div className="flex g-2">
-             <Button
+            <Button
               type="text"
               style={{ border: "1px solid ligthgray", width: 50 }}
               icon={<GrView size={20} />}
               onClick={() => {
-    const report = Object.keys(recored?.indicators).map(key=>({name:key,value:recored?.indicators[key]}))
+                const report = Object.keys(recored?.indicators).map((key) => ({
+                  name: key,
+                  value: recored?.indicators[key],
+                }));
 
-               navigate('/indicators/'+recored.id,{ state: {recored,data:report} })
+                navigate("/indicators/" + recored.id, {
+                  state: { recored, data: report },
+                });
               }}
             ></Button>
             <di className="mx-1"></di>
@@ -262,7 +268,7 @@ const IndicatorsList = () => {
             >
               Print
             </button>
-            <ExcelExportIndicators data={recored}/>
+            <ExcelExportIndicators data={recored} />
           </div>
         );
       },
@@ -314,6 +320,10 @@ const IndicatorsList = () => {
           />
         </SearchInputStyle> */}
         <div></div>
+        <div className="App">
+          <h1>Import Excel Data in React.js</h1>
+          <FileInput />
+        </div>
         <div className="header_right flex gap-3">
           <div className="flex bg-gray-300 py-2 px-4 rounded-full w-[200px] gap-2">
             <div className="flex justify-center items-center">

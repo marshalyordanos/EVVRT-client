@@ -19,6 +19,9 @@ import Home from "./pages/Home";
 import AdminDashboard from "./pages/AdminDashboard";
 import SettingPage from "./pages/SettingPage";
 import IndicatorsDetail from "./pages/indicators/IndicatorsDetails";
+import ForgetByEmail from "./pages/forget/ForgetByEmail";
+import PassowrdReset from "./pages/forget/PassowrdReset";
+import DashBoard from "./pages/Dashboard/DashBoard";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -48,8 +51,9 @@ function App() {
             <Route path="/indicators" element={<IndicatorsList />} />
             <Route path="/indicators/:id" element={<IndicatorsDetail />} />
 
-
             <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/dashboard" element={<DashBoard />} />
+
             <Route path="/report-setting" element={<SettingPage />} />
 
             <Route path="/setting/*" element={<SettingRoutting />} />
@@ -60,6 +64,9 @@ function App() {
           {/* <Route element={<>Dashboard</>} path='/' /> */}
 
           <Route path="/login" element={<Login />} />
+          <Route path="/forget-by-email" element={<ForgetByEmail />} />
+          <Route path="/reset-password" element={<PassowrdReset />} />
+
           <Route path="/signup" element={<div>Signup</div>} />
 
           <Route path="*" element={<h1>Page is not found</h1>} />

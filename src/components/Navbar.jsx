@@ -77,6 +77,12 @@ const Navbar = () => {
               <NavLink to="/admin">Report</NavLink>{" "}
             </li>
           )}
+          {(user?.user?.role == "admin" ||
+            user?.user?.role == "regional_manager") && (
+            <li>
+              <NavLink to="/dashboard">DashBoard</NavLink>{" "}
+            </li>
+          )}
           <li>
             <NavLink to="/indicators">Indicators</NavLink>{" "}
           </li>
@@ -128,6 +134,12 @@ const Navbar = () => {
               user?.user?.role == "regional_manager") && (
               <li>
                 <NavLink to="/admin">Report</NavLink>{" "}
+              </li>
+            )}
+            {(user?.user?.role == "admin" ||
+              user?.user?.role == "regional_manager") && (
+              <li>
+                <NavLink to="/dashboard">DashBoard</NavLink>{" "}
               </li>
             )}
             <li>
