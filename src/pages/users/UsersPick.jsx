@@ -10,7 +10,7 @@ import { Divider, Input } from "antd";
 import { searchUsers, updateUsersState, usersSearchText } from "./UsersRedux"; //** */
 import { useDispatch, useSelector } from "react-redux"; /*** */
 
-const UsersPick = ({ setIsModalOpen, selectHandler }) => {
+const UsersPick = ({ setIsModalOpen, selectHandler, type }) => {
   const [usersData, setUsersData] = useState([]);
   const [total, setTotal] = useState();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -35,7 +35,7 @@ const UsersPick = ({ setIsModalOpen, selectHandler }) => {
   async function searchData() {
     try {
       setLoading(true);
-      const { payload } = await dispatch(searchUsers());
+      const { payload } = await dispatch(searchUsers(type));
       setUsersData(payload.data);
       setTotal(payload.total);
       setLoading(false);

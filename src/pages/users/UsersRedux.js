@@ -7,10 +7,11 @@
         "users/searchUsers",
         async (data, { rejectWithValue,getState }) => {
         try {
+            console.log("USERS REDUX: ",data)
             
             const { searchText,page,limit,sort,order } = getState().users.query; // Access state directly
 
-            const res = await UsersService.searchUser({page,limit,searchText,sort,order});
+            const res = await UsersService.searchUser({page,limit,searchText,sort,order,type:data});
             
     
             return res;

@@ -49,6 +49,15 @@ class IndicatorsService {
                 return response.data;
             });
     }
+    getRegionReport(toDate,fromDate) {
+        let url = `/indicators/donation?fromDate=${fromDate}&toDate=${toDate}`
+        
+        return api
+            .get(url )
+            .then(response => {
+                return response.data;
+            });
+    }
     searchIndicator({page, limit,searchText=null,sort=null,order}) {
         let url = `/indicators?page=${page}&limit=${limit}`
         if(sort){

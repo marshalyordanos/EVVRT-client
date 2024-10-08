@@ -26,6 +26,7 @@ import { IoMdAdd } from "react-icons/io";
 import IndicatorsReports from "../report/IndicatorsReport";
 import { selectCurrentUser } from "../../redux/auth/authSlice";
 import ExcelExportIndicators from "../../utils/ExcelExportIndicators";
+import FileInput from "../../utils/ExcelImport";
 
 const options = {
   year: "numeric",
@@ -44,13 +45,15 @@ const IndicatorsList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [type, setType] = useState("");
-
+  const [importedData, setIMportedData] = useState(null);
   const [modeID, setModeID] = useState("");
+  const [modalImport, setModalImport] = useState(false);
+
   const [searchParams, setSearchParams] = useSearchParams();
 
   const delayTimerRef = useRef(null);
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const getPaginationInfo = () => {
     return [searchParams.get("page") || 1, searchParams.get("limit") || 5];
@@ -171,8 +174,8 @@ const IndicatorsList = () => {
   ];
 
   const reportGenerator = async (data) => {
-    IndicatorsReports(data, (user?.user?.firstName + " "+user?.user?.lastName));
-    message.success("Report printed successfully!");
+    IndicatorsReports(data, user?.user?.firstName + " " + user?.user?.lastName);
+    // message.success("Report printed successfully!");
   };
   const columns = [
     {
@@ -221,40 +224,51 @@ const IndicatorsList = () => {
       render: (text, recored) => {
         return (
           <div className="flex g-2">
-             <Button
+            <Button
               type="text"
               style={{ border: "1px solid ligthgray", width: 50 }}
               icon={<GrView size={20} />}
               onClick={() => {
-    const report = Object.keys(recored?.indicators).map(key=>({name:key,value:recored?.indicators[key]}))
+                const report = Object.keys(recored?.indicators).map((key) => ({
+                  name: key,
+                  value: recored?.indicators[key],
+                }));
 
-               navigate('/indicators/'+recored.id,{ state: {recored,data:report} })
+                navigate("/indicators/" + recored.id, {
+                  state: { recored, data: report },
+                });
               }}
             ></Button>
             <di className="mx-1"></di>
-            <Button
-              type="text"
-              style={{ border: "1px solid ligthgray", width: 50 }}
-              icon={<FiEdit size={20} />}
-              onClick={() => {
-                setModeID(recored.id);
-                setType("form");
-                setIsModalOpen(true);
-              }}
-            ></Button>
+            {user?.user?.role != "manager" &&
+              user?.user?.role != "site_coordiantor" && (
+                <Button
+                  type="text"
+                  style={{ border: "1px solid ligthgray", width: 50 }}
+                  icon={<FiEdit size={20} />}
+                  onClick={() => {
+                    setModeID(recored.id);
+                    setType("form");
+                    setIsModalOpen(true);
+                  }}
+                ></Button>
+              )}
             <di className="mx-1"></di>
-            <Button
-              type="text"
-              className="bg-gray-100"
-              icon={<FaCirclePlus style={{ fontSize: 20 }} />}
-              onClick={() => {
-                setModeID(recored.id);
-                setType("indicator");
-                setIsModalOpen(true);
-              }}
-            >
-              Add Indicators
-            </Button>
+            {user?.user?.role != "manager" && (
+              <Button
+                type="text"
+                className="bg-gray-100"
+                icon={<FaCirclePlus style={{ fontSize: 20 }} />}
+                onClick={() => {
+                  console.log("mode list:", recored.id);
+                  setModeID(recored.id);
+                  setType("indicator");
+                  setIsModalOpen(true);
+                }}
+              >
+                Add Indicators
+              </Button>
+            )}
             <di className="mx-1"></di>
             <button
               onClick={() => reportGenerator(recored?.indicators)}
@@ -262,7 +276,34 @@ const IndicatorsList = () => {
             >
               Print
             </button>
-            <ExcelExportIndicators data={recored}/>
+            {user?.user?.role != "manager" && (
+              <button
+                onClick={() => {
+                  console.log("mode list:", recored);
+                  setModeID(recored.id);
+                  setModalImport(true);
+                }}
+                className="bg-yellow-600 text-white py-[1px] px-4 text-sm rounded-lg mr-2"
+              >
+                Import
+              </button>
+            )}
+            {/* <div
+              onClick={() => {
+                console.log("ppppp", recored);
+              }}
+              className="App"
+            >
+              <FileInput
+                setModeID={setModeID}
+                id={recored.id}
+                setIsModalOpen={setIsModalOpen}
+                setType={setType}
+                data={importedData}
+                setData={setIMportedData}
+              />
+            </div> */}
+            <ExcelExportIndicators data={recored} />
           </div>
         );
       },
@@ -271,13 +312,17 @@ const IndicatorsList = () => {
 
   return (
     <div className="max-w-[1200px] m-auto">
+      {/* <p>{JSON.stringify(importedData)}</p> */}
       {isModalOpen ? (
         <CommonModal
           width={1000}
           isModalOpen={isModalOpen}
           setIsModalOpen={setIsModalOpen}
+          setIMportedData={setIMportedData}
         >
           <IndicatorsEdit
+            importedData={importedData}
+            setIMportedData={setIMportedData}
             indicatorsData={indicatorsData}
             searchData={searchData}
             setMode={setModeID}
@@ -304,6 +349,32 @@ const IndicatorsList = () => {
         ""
       )}
 
+      {modalImport && (
+        <CommonModal
+          width={600}
+          isModalOpen={modalImport}
+          setIsModalOpen={setModalImport}
+          setIMportedData={setIMportedData}
+        >
+          <div
+            onClick={() => {
+              console.log("ppppp", recored);
+            }}
+            className="App"
+          >
+            <FileInput
+              setModeID={setModeID}
+              id={modeID}
+              setModalImport={setModalImport}
+              setIsModalOpen={setIsModalOpen}
+              setType={setType}
+              data={importedData}
+              setData={setIMportedData}
+            />
+          </div>
+        </CommonModal>
+      )}
+
       <div className="flex flex-row gap-6 my-8 justify-between items-center">
         {/* <SearchInputStyle>
           <Input
@@ -314,6 +385,7 @@ const IndicatorsList = () => {
           />
         </SearchInputStyle> */}
         <div></div>
+
         <div className="header_right flex gap-3">
           <div className="flex bg-gray-300 py-2 px-4 rounded-full w-[200px] gap-2">
             <div className="flex justify-center items-center">

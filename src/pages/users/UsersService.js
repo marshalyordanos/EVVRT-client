@@ -19,7 +19,8 @@ class UsersService {
             });
     }
 
-    searchUser({page, limit,searchText=null,sort=null,order}) {
+    searchUser({page, limit,searchText=null,sort=null,order,type}) {
+        
         let url = `/users?page=${page}&limit=${limit}`
         if(sort){
     const sortValue = order == 'ascend' ? sort : order == 'descend' ? '-'+sort:'';
@@ -31,6 +32,9 @@ class UsersService {
             url = url + `&searchText=${searchText}`
         }
 
+        if(type){
+            url = url +`&role=${type}`
+        }
         return api
             .get(url)
             .then(response => {

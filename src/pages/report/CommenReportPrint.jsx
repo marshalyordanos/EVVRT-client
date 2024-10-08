@@ -3,7 +3,7 @@ import handlePrint from "./Print";
 import { indicators } from "../../utils/indicators";
 import html2pdf from "html2pdf.js";
 
-const IndicatorsReports = (data, username) => {
+const CommonPrint = (data, username) => {
   const getCurrentDate = () => {
     const now = new Date();
     const day = String(now.getDate()).padStart(2, "0");
@@ -169,8 +169,8 @@ const IndicatorsReports = (data, username) => {
   </html>
    `;
   // console.log(printContent,"print content")
-  return handlePrint(printContent);
-  // return printContent;
+  // return handlePrint(printContent);
+  return printContent;
 };
 
-export default IndicatorsReports;
+export default CommonPrint;

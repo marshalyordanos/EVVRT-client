@@ -71,10 +71,14 @@ const Navbar = () => {
           <li>
             <NavLink to="/">Home</NavLink>{" "}
           </li>
-          {(user?.user?.role == "admin" ||
-            user?.user?.role == "regional_manager") && (
+          {user?.user?.role != "site_coordiantor" && (
             <li>
               <NavLink to="/admin">Report</NavLink>{" "}
+            </li>
+          )}
+          {user?.user?.role != "site_coordiantor" && (
+            <li>
+              <NavLink to="/dashboard">DashBoard</NavLink>{" "}
             </li>
           )}
           <li>
@@ -124,10 +128,14 @@ const Navbar = () => {
             <li>
               <NavLink to="/">Home</NavLink>{" "}
             </li>
-            {(user?.user?.role == "admin" ||
-              user?.user?.role == "regional_manager") && (
+            {user?.user?.role != "site_coordiantor" && (
               <li>
                 <NavLink to="/admin">Report</NavLink>{" "}
+              </li>
+            )}
+            {user?.user?.role != "site_coordiantor" && (
+              <li>
+                <NavLink to="/dashboard">DashBoard</NavLink>{" "}
               </li>
             )}
             <li>

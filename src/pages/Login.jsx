@@ -36,7 +36,7 @@ const Login = () => {
   return !loading ? (
     <Container>
       <div className="login_con">
-        <p>EVVRT Login</p>
+        <p>eVVRT Login</p>
         <Form
           name="basic"
           initialValues={{
@@ -72,16 +72,16 @@ const Login = () => {
           >
             <Input.Password placeholder="password" className="input-style " />
           </Form.Item>
-          {/* <Link
+          <Link
             style={{
               textDecoration: "underline",
               margin: "10px 10px",
               display: "block",
             }}
-            to={"/"}
+            to={"/forget-by-email"}
           >
             Forget Password
-          </Link> */}
+          </Link>
 
           <Form.Item>
             <Button className="button-style" type="primary" htmlType="submit">
