@@ -46,6 +46,8 @@ const IndicatorsEdit = ({
   indicatorsData,
   searchData,
   type,
+  importedData,
+  setIMportedData,
 }) => {
   const [form] = Form.useForm();
   const [switch2, setSwitch2] = useState("");
@@ -104,6 +106,7 @@ const IndicatorsEdit = ({
   useEffect(() => {
     const featchData = async () => {
       try {
+        console.log("mode: ", mode);
         const data = await indicatorsService.getIndicator(mode);
         console.log("one data:", data);
         setSelectedsite(data.siteId);
@@ -112,14 +115,32 @@ const IndicatorsEdit = ({
           dueDate: dayjs(data.dueDate),
           date: dayjs(data.date),
         });
-        form.setFieldsValue({
-          form: {
-            siteId: data.siteId._id,
-            dueDate: dayjs(data.dueDate),
-            date: dayjs(data.date),
-          },
-          indicator: data.indicators,
-        });
+
+        if (type == "imported") {
+          const objImpotred = {};
+          importedData.forEach((x) => {
+            objImpotred[[x["name"]]] = x["value"];
+          });
+          console.log("type: ", type, objImpotred);
+
+          form.setFieldsValue({
+            form: {
+              siteId: data.siteId._id,
+              dueDate: dayjs(data.dueDate),
+              date: dayjs(data.date),
+            },
+            indicator: objImpotred,
+          });
+        } else {
+          form.setFieldsValue({
+            form: {
+              siteId: data.siteId._id,
+              dueDate: dayjs(data.dueDate),
+              date: dayjs(data.date),
+            },
+            indicator: data.indicators,
+          });
+        }
       } catch (err) {}
     };
     if (mode == "") {
@@ -221,6 +242,7 @@ const IndicatorsEdit = ({
         });
 
         next();
+        setIMportedData(null);
       } catch (err) {
         console.log(err);
       }
@@ -2659,20 +2681,44 @@ overload"
                 marginTop: 24,
               }}
             >
-              {current < steps.length - 1 && (
-                <Button htmlType="submit" type="primary">
-                  Next
-                </Button>
+              {type != "imported" && (
+                <>
+                  {current < steps.length - 1 && (
+                    <Button htmlType="submit" type="primary">
+                      Next
+                    </Button>
+                  )}
+                  {current === steps.length - 1 && (
+                    <Button
+                      htmlType="submit"
+                      type="primary"
+                      onClick={() => message.success("Processing complete!")}
+                    >
+                      Done
+                    </Button>
+                  )}
+                </>
               )}
-              {current === steps.length - 1 && (
-                <Button
-                  htmlType="submit"
-                  type="primary"
-                  onClick={() => message.success("Processing complete!")}
-                >
-                  Done
-                </Button>
+
+              {type == "imported" && (
+                <>
+                  {current < steps.length - 1 && (
+                    <Button onClick={() => next()} type="primary">
+                      Next
+                    </Button>
+                  )}
+                  {current === steps.length - 1 && (
+                    <Button
+                      htmlType="submit"
+                      type="primary"
+                      onClick={() => message.success("Processing complete!")}
+                    >
+                      Done
+                    </Button>
+                  )}
+                </>
               )}
+
               {current > 0 && (
                 <Button
                   style={{
@@ -2681,6 +2727,17 @@ overload"
                   onClick={() => prev()}
                 >
                   Previous
+                </Button>
+              )}
+
+              {type == "imported" && (
+                <Button
+                  htmlType="submit"
+                  style={{
+                    margin: "0 8px",
+                  }}
+                >
+                  Save
                 </Button>
               )}
             </div>

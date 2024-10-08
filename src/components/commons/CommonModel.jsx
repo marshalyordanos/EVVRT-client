@@ -1,6 +1,15 @@
-import React, { useState } from 'react';
-import { Button, Modal } from 'antd';
-const CommonModal = ({style,children,isModalOpen,setIsModalOpen,handleSubmit,width,title}) => {
+import React, { useState } from "react";
+import { Button, Modal } from "antd";
+const CommonModal = ({
+  style,
+  children,
+  isModalOpen,
+  setIsModalOpen,
+  handleSubmit,
+  width,
+  title,
+  setIMportedData,
+}) => {
   const showModal = () => {
     setIsModalOpen(true);
   };
@@ -9,16 +18,20 @@ const CommonModal = ({style,children,isModalOpen,setIsModalOpen,handleSubmit,wid
   };
   const handleCancel = () => {
     setIsModalOpen(false);
+    setIMportedData(null);
   };
   return (
     <>
-      
-      <Modal 
-      width={width}
-      footer={false}
-      className={style}
-      maskClosable={false}
-      title={title} open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+      <Modal
+        width={width}
+        footer={false}
+        className={style}
+        maskClosable={false}
+        title={title}
+        open={isModalOpen}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
         {children}
       </Modal>
     </>

@@ -62,7 +62,7 @@ const SitesEdit = ({
           site: {
             ...data,
             coordinatorId: data?.coordinatorId?._id,
-            regionId:data?.regionId?._id,
+            regionId: data?.regionId?._id,
             updatedAt: dayjs(data.updatedAt),
           },
         });
@@ -148,6 +148,7 @@ const SitesEdit = ({
           setIsModalOpen={setUserPick}
         >
           <UsersPick
+            type={"site_coordiantor"}
             setIsModalOpen={setUserPick}
             selectHandler={userPickHandler}
           />

@@ -55,10 +55,10 @@ const RegionsEdit = ({
     const featchData = async () => {
       try {
         const data = await regionsService.getRegion(mode);
-        console.log("region edit data: ",data)
+        console.log("region edit data: ", data);
         form.setFieldsValue({
           region: {
-            name:data?.name,
+            name: data?.name,
             managerId: data?.managerId?._id,
             updatedAt: dayjs(data.updatedAt),
           },
@@ -135,6 +135,7 @@ const RegionsEdit = ({
           <UsersPick
             setIsModalOpen={setUserPick}
             selectHandler={userPickHandler}
+            type={"regional_manager"}
           />
         </CommonModal>
       ) : (
