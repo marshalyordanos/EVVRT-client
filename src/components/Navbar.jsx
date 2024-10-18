@@ -37,6 +37,16 @@ const Navbar = () => {
       key: "1",
     },
   ];
+  const items2 = [
+    {
+      label: <NavLink to="/report-setting">Target</NavLink>,
+      key: "0",
+    },
+    {
+      label: <NavLink to="/target-setting">Advanced Setting</NavLink>,
+      key: "1",
+    },
+  ];
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
     setIsModalOpen(true);
@@ -124,7 +134,7 @@ const Navbar = () => {
       <div className="navbar">
         <img src={mainLogo} className="w-[130px] md:w-[200px]" alt="" />
         {user && (
-          <div className="links">
+          <div className="links  flex items-center">
             <li>
               <NavLink to="/">Home</NavLink>{" "}
             </li>
@@ -158,9 +168,14 @@ const Navbar = () => {
               </li>
             )}
             {user?.user?.role == "admin" && (
-              <li>
-                <NavLink to="/report-setting">Setting</NavLink>{" "}
-              </li>
+              <Dropdown
+                menu={{
+                  items: items2,
+                }}
+                trigger={["click"]}
+              >
+                <p className=" cursor-pointer">Setting</p>
+              </Dropdown>
             )}
           </div>
         )}
@@ -206,6 +221,7 @@ const Styled = styled.div`
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
+    /* border: 1px solid red; */
   }
 
   .links {

@@ -57,7 +57,7 @@ const setup = (store) => {
       if (err.code == "ERR_NETWORK") {
         message.info("the server is down retry after some time!");
       } else {
-        console.log("eror from api : ",err.response.data.message)
+        console.log("eror from api : ", err.response.data.message);
         message.info(err.response?.data?.message);
       }
       // if (originalConfig.url !== "/auth/signin" && err.response) {

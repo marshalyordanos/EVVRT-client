@@ -23,6 +23,7 @@ import ForgetByEmail from "./pages/forget/ForgetByEmail";
 import PassowrdReset from "./pages/forget/PassowrdReset";
 import DashBoard from "./pages/Dashboard/DashBoard";
 import ReportTab from "./pages/report/ReportTab";
+import TargetSettingPage from "./pages/TargetSetting";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -56,6 +57,7 @@ function App() {
             <Route path="/dashboard" element={<DashBoard />} />
 
             <Route path="/report-setting" element={<SettingPage />} />
+            <Route path="/target-setting" element={<TargetSettingPage />} />
 
             <Route path="/setting/*" element={<SettingRoutting />} />
 

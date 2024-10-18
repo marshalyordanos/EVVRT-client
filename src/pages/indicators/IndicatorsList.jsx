@@ -387,6 +387,15 @@ const IndicatorsList = () => {
         <div></div>
 
         <div className="header_right flex gap-3">
+          <div className="flex bg-green-800 flex justify-center items-center text-white py-2 px-4 rounded-full w-[200px] gap-2">
+            <a
+              className="block"
+              href="/sampledata_2024-09-03T00_00_00.000Z.xls"
+              download
+            >
+              sample data
+            </a>
+          </div>
           <div className="flex bg-gray-300 py-2 px-4 rounded-full w-[200px] gap-2">
             <div className="flex justify-center items-center">
               <p className="bg-gray-600 text-white py-2 px-7 rounded-full text-xl">

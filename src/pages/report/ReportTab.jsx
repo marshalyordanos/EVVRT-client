@@ -39,7 +39,7 @@ const ReportTab = () => {
 
     {
       key: "5",
-      label: <p className=" p-2 text-lg">Discharge</p>,
+      label: <p className=" p-2 text-lg">Discarde</p>,
       children: <Discharge />,
     },
     {
