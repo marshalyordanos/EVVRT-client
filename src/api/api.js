@@ -15,6 +15,7 @@ const instance = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
+  timeout: 90000,
 });
 
 let isreFrasing = false;
