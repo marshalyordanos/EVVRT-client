@@ -27,6 +27,7 @@ import IndicatorsReports from "../report/IndicatorsReport";
 import { selectCurrentUser } from "../../redux/auth/authSlice";
 import ExcelExportIndicators from "../../utils/ExcelExportIndicators";
 import FileInput from "../../utils/ExcelImport";
+import IndicatorsService from "./IndicatorsService";
 
 const options = {
   year: "numeric",
@@ -177,6 +178,20 @@ const IndicatorsList = () => {
     IndicatorsReports(data, user?.user?.firstName + " " + user?.user?.lastName);
     // message.success("Report printed successfully!");
   };
+  const handleSubmitIndectors = async (id) => {
+    console.log("id:::", id);
+    try {
+      const data = await IndicatorsService.updateIndicator(
+        {
+          isPublished: true,
+        },
+        id
+      );
+      searchData();
+    } catch (error) {
+      console.log("err:::::", error);
+    }
+  };
   const columns = [
     {
       title: "siteid",
@@ -222,6 +237,7 @@ const IndicatorsList = () => {
       title: "Action",
       dataIndex: "action",
       render: (text, recored) => {
+        console.log("record::", recored);
         return (
           <div className="flex g-2">
             <Button
@@ -254,22 +270,49 @@ const IndicatorsList = () => {
                 ></Button>
               )}
             <di className="mx-1"></di>
-            {user?.user?.role != "manager" && (
-              <Button
-                type="text"
-                className="bg-gray-100"
-                icon={<FaCirclePlus style={{ fontSize: 20 }} />}
-                onClick={() => {
-                  console.log("mode list:", recored.id);
-                  setModeID(recored.id);
-                  setType("indicator");
-                  setIsModalOpen(true);
-                }}
-              >
-                Add Indicators
-              </Button>
-            )}
+            {user?.user?.role != "manager" &&
+              user?.user?.role != "site_coordiantor" && (
+                <Button
+                  type="text"
+                  className="bg-gray-100"
+                  icon={<FaCirclePlus style={{ fontSize: 20 }} />}
+                  onClick={() => {
+                    console.log("mode list:", recored.id);
+                    setModeID(recored.id);
+                    setType("indicator");
+                    setIsModalOpen(true);
+                  }}
+                >
+                  Add Indicators
+                </Button>
+              )}
+            {user?.user?.role == "site_coordiantor" &&
+              !recored?.isPublished && (
+                <Button
+                  type="text"
+                  className="bg-gray-100"
+                  icon={<FaCirclePlus style={{ fontSize: 20 }} />}
+                  onClick={() => {
+                    console.log("mode list:", recored.id);
+                    setModeID(recored.id);
+                    setType("indicator");
+                    setIsModalOpen(true);
+                  }}
+                >
+                  Add Indicators
+                </Button>
+              )}
             <di className="mx-1"></di>
+            {!recored?.isPublished &&
+              user?.user?.role == "site_coordiantor" && (
+                <button
+                  onClick={() => handleSubmitIndectors(recored?.id)}
+                  className="bg-sky-700 text-white py-[1px] px-4 text-sm rounded-lg mr-2"
+                >
+                  Submit
+                </button>
+              )}
+
             <button
               onClick={() => reportGenerator(recored?.indicators)}
               className="bg-red-700 text-white py-[1px] px-4 text-sm rounded-lg mr-2"

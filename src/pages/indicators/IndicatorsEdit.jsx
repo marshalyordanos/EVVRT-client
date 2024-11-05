@@ -105,6 +105,7 @@ const IndicatorsEdit = ({
 
   useEffect(() => {
     const featchData = async () => {
+      console.log("type::: ");
       try {
         console.log("mode: ", mode);
         const data = await indicatorsService.getIndicator(mode);
@@ -114,6 +115,7 @@ const IndicatorsEdit = ({
           siteId: data.siteId._id,
           dueDate: dayjs(data.dueDate),
           date: dayjs(data.date),
+          isPublished: data.isPublished,
         });
 
         if (type == "imported") {
@@ -121,22 +123,25 @@ const IndicatorsEdit = ({
           importedData.forEach((x) => {
             objImpotred[[x["name"]]] = x["value"];
           });
-          console.log("type: ", type, objImpotred);
+          console.log("type::: ", data);
 
           form.setFieldsValue({
             form: {
               siteId: data.siteId._id,
               dueDate: dayjs(data.dueDate),
               date: dayjs(data.date),
+              isPublished: data.isPublished,
             },
             indicator: objImpotred,
           });
         } else {
+          console.log("type::: ", data);
           form.setFieldsValue({
             form: {
               siteId: data.siteId._id,
               dueDate: dayjs(data.dueDate),
               date: dayjs(data.date),
+              isPublished: data.isPublished,
             },
             indicator: data.indicators,
           });
@@ -211,13 +216,14 @@ const IndicatorsEdit = ({
     if (type == "form") {
       try {
         // setLoading(true);
-        console.log("datas", forms);
+        console.log("datas||||", forms);
 
         const data = await indicatorsService.updateIndicator(
           {
             ...datas.form,
             date: forms?.date,
             dueDate: forms?.dueDate,
+            isPublished: forms?.isPublished,
           },
           mode
         );
@@ -250,6 +256,7 @@ const IndicatorsEdit = ({
   };
 
   const onFinish = (values) => {
+    console.log("(((((", values);
     mode == "" ? onAdd(values) : onUpdate(values);
   };
 
@@ -2564,6 +2571,11 @@ overload"
     console.log(date, dateString);
     setForms({ ...forms, dueDate: dateString });
   };
+
+  const onChange = (checked) => {
+    console.log(`switch to ${checked}`);
+    setForms({ ...forms, isPublished: checked });
+  };
   return (
     <div>
       {/*******  picks **********/}
@@ -2648,6 +2660,13 @@ overload"
             ]}
           >
             <DatePicker onChange={onChangeDate} />
+          </Form.Item>
+          <Form.Item
+            className="flex-1 "
+            name={["form", "isPublished"]}
+            label="Date"
+          >
+            <Switch onChange={onChange} />
           </Form.Item>
 
           {/* <Form.Item name={["indicator", "isPublish"]} label="Is publish">
