@@ -2664,7 +2664,7 @@ overload"
           <Form.Item
             className="flex-1 "
             name={["form", "isPublished"]}
-            label="Date"
+            label="Disabled"
           >
             <Switch onChange={onChange} />
           </Form.Item>
