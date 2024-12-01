@@ -186,6 +186,7 @@ const UsersEdit = ({
             label="Email"
             rules={[
               {
+                type: "email",
                 required: true,
               },
             ]}

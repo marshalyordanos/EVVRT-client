@@ -91,7 +91,7 @@ const Login = () => {
         </Form>
       </div>
       <div className="image_con">
-        <img src={BloodLoginImage} alt="" />
+        <img src={"/images.jpeg"} alt="" />
         <div className="onTop_impage">
           <p className="image-text">
             Admin Login - Blood Donation Dashboard: Secure access to manage and
