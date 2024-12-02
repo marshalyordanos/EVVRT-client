@@ -33,7 +33,7 @@ const DashBoard = () => {
             categories: x,
           },
           title: {
-            text: "Monthly Sales Data",
+            text: "",
             align: "center",
           },
           plotOptions: {

@@ -270,22 +270,21 @@ const IndicatorsList = () => {
                 ></Button>
               )}
             <di className="mx-1"></di>
-            {user?.user?.role != "manager" &&
-              user?.user?.role != "site_coordiantor" && (
-                <Button
-                  type="text"
-                  className="bg-gray-100"
-                  icon={<FaCirclePlus style={{ fontSize: 20 }} />}
-                  onClick={() => {
-                    console.log("mode list:", recored.id);
-                    setModeID(recored.id);
-                    setType("indicator");
-                    setIsModalOpen(true);
-                  }}
-                >
-                  Add Indicators
-                </Button>
-              )}
+            {user?.user?.role == "admin" && (
+              <Button
+                type="text"
+                className="bg-gray-100"
+                icon={<FaCirclePlus style={{ fontSize: 20 }} />}
+                onClick={() => {
+                  console.log("mode list:", recored.id);
+                  setModeID(recored.id);
+                  setType("indicator");
+                  setIsModalOpen(true);
+                }}
+              >
+                Add Indicators
+              </Button>
+            )}
             {user?.user?.role == "site_coordiantor" &&
               !recored?.isPublished && (
                 <Button
@@ -319,7 +318,21 @@ const IndicatorsList = () => {
             >
               Print
             </button>
-            {user?.user?.role != "manager" && (
+            {user?.user?.role != "manager" &&
+              user?.user?.role != "admin" &&
+              !recored?.isPublished && (
+                <button
+                  onClick={() => {
+                    console.log("mode list:", recored);
+                    setModeID(recored.id);
+                    setModalImport(true);
+                  }}
+                  className="bg-yellow-600 text-white py-[1px] px-4 text-sm rounded-lg mr-2"
+                >
+                  Import
+                </button>
+              )}
+            {user?.user?.role == "admin" && (
               <button
                 onClick={() => {
                   console.log("mode list:", recored);
