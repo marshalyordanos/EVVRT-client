@@ -2722,7 +2722,7 @@ overload"
               {type == "imported" && (
                 <>
                   {current < steps.length - 1 && (
-                    <Button onClick={() => next()} type="primary">
+                    <Button htmlType="submit" type="primary">
                       Next
                     </Button>
                   )}

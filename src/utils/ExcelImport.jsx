@@ -28,6 +28,7 @@ function FileInput({
       setIsModalOpen(true);
       setModalImport(false);
       // setModeID(id);
+      console.log("sheetData ............................ : ", sheetData);
 
       setData(sheetData);
       e.target.value = ""; // This clears the file input
