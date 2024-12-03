@@ -18,14 +18,15 @@ class IndicatorsService {
       return response.data.data;
     });
   }
-  getHomeReport(type, siteId, regionId) {
-    let url = `/indicators/home?type=${type}`;
+  getHomeReport(type, siteId, regionId, toDate, formDate) {
+    let url = `/indicators/home?type=${type}&toDate=${toDate}&fromDate=${formDate}`;
     if (siteId) {
       url = url`&siteId=${siteId}`;
     }
     if (regionId) {
       url = url`&regionId=${regionId}`;
     }
+
     return api.get(url).then((response) => {
       return response.data;
     });
