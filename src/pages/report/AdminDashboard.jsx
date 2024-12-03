@@ -59,7 +59,7 @@ const AdminDashboard = () => {
   async function searchData() {
     try {
       setLoading(true);
-      const { payload } = await dispatch(searchRegions());
+      const { payload } = await dispatch(searchRegions("all"));
       setRegionsData(payload.data);
 
       if (payload.data?.length != 0) {
