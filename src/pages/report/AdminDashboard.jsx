@@ -60,6 +60,7 @@ const AdminDashboard = () => {
     try {
       setLoading(true);
       const { payload } = await dispatch(searchRegions("all"));
+      console.log("payload", payload);
       setRegionsData(payload.data);
 
       if (payload.data?.length != 0) {
