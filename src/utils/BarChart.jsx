@@ -12,7 +12,7 @@ const ChatApp = ({ data, type }) => {
             series={data.series}
             type={type}
             width="100%"
-            height={600}
+            height={350}
           />
         </div>
       </div>
