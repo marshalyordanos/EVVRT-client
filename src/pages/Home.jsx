@@ -64,7 +64,7 @@ const Home = () => {
       setForms({ ...forms, toDate: "9999-09-03", formDate: "1970-09-03" });
       searchReport(null, null, null, "9999-09-03", "1970-09-03");
     } else {
-      setForms({ ...forms, formDate: dateString[1], toDate: dateString[1] });
+      setForms({ ...forms, formDate: dateString[0], toDate: dateString[1] });
       searchReport(null, null, null, dateString[1], dateString[0]);
     }
   };

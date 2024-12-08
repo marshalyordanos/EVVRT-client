@@ -77,6 +77,19 @@ const IndicatorsEdit = ({
     Number(Form.useWatch(["indicator", "male_donors"], form)) || 0;
   const female_donors =
     Number(Form.useWatch(["indicator", "female_donors"], form)) || 0;
+  const component_processing_system =
+    Number(Form.useWatch(["indicator", "component_processing_system"], form)) ||
+    false;
+
+  const post_donation_counselling_system =
+    Number(
+      Form.useWatch(["indicator", "post_donation_counselling_system"], form)
+    ) || "no";
+
+  const referral_for_positive_ttis_donors =
+    Number(
+      Form.useWatch(["indicator", "referral_for_positive_ttis_donors"], form)
+    ) || "no";
 
   console.log("type", type);
   // *********************** steper****************************
@@ -183,10 +196,11 @@ const IndicatorsEdit = ({
         ...datas.form,
         date: forms?.date,
         dueDate: forms?.dueDate,
+        submissionDate: form?.submissionDate,
       });
 
       setIsModalOpen(false);
-      searchData();
+      searchData("9999-09-03", "1970-09-03");
 
       setLoading(false);
     } catch (err) {
@@ -224,12 +238,13 @@ const IndicatorsEdit = ({
             date: forms?.date,
             dueDate: forms?.dueDate,
             isPublished: forms?.isPublished,
+            submissionDate: form?.submissionDate,
           },
           mode
         );
 
         setIsModalOpen(false);
-        searchData();
+        searchData("9999-09-03", "1970-09-03");
 
         setLoading(false);
       } catch (err) {
@@ -249,6 +264,9 @@ const IndicatorsEdit = ({
 
         next();
         setIMportedData(null);
+        if (current == 14) {
+          setIsModalOpen(false);
+        }
       } catch (err) {
         console.log(err);
       }
@@ -920,6 +938,10 @@ positive for TTIs?"
           label="Number of donors given pre-donation information."
         >
           <InputNumber
+            disabled={
+              post_donation_counselling_system == "no" &&
+              referral_for_positive_ttis_donors == "no"
+            }
             className="border-gray-400 py-1 w-full"
             style={{
               minWidth: 150,
@@ -934,6 +956,10 @@ positive for TTIs?"
 counselling."
         >
           <InputNumber
+            disabled={
+              post_donation_counselling_system == "no" &&
+              referral_for_positive_ttis_donors == "no"
+            }
             className="border-gray-400 py-1 w-full"
             style={{
               minWidth: 150,
@@ -950,6 +976,10 @@ counselling."
 counselling service"
         >
           <InputNumber
+            disabled={
+              post_donation_counselling_system == "no" &&
+              referral_for_positive_ttis_donors == "no"
+            }
             className="border-gray-400 py-1 w-full"
             style={{
               minWidth: 150,
@@ -964,6 +994,10 @@ counselling service"
 counselling service from Mobile site"
         >
           <InputNumber
+            disabled={
+              post_donation_counselling_system == "no" &&
+              referral_for_positive_ttis_donors == "no"
+            }
             className="border-gray-400 py-1 w-full"
             style={{
               minWidth: 150,
@@ -979,6 +1013,10 @@ counselling service from Mobile site"
 counselling service from Center. "
         >
           <InputNumber
+            disabled={
+              post_donation_counselling_system == "no" &&
+              referral_for_positive_ttis_donors == "no"
+            }
             className="border-gray-400 py-1 w-full"
             style={{
               minWidth: 150,
@@ -993,6 +1031,10 @@ counselling service from Center. "
 service."
         >
           <InputNumber
+            disabled={
+              post_donation_counselling_system == "no" &&
+              referral_for_positive_ttis_donors == "no"
+            }
             className="border-gray-400 py-1 w-full"
             style={{
               minWidth: 150,
@@ -1009,6 +1051,10 @@ service."
 service. "
         >
           <InputNumber
+            disabled={
+              post_donation_counselling_system == "no" &&
+              referral_for_positive_ttis_donors == "no"
+            }
             className="border-gray-400 py-1 w-full"
             style={{
               minWidth: 150,
@@ -1023,6 +1069,10 @@ service. "
 receive PDC service. "
         >
           <InputNumber
+            disabled={
+              post_donation_counselling_system == "no" &&
+              referral_for_positive_ttis_donors == "no"
+            }
             className="border-gray-400 py-1 w-full"
             style={{
               minWidth: 150,
@@ -1203,6 +1253,7 @@ Blood Group in a quality-assured manner."
   into components"
         >
           <InputNumber
+            disabled={!component_processing_system}
             className="border-gray-400 py-1 w-full"
             style={{
               minWidth: 150,
@@ -1217,6 +1268,7 @@ Blood Group in a quality-assured manner."
           label="Number of CRC units prepared"
         >
           <InputNumber
+            disabled={!component_processing_system}
             className="border-gray-400 py-1 w-full"
             style={{
               minWidth: 150,
@@ -1230,6 +1282,7 @@ Blood Group in a quality-assured manner."
           label="Number of Platelet prepared"
         >
           <InputNumber
+            disabled={!component_processing_system}
             className="border-gray-400 py-1 w-full"
             style={{
               minWidth: 150,
@@ -1244,6 +1297,7 @@ Blood Group in a quality-assured manner."
           label="Number of FFP prepared"
         >
           <InputNumber
+            disabled={!component_processing_system}
             className="border-gray-400 py-1 w-full"
             style={{
               minWidth: 150,
@@ -1257,6 +1311,7 @@ Blood Group in a quality-assured manner."
           label="Number of Cryoprecipitate prepared"
         >
           <InputNumber
+            disabled={!component_processing_system}
             className="border-gray-400 py-1 w-full"
             style={{
               minWidth: 150,
@@ -1273,6 +1328,7 @@ Blood Group in a quality-assured manner."
   underweight CRC due to processing problem"
         >
           <InputNumber
+            disabled={!component_processing_system}
             className="border-gray-400 py-1 w-full"
             style={{
               minWidth: 150,
@@ -1287,6 +1343,7 @@ Blood Group in a quality-assured manner."
   underweight platelets due to processing problem"
         >
           <InputNumber
+            disabled={!component_processing_system}
             className="border-gray-400 py-1 w-full"
             style={{
               minWidth: 150,
@@ -1303,6 +1360,7 @@ Blood Group in a quality-assured manner."
   underweight FFP due to processing problem"
         >
           <InputNumber
+            disabled={!component_processing_system}
             className="border-gray-400 py-1 w-full"
             style={{
               minWidth: 150,
@@ -1318,6 +1376,7 @@ Blood Group in a quality-assured manner."
   problem"
         >
           <InputNumber
+            disabled={!component_processing_system}
             className="border-gray-400 py-1 w-full"
             style={{
               minWidth: 150,
@@ -2567,6 +2626,10 @@ overload"
     console.log(date, dateString);
     setForms({ ...forms, date: dateString });
   };
+  const onChangeSubmissionDate = (date, dateString) => {
+    console.log(date, dateString);
+    setForms({ ...forms, submissionDate: dateString });
+  };
   const onChangeDueDate = (date, dateString) => {
     console.log(date, dateString);
     setForms({ ...forms, dueDate: dateString });
@@ -2635,7 +2698,30 @@ overload"
               </div>
             </div>
           </Form.Item>
-
+          <Form.Item
+            className="flex-1 "
+            name={["form", "submissionDate"]}
+            label="Submission Date:"
+            rules={[
+              {
+                required: true,
+              },
+            ]}
+          >
+            <DatePicker onChange={onChangeDate} />
+          </Form.Item>
+          <Form.Item
+            className="flex-1 "
+            name={["form", "date"]}
+            label="Start Date"
+            rules={[
+              {
+                required: true,
+              },
+            ]}
+          >
+            <DatePicker onChange={onChangeDate} />
+          </Form.Item>
           <Form.Item
             className="flex-1 "
             name={["form", "dueDate"]}
@@ -2649,18 +2735,6 @@ overload"
             <DatePicker onChange={onChangeDueDate} />
           </Form.Item>
 
-          <Form.Item
-            className="flex-1 "
-            name={["form", "date"]}
-            label="Date"
-            rules={[
-              {
-                required: true,
-              },
-            ]}
-          >
-            <DatePicker onChange={onChangeDate} />
-          </Form.Item>
           <Form.Item
             className="flex-1 "
             name={["form", "isPublished"]}
@@ -2749,7 +2823,7 @@ overload"
                 </Button>
               )}
 
-              {type == "imported" && (
+              {/* {type == "imported" && (
                 <Button
                   htmlType="submit"
                   style={{
@@ -2758,7 +2832,7 @@ overload"
                 >
                   Save
                 </Button>
-              )}
+              )} */}
             </div>
           </>
           {/* ******************************** steper *************************** */}

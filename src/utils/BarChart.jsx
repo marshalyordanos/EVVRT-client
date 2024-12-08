@@ -4,14 +4,15 @@ import Chart from "react-apexcharts";
 const ChatApp = ({ data, type }) => {
   console.log("ChatApp", data, type);
   return (
-    <div className="app">
+    <div className="app ">
       <div className="row">
         <div className="mixed-chart">
           <Chart
             options={data.options}
             series={data.series}
             type={type}
-            width="500"
+            width="100%"
+            height={600}
           />
         </div>
       </div>

@@ -62,6 +62,8 @@ const RegionsPick = ({ setIsModalOpen, selectHandler }) => {
 
   const handlePagination = (page, pageSize) => {
     setSearchParams({ page: page, limit: pageSize });
+    dispatch(updateRegionsState({ page: page, limit: pageSize }));
+
     searchData();
   };
 

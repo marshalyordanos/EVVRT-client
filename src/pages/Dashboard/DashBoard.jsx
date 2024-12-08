@@ -45,7 +45,7 @@ const DashBoard = () => {
         },
         series: [
           {
-            name: "Sales",
+            name: "Total blood collection",
             data: y, // Data for each month
           },
         ],
@@ -76,7 +76,7 @@ const DashBoard = () => {
   }
   console.log("data: ", data);
   return (
-    <div className=" max-w-[1200px] m-auto ">
+    <div className=" max-w-full m-auto ">
       <div className="bg-slate-100 m-10 p-6 rounded-xl">
         <p className="text-2xl">Region total blood donations </p>
         {data && <ChatApp type={"bar"} data={data} />}

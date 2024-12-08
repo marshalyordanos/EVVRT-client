@@ -39,11 +39,11 @@ const Navbar = () => {
   ];
   const items2 = [
     {
-      label: <NavLink to="/report-setting">Target</NavLink>,
+      label: <NavLink to="/target-setting">Target</NavLink>,
       key: "0",
     },
     {
-      label: <NavLink to="/target-setting">Advanced Setting</NavLink>,
+      label: <NavLink to="/report-setting">Advanced Setting</NavLink>,
       key: "1",
     },
   ];

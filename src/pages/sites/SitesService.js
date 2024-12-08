@@ -1,77 +1,58 @@
-
-    
-import api from '../../api/api';
+import api from "../../api/api";
 
 class SitesService {
-    createSite(data) {
-        return api
-            .post("/sites", data)
-            .then(response => {
-                return response.data.data;
-            });
+  createSite(data) {
+    return api.post("/sites", data).then((response) => {
+      return response.data.data;
+    });
+  }
+
+  updateSite(data, id) {
+    return api.patch("/sites/" + id, data).then((response) => {
+      return response.data.data;
+    });
+  }
+
+  searchSite({ page, limit, searchText = null, sort = null, order, type }) {
+    let url = `/sites?page=${page}&limit=${type ? 100000 : limit}`;
+    if (sort) {
+      const sortValue =
+        order == "ascend" ? sort : order == "descend" ? "-" + sort : "";
+      url = url + `&sort=${sortValue}`;
     }
 
-    updateSite(data, id) {
-        return api
-            .patch("/sites/" + id, data)
-            .then(response => {
-                return response.data.data;
-            });
+    if (searchText) {
+      url = url + `&searchText=${searchText}`;
     }
 
-    searchSite({page, limit,searchText=null,sort=null,order}) {
-        let url = `/sites?page=${page}&limit=${limit}`
-        if(sort){
-    const sortValue = order == 'ascend' ? sort : order == 'descend' ? '-'+sort:'';
-            url = url + `&sort=${sortValue}`
-        }
+    return api.get(url).then((response) => {
+      return { data: response.data.data, total: response.data.total };
+    });
+  }
 
-        if(searchText){
-           
-            url = url + `&searchText=${searchText}`
-        }
+  getSite(id) {
+    return api.get("/sites/" + id).then((response) => {
+      return response.data.data;
+    });
+  }
 
-        return api
-            .get(url)
-            .then(response => {
-                return {data:response.data.data,total:response.data.total};
-            });
-    }
+  deleteSite(id) {
+    return api.delete("/sites/" + id).then((response) => {
+      return response.data.data;
+    });
+  }
 
-    getSite(id) {
-        return api
-            .get("/sites/" + id)
-            .then(response => {
-                return response.data.data;
-            });
-    }
+  sitesDo({ method, payload }) {
+    return api.post("/sites/do", { method, payload }).then((response) => {
+      return response.data.data;
+    });
+  }
 
-
-    deleteSite( id) {
-        return api
-            .delete("/sites/" + id)
-            .then(response => {
-                return response.data.data;
-            });
-    }
-
-    sitesDo({method,payload}){
-        return api
-            .post("/sites/do",{method,payload})
-            .then(response => {
-                return response.data.data;
-            });
-    }
-
-    siteDo({method,payload,id}){
-        return api
-            .post("/sites/do/"+id,{method,payload})
-            .then(response => {
-                return response.data.data;
-            });
-    }
+  siteDo({ method, payload, id }) {
+    return api.post("/sites/do/" + id, { method, payload }).then((response) => {
+      return response.data.data;
+    });
+  }
 }
 
 export default new SitesService();
-
-    

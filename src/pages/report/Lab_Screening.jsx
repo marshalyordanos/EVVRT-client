@@ -120,16 +120,12 @@ const Lab_Screening = () => {
       title: "HIV positive",
       dataIndex: "from_male_donor",
       render: (_, record) => {
-        return (
-          <p>
-            {" "}
-            {(
-              (100 * record.hiv_positive) /
-              record.total_blood_donations
-            ).toFixed(1)}
-            %{" "}
-          </p>
-        );
+        const p = `${(
+          (100 * record.hiv_positive) /
+          (record.total_blood_donations || 1)
+        ).toFixed(1)}
+        %`;
+        return <p>{`${p} (${record.hiv_positive})`}</p>;
       },
       sorter: false,
     },
@@ -137,16 +133,12 @@ const Lab_Screening = () => {
       title: "Hepatitis B positive",
       dataIndex: "from_center",
       render: (_, record) => {
-        return (
-          <p>
-            {" "}
-            {(
-              (100 * record.hepatitis_b_positive) /
-              record.total_blood_donations
-            ).toFixed(1)}
-            %{" "}
-          </p>
-        );
+        const p = `${(
+          (100 * record.hepatitis_b_positive) /
+          (record.total_blood_donations || 1)
+        ).toFixed(1)}
+        %`;
+        return <p>{`${p} (${record.hepatitis_b_positive})`}</p>;
       },
       sorter: false,
     },
@@ -154,16 +146,12 @@ const Lab_Screening = () => {
       title: "Hepatitis C positive",
       dataIndex: "from_mobile",
       render: (_, record) => {
-        return (
-          <p>
-            {" "}
-            {(
-              (100 * record.hepatitis_c_positive) /
-              record.total_blood_donations
-            ).toFixed(1)}
-            %{" "}
-          </p>
-        );
+        const p = `${(
+          (100 * record.hepatitis_c_positive) /
+          (record.total_blood_donations || 1)
+        ).toFixed(1)}
+        %`;
+        return <p>{`${p} (${record.hepatitis_c_positive})`}</p>;
       },
       sorter: false,
     },
@@ -171,16 +159,12 @@ const Lab_Screening = () => {
       title: "Syphilis positive",
       dataIndex: "mobile_session_conducted",
       render: (_, record) => {
-        return (
-          <p>
-            {" "}
-            {(
-              (100 * record.syphilis_positive) /
-              record.total_blood_donations
-            ).toFixed(1)}
-            %{" "}
-          </p>
-        );
+        const p = `${(
+          (100 * record.syphilis_positive) /
+          (record.total_blood_donations || 1)
+        ).toFixed(1)}
+        %`;
+        return <p>{`${p} (${record.syphilis_positive})`}</p>;
       },
       sorter: false,
     },
@@ -197,16 +181,12 @@ const Lab_Screening = () => {
       title: "Donors TTIs prevalence ",
       dataIndex: "collection_plan_achivement  ",
       render: (_, record) => {
-        return (
-          <p>
-            {(record.donations_screened_for_ttis
-              ? (100 * record.donors_positive_for_ttis) /
-                record.donations_screened_for_ttis
-              : 0
-            ).toFixed(1)}
-            %
-          </p>
-        );
+        const p = `${(
+          (100 * record.donations_screened_for_ttis) /
+          (record.total_blood_donations || 1)
+        ).toFixed(1)}
+        %`;
+        return <p>{`${p} (${record.donations_screened_for_ttis})`}</p>;
       },
       sorter: false,
     },

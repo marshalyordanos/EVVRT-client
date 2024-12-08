@@ -1,7 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
 import CommonTable from "../../components/commons/CommonTable";
 import { MoreOutlined, ReloadOutlined } from "@ant-design/icons";
-import { Button, Dropdown, Input, Modal, message } from "antd";
+import {
+  Button,
+  DatePicker,
+  Dropdown,
+  Input,
+  Modal,
+  Select,
+  message,
+} from "antd";
 import styled from "styled-components";
 import CommonModal from "../../components/commons/CommonModel";
 import { FaCirclePlus } from "react-icons/fa6";
@@ -28,30 +36,41 @@ import { selectCurrentUser } from "../../redux/auth/authSlice";
 import ExcelExportIndicators from "../../utils/ExcelExportIndicators";
 import FileInput from "../../utils/ExcelImport";
 import IndicatorsService from "./IndicatorsService";
+import { searchRegions } from "../regions/RegionsRedux";
+import { searchSites } from "../sites/SitesRedux";
 
 const options = {
   year: "numeric",
   month: "long",
   day: "numeric",
 };
+const { RangePicker } = DatePicker;
 
 const IndicatorsList = () => {
   const [indicatorsData, setIndicatorsData] = useState([]);
   const [total, setTotal] = useState();
   const user = useSelector(selectCurrentUser);
+  const [regionsData, setRegionsData] = useState([]);
+  const [branchsData, setBranchsData] = useState([]);
 
   const searchText = useSelector(indicatorsSearchText);
   const [loading, setLoading] = useState();
   const [indicatorsSelection, setIndicatorsSelection] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [submitModal, setSubmitModal] = useState(false);
+  const [selectedIndicator, setSelectedIdicator] = useState(null);
   const [type, setType] = useState("");
   const [importedData, setIMportedData] = useState(null);
   const [modeID, setModeID] = useState("");
   const [modalImport, setModalImport] = useState(false);
 
   const [searchParams, setSearchParams] = useSearchParams();
-
+  const [forms, setForms] = useState({
+    branchId: null,
+    toDate: "9999-09-03",
+    formDate: "1970-09-03",
+  });
   const delayTimerRef = useRef(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -64,13 +83,37 @@ const IndicatorsList = () => {
     const [page, limit] = getPaginationInfo();
     dispatch(updateIndicatorsState({ page: page, limit: limit }));
     // setSearchParams({ ...Object.fromEntries(searchParams), 'searchText': e.target.value })
-    searchData();
+    searchData("9999-09-03", "1970-09-03", forms.branchId);
   }, []);
 
-  async function searchData() {
+  async function searchData2() {
     try {
       setLoading(true);
-      const { payload } = await dispatch(searchIndicators());
+      const { payload } = await dispatch(searchRegions("all"));
+      console.log("payload", payload);
+      setRegionsData(payload.data);
+
+      if (payload.data?.length != 0) {
+        setForms({ ...forms, regionId: payload.data[0]._id });
+        searchReport(
+          forms.toDate,
+          forms.formDate,
+          payload.data[0]?._id,
+          payload.data
+        );
+      }
+      setLoading(false);
+    } catch (err) {
+      console.log(err);
+      setLoading(false);
+    }
+  }
+  async function searchData(toDate, formDate, val) {
+    try {
+      setLoading(true);
+      const { payload } = await dispatch(
+        searchIndicators({ toDate, formDate, siteId: val })
+      );
       console.log("data playlpd:", payload);
       setIndicatorsData(payload.data);
       setTotal(payload.total);
@@ -80,20 +123,22 @@ const IndicatorsList = () => {
     }
   }
 
-  const searchHandler = (e) => {
-    const { value } = e.target;
-    const [page, limit] = getPaginationInfo();
+  useEffect(() => {
+    featchBranch();
+  }, []);
+  async function featchBranch() {
+    try {
+      setLoading(true);
+      const { payload } = await dispatch(searchSites("all"));
+      console.log("payload", payload);
+      setBranchsData(payload.data);
 
-    // setSearchParams({ page: page, limit: limit })
-    dispatch(
-      updateIndicatorsState({ page: page, limit: limit, searchText: value })
-    );
-    clearTimeout(delayTimerRef.current);
-    delayTimerRef.current = setTimeout(() => {
-      searchData();
-    }, 500);
-  };
-
+      setLoading(false);
+    } catch (err) {
+      console.log(err);
+      setLoading(false);
+    }
+  }
   const handlePagination = async (page, pageSize) => {
     // permmission exmple
 
@@ -104,30 +149,14 @@ const IndicatorsList = () => {
     setSearchParams({ page: page, limit: pageSize });
     dispatch(updateIndicatorsState({ page: page, limit: pageSize }));
 
-    searchData();
+    searchData(forms.toDate, forms.formDate, forms.branchId);
   };
 
   const tableChange = (pagination, filters, sorter) => {
     const { field, order } = sorter;
     dispatch(updateIndicatorsState({ sort: field, order: order }));
 
-    searchData();
-  };
-
-  const handleReload = () => {
-    const [page, limit] = getPaginationInfo();
-
-    setSearchParams({ page: 1, limit: 5 });
-    dispatch(
-      updateIndicatorsState({
-        page: 1,
-        limit: 5,
-        sort: "",
-        order: "",
-        searchText: "",
-      })
-    );
-    searchData();
+    searchData(forms.toDate, forms.formDate, forms.branchId);
   };
 
   const handleDelete = async () => {
@@ -136,7 +165,7 @@ const IndicatorsList = () => {
       const data = await indicatorsService.deleteIndicator(modeID);
       setIsDeleteModalOpen(false);
 
-      searchData();
+      searchData(forms.toDate, forms.formDate, forms.branchId);
       setLoading(false);
     } catch (err) {
       setLoading(false);
@@ -187,7 +216,7 @@ const IndicatorsList = () => {
         },
         id
       );
-      searchData();
+      searchData("9999-09-03", "1970-09-03", null);
     } catch (error) {
       console.log("err:::::", error);
     }
@@ -305,7 +334,11 @@ const IndicatorsList = () => {
             {!recored?.isPublished &&
               user?.user?.role == "site_coordiantor" && (
                 <button
-                  onClick={() => handleSubmitIndectors(recored?.id)}
+                  onClick={() => {
+                    setSelectedIdicator(recored?.id);
+                    setSubmitModal(true);
+                    // handleSubmitIndectors(recored?.id);
+                  }}
                   className="bg-sky-700 text-white py-[1px] px-4 text-sm rounded-lg mr-2"
                 >
                   Submit
@@ -366,6 +399,22 @@ const IndicatorsList = () => {
     },
   ];
 
+  const onChangeFromDate = (date, dateString) => {
+    console.log(date, dateString);
+    if (dateString[0] == "" && dateString[1] == "") {
+      setForms({ ...forms, toDate: "9999-09-03", formDate: "1970-09-03" });
+      searchData("9999-09-03", "1970-09-03", forms.branchId);
+    } else {
+      setForms({ ...forms, formDate: dateString[0], toDate: dateString[1] });
+      searchData(dateString[1], dateString[0], forms.branchId);
+    }
+  };
+
+  const onBranchChange = (val) => {
+    console.log(val);
+    setForms({ ...forms, branchId: val });
+    searchData(forms.toDate, forms.formDate, val);
+  };
   return (
     <div className="max-w-[1200px] m-auto">
       {/* <p>{JSON.stringify(importedData)}</p> */}
@@ -405,6 +454,42 @@ const IndicatorsList = () => {
         ""
       )}
 
+      {submitModal ? (
+        <Modal
+          title="Delete"
+          open={submitModal}
+          onOk={() => {
+            handleSubmitIndectors(selectedIndicator);
+            setSubmitModal(false);
+          }}
+          footer={[
+            <Button
+              key="back"
+              onClick={() => {
+                setSubmitModal(false);
+                setSubmitModal(false);
+              }}
+            >
+              Cancel
+            </Button>,
+            <Button
+              danger
+              key="submit"
+              type="primary"
+              loading={loading}
+              onClick={() => handleSubmitIndectors(selectedIndicator)}
+            >
+              Yes
+            </Button>,
+          ]}
+          onCancel={() => setSubmitModal(false)}
+        >
+          <h1 className=" text-2xl">Are you sure?</h1>
+        </Modal>
+      ) : (
+        ""
+      )}
+
       {modalImport && (
         <CommonModal
           width={600}
@@ -440,9 +525,39 @@ const IndicatorsList = () => {
             allowClear
           />
         </SearchInputStyle> */}
-        <div></div>
+        <div>
+          {branchsData?.length != 0 &&
+            user?.user?.role == "site_coordiantor" && (
+              <Select
+                onChange={onBranchChange}
+                className="border-gray-400 mr-2 w-[200px]"
+                placeholder="select your role"
+                allowClear
+                showSearch
+                optionFilterProp="children" // Ensures search works with option text
+                filterOption={(input, option) =>
+                  (option?.children?.toLowerCase() ?? "").includes(
+                    input.toLowerCase()
+                  )
+                }
 
-        <div className="header_right flex gap-3">
+                // defaultValue={branchsData && branchsData[0]?._id}
+              >
+                {branchsData?.map((branch) => (
+                  <Option value={branch._id}>{branch.name}</Option>
+                ))}
+              </Select>
+            )}
+          <RangePicker
+            // defaultValue={[
+            //   dayjs("2019-09-03", dateFormat),
+            //   dayjs("2019-11-22", dateFormat),
+            // ]}
+            onChange={onChangeFromDate}
+          />
+        </div>
+
+        <div className="header_right flex items-center gap-3">
           <div className="flex bg-green-800 flex justify-center items-center text-white py-2 px-4 rounded-full w-[200px] gap-2">
             <a
               className="block"

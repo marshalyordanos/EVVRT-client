@@ -155,7 +155,7 @@ const RhMinusVeBlood = () => {
                 record.requested_aminus_wb_crc
               : 0
             ).toFixed(1)}
-            %
+            %{` (${record.distributed_bminus_wb_crc})`}
           </p>
         );
       },
@@ -172,7 +172,7 @@ const RhMinusVeBlood = () => {
                 record.requested_bminus_wb_crc
               : 0
             ).toFixed(1)}
-            %
+            %{` (${record.distributed_abminus_wb_crc})`}
           </p>
         );
       },
@@ -189,7 +189,7 @@ const RhMinusVeBlood = () => {
                 record.requested_abminus_wb_crc
               : 0
             ).toFixed(1)}
-            %
+            %{` (${record.distributed_ominus_wb_crc})`}
           </p>
         );
       },
@@ -206,7 +206,7 @@ const RhMinusVeBlood = () => {
                 record.requested_ominus_wb_crc
               : 0
             ).toFixed(1)}
-            %
+            %{` (${record.distributed_platelets_units})`}
           </p>
         );
       },
@@ -223,7 +223,7 @@ const RhMinusVeBlood = () => {
                 record.requested_platelets_units
               : 0
             ).toFixed(1)}
-            %
+            %{` (${record.distributed_ffp_units})`}
           </p>
         );
       },

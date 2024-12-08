@@ -27,7 +27,7 @@ const SitesPick = ({ setIsModalOpen, selectHandler }) => {
 
   useEffect(() => {
     const [page, limit] = getPaginationInfo();
-    dispatch(updateSitesState({ page: page, limit: limit }));
+    dispatch(updateSitesState({ page: 1, limit: 5 }));
 
     searchData();
   }, []);

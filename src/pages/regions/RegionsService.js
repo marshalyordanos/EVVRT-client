@@ -14,7 +14,7 @@ class RegionsService {
   }
 
   searchRegion({ page, limit, searchText = null, sort = null, order, type }) {
-    let url = `/regions?page=${page}&limit=${type ? 1000 : limit}`;
+    let url = `/regions?page=${page}&limit=${type ? 100000 : limit}`;
     if (sort) {
       const sortValue =
         order == "ascend" ? sort : order == "descend" ? "-" + sort : "";

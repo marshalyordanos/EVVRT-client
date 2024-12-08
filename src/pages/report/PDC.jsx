@@ -101,15 +101,13 @@ const PDC = () => {
       dataIndex: "target",
       render: (_, record) => {
         // return <p>{record.male_patients_transfused}</p>;
+        const p = `${(
+          (100 * record.post_donation_counselling_from_mobile) /
+          (record.total_blood_donations || 1)
+        ).toFixed(1)}
+              %`;
         return (
-          <p>
-            {" "}
-            {(
-              (100 * record.post_donation_counselling_from_mobile) /
-              record.total_blood_donations
-            ).toFixed(1)}
-            %
-          </p>
+          <p>{`${p} (${record.post_donation_counselling_from_mobile})`}</p>
         );
       },
       sorter: false,
@@ -119,16 +117,24 @@ const PDC = () => {
       dataIndex: "target",
       render: (_, record) => {
         // return <p>{record.male_patients_transfused}</p>;
+        const p = `${(
+          (100 * record.post_donation_counselling_from_center) /
+          (record.total_blood_donations || 1)
+        ).toFixed(1)}
+              %`;
         return (
-          <p>
-            {" "}
-            {(
-              (100 * record.post_donation_counselling_from_center) /
-              record.total_blood_donations
-            ).toFixed(1)}
-            %
-          </p>
+          <p>{`${p} (${record.post_donation_counselling_from_center})`}</p>
         );
+        // return (
+        //   <p>
+        //     {" "}
+        //     {(
+        //       (100 * record.post_donation_counselling_from_center) /
+        //       record.total_blood_donations
+        //     ).toFixed(1)}
+        //     %
+        //   </p>
+        // );
       },
       sorter: false,
     },
@@ -161,18 +167,24 @@ const PDC = () => {
       dataIndex: "target",
       render: (_, record) => {
         // return <p>{record.male_patients_transfused}</p>;
-        return (
-          <p>
-            {" "}
-            {record.pre_donation_information_given
-              ? (
-                  (100 * record.total_blood_donations) /
-                  record.pre_donation_information_given
-                ).toFixed(1)
-              : 0}
-            %
-          </p>
-        );
+        const p = `${(
+          (100 * record.pre_donation_information_given) /
+          (record.total_blood_donations || 1)
+        ).toFixed(1)}
+              %`;
+        return <p>{`${p} (${record.pre_donation_information_given})`}</p>;
+        // return (
+        //   <p>
+        //     {" "}
+        //     {record.pre_donation_information_given
+        //       ? (
+        //           (100 * record.total_blood_donations) /
+        //           record.pre_donation_information_given
+        //         ).toFixed(1)
+        //       : 0}
+        //     %
+        //   </p>
+        // );
       },
       sorter: false,
     },
@@ -181,18 +193,24 @@ const PDC = () => {
       dataIndex: "target",
       render: (_, record) => {
         // return <p>{record.male_patients_transfused}</p>;
-        return (
-          <p>
-            {" "}
-            {record.pre_donation_counselling
-              ? (
-                  (100 * record.total_blood_donations) /
-                  record.pre_donation_counselling
-                ).toFixed(1)
-              : 0}
-            %
-          </p>
-        );
+        const p = `${(
+          (100 * record.pre_donation_counselling) /
+          (record.total_blood_donations || 1)
+        ).toFixed(1)}
+              %`;
+        return <p>{`${p} (${record.pre_donation_counselling})`}</p>;
+        // return (
+        //   <p>
+        //     {" "}
+        //     {record.pre_donation_counselling
+        //       ? (
+        //           (100 * record.total_blood_donations) /
+        //           record.pre_donation_counselling
+        //         ).toFixed(1)
+        //       : 0}
+        //     %
+        //   </p>
+        // );
       },
       sorter: false,
     },

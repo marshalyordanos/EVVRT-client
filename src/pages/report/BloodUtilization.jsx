@@ -68,17 +68,12 @@ const BloodUtilization = () => {
       title: "Male patients transfused",
       dataIndex: "target",
       render: (_, record) => {
-        // return <p>{record.male_patients_transfused}</p>;
-        return (
-          <p>
-            {" "}
-            {(
-              (100 * record.male_patients_transfused) /
-              record.total_blood_donations
-            ).toFixed(1)}
-            %{" "}
-          </p>
-        );
+        const p = `${(
+          (100 * record.male_patients_transfused) /
+          (record.total_blood_donations || 1)
+        ).toFixed(1)}
+              %`;
+        return <p>{`${p} (${record.male_patients_transfused})`}</p>;
       },
       sorter: false,
     },
@@ -86,17 +81,12 @@ const BloodUtilization = () => {
       title: "Female patients transfused",
       dataIndex: "target",
       render: (_, record) => {
-        // return <p>{record.female_patients_transfused}</p>;
-        return (
-          <p>
-            {" "}
-            {(
-              (100 * record.female_patients_transfused) /
-              record.total_blood_donations
-            ).toFixed(1)}
-            %{" "}
-          </p>
-        );
+        const p = `${(
+          (100 * record.female_patients_transfused) /
+          (record.total_blood_donations || 1)
+        ).toFixed(1)}
+              %`;
+        return <p>{`${p} (${record.female_patients_transfused})`}</p>;
       },
       sorter: false,
     },
@@ -104,17 +94,22 @@ const BloodUtilization = () => {
       title: "Patients transfused under 5 years",
       dataIndex: "target",
       render: (_, record) => {
-        // return <p>{record.patients_under5_transfused}</p>;
-        return (
-          <p>
-            {" "}
-            {(
-              (100 * record.patients_under5_transfused) /
-              record.total_blood_donations
-            ).toFixed(1)}
-            %{" "}
-          </p>
-        );
+        const p = `${(
+          (100 * record.patients_under5_transfused) /
+          (record.total_blood_donations || 1)
+        ).toFixed(1)}
+              %`;
+        return <p>{`${p} (${record.patients_under5_transfused})`}</p>;
+        // return (
+        //   <p>
+        //     {" "}
+        //     {(
+        //       (100 * record.patients_under5_transfused) /
+        //       record.total_blood_donations
+        //     ).toFixed(1)}
+        //     %{" "}
+        //   </p>
+        // );
       },
       sorter: false,
     },
@@ -122,17 +117,22 @@ const BloodUtilization = () => {
       title: "Patients transfused 5 to 14 years",
       dataIndex: "target",
       render: (_, record) => {
-        // return <p>{record.patients5_to14_transfused}</p>;
-        return (
-          <p>
-            {" "}
-            {(
-              (100 * record.patients5_to14_transfused) /
-              record.total_blood_donations
-            ).toFixed(1)}
-            %{" "}
-          </p>
-        );
+        const p = `${(
+          (100 * record.patients5_to14_transfused) /
+          (record.total_blood_donations || 1)
+        ).toFixed(1)}
+              %`;
+        return <p>{`${p} (${record.patients5_to14_transfused})`}</p>;
+        //       return (
+        //   <p>
+        //     {" "}
+        //     {(
+        //       (100 * record.patients5_to14_transfused) /
+        //       record.total_blood_donations
+        //     ).toFixed(1)}
+        //     %{" "}
+        //   </p>
+        // );
       },
       sorter: false,
     },
@@ -140,17 +140,22 @@ const BloodUtilization = () => {
       title: "Patients transfused 15 to 44 years",
       dataIndex: "target",
       render: (_, record) => {
-        // return <p>{record.patients15_to44_transfused}</p>;
-        return (
-          <p>
-            {" "}
-            {(
-              (100 * record.patients15_to44_transfused) /
-              record.total_blood_donations
-            ).toFixed(1)}
-            %{" "}
-          </p>
-        );
+        const p = `${(
+          (100 * record.patients15_to44_transfused) /
+          (record.total_blood_donations || 1)
+        ).toFixed(1)}
+              %`;
+        return <p>{`${p} (${record.patients15_to44_transfused})`}</p>;
+        //         return (
+        //   <p>
+        //     {" "}
+        //     {(
+        //       (100 * record.patients15_to44_transfused) /
+        //       record.total_blood_donations
+        //     ).toFixed(1)}
+        //     %{" "}
+        //   </p>
+        // );
       },
       sorter: false,
     },
@@ -158,17 +163,22 @@ const BloodUtilization = () => {
       title: "Patients transfused 45 to 59 years",
       dataIndex: "target",
       render: (_, record) => {
-        // return <p>{record.patients45_to59_transfused}</p>;
-        return (
-          <p>
-            {" "}
-            {(
-              (100 * record.patients45_to59_transfused) /
-              record.total_blood_donations
-            ).toFixed(1)}
-            %{" "}
-          </p>
-        );
+        const p = `${(
+          (100 * record.patients45_to59_transfused) /
+          (record.total_blood_donations || 1)
+        ).toFixed(1)}
+              %`;
+        return <p>{`${p} (${record.patients45_to59_transfused})`}</p>;
+        //        return (
+        //   <p>
+        //     {" "}
+        //     {(
+        //       (100 * record.patients45_to59_transfused) /
+        //       record.total_blood_donations
+        //     ).toFixed(1)}
+        //     %{" "}
+        //   </p>
+        // );
       },
       sorter: false,
     },
@@ -176,17 +186,22 @@ const BloodUtilization = () => {
       title: "Patients transfused 60 years or older",
       dataIndex: "target",
       render: (_, record) => {
-        // return <p>{record.patients60_or_older_transfused}</p>;
-        return (
-          <p>
-            {" "}
-            {(
-              (100 * record.patients60_or_older_transfused) /
-              record.total_blood_donations
-            ).toFixed(1)}
-            %{" "}
-          </p>
-        );
+        const p = `${(
+          (100 * record.patients60_or_older_transfused) /
+          (record.total_blood_donations || 1)
+        ).toFixed(1)}
+              %`;
+        return <p>{`${p} (${record.patients60_or_older_transfused})`}</p>;
+        //        return (
+        //   <p>
+        //     {" "}
+        //     {(
+        //       (100 * record.patients60_or_older_transfused) /
+        //       record.total_blood_donations
+        //     ).toFixed(1)}
+        //     %{" "}
+        //   </p>
+        // );
       },
       sorter: false,
     },

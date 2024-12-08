@@ -64,189 +64,184 @@ const DonatoinReport = () => {
     {
       title: "Blood bank",
       dataIndex: "regionName",
-
       sorter: false,
-      width: 300,
+      width: 200,
     },
     {
       title: "Target",
       dataIndex: "target",
-
       sorter: false,
+      width: 200,
     },
     {
       title: "Collection",
       dataIndex: "total_blood_donations",
-
       sorter: false,
+      width: 200,
     },
     {
-      title: "Collected from  replacement",
+      title: "Collected from replacement",
       dataIndex: "familyr_eplacement_donations",
-
       sorter: false,
+      width: 200,
     },
     {
       title: "From repeat donors",
       dataIndex: "from_repeat_donors",
-      render: (_, record) => {
-        return (
-          <p>
-            {(
-              (100 * record.repeat_donors) /
-              record.total_blood_donations
-            ).toFixed(1)}
-            %
-          </p>
-        );
-      },
+      render: (_, record) => (
+        <p>
+          {record.total_blood_donations > 0
+            ? `${(
+                (100 * record.repeat_donors) /
+                record.total_blood_donations
+              ).toFixed(1)}% (${record.repeat_donors})`
+            : `0% (${record.repeat_donors})`}
+        </p>
+      ),
       sorter: false,
+      width: 200,
     },
     {
       title: "1st time donors",
       dataIndex: "1st_time_donors",
-      render: (_, record) => {
-        return (
-          <p>
-            {(
-              (100 * record.first_time_donors) /
-              record.total_blood_donations
-            ).toFixed(1)}
-            %
-          </p>
-        );
-      },
+      render: (_, record) => (
+        <p>
+          {record.total_blood_donations > 0
+            ? `${(
+                (100 * record.first_time_donors) /
+                record.total_blood_donations
+              ).toFixed(1)}% (${record.first_time_donors})`
+            : `0% (${record.first_time_donors})`}
+        </p>
+      ),
       sorter: false,
+      width: 200,
     },
     {
       title: "From Female donor",
       dataIndex: "from_female_donor",
-      render: (_, record) => {
-        return (
-          <p>
-            {(
-              (100 * record.female_donors) /
-              record.total_blood_donations
-            ).toFixed(1)}
-            %
-          </p>
-        );
-      },
+      render: (_, record) => (
+        <p>
+          {record.total_blood_donations > 0
+            ? `${(
+                (100 * record.female_donors) /
+                record.total_blood_donations
+              ).toFixed(1)}% (${record.female_donors})`
+            : `0% (${record.female_donors})`}
+        </p>
+      ),
       sorter: false,
+      width: 200,
     },
     {
       title: "From Male donor",
       dataIndex: "from_male_donor",
-      render: (_, record) => {
-        return (
-          <p>
-            {(
-              (100 * record.male_donors) /
-              record.total_blood_donations
-            ).toFixed(1)}
-            %
-          </p>
-        );
-      },
+      render: (_, record) => (
+        <p>
+          {record.total_blood_donations > 0
+            ? `${(
+                (100 * record.male_donors) /
+                record.total_blood_donations
+              ).toFixed(1)}% (${record.male_donors})`
+            : `0% (${record.male_donors})`}
+        </p>
+      ),
       sorter: false,
+      width: 200,
     },
     {
       title: "From center",
       dataIndex: "from_center",
-      render: (_, record) => {
-        return (
-          <p>
-            {(
-              (100 * record.donations_fromCenter) /
-              record.total_blood_donations
-            ).toFixed(1)}
-            %
-          </p>
-        );
-      },
+      render: (_, record) => (
+        <p>
+          {record.total_blood_donations > 0
+            ? `${(
+                (100 * record.donations_fromCenter) /
+                record.total_blood_donations
+              ).toFixed(1)}% (${record.donations_fromCenter})`
+            : `0% (${record.donations_fromCenter})`}
+        </p>
+      ),
       sorter: false,
+      width: 200,
     },
     {
       title: "From mobile",
       dataIndex: "from_mobile",
-      render: (_, record) => {
-        return (
-          <p>
-            {(
-              (100 * record.donations_from_mobile) /
-              record.total_blood_donations
-            ).toFixed(1)}
-            %
-          </p>
-        );
-      },
+      render: (_, record) => (
+        <p>
+          {record.total_blood_donations > 0
+            ? `${(
+                (100 * record.donations_from_mobile) /
+                record.total_blood_donations
+              ).toFixed(1)}% (${record.donations_from_mobile})`
+            : `0% (${record.donations_from_mobile})`}
+        </p>
+      ),
       sorter: false,
+      width: 200,
     },
     {
       title: "Mobile Session conducted",
       dataIndex: "mobile_session_conducted",
-      render: (_, record) => {
-        return (
-          <p>
-            {(
-              (100 * record.mobile_sessions_conducted) /
-              record.total_blood_donations
-            ).toFixed(1)}
-            %
-          </p>
-        );
-      },
+      render: (_, record) => (
+        <p>
+          {record.total_blood_donations > 0
+            ? `${(
+                (100 * record.mobile_sessions_conducted) /
+                record.total_blood_donations
+              ).toFixed(1)}% (${record.mobile_sessions_conducted})`
+            : `0% (${record.mobile_sessions_conducted})`}
+        </p>
+      ),
       sorter: false,
+      width: 200,
     },
     {
       title: "Number of active blood donors Club2",
       dataIndex: "number_of_active_blood_donors_club2",
       sorter: false,
-      render: (_, record) => {
-        return (
-          <p>
-            {(
-              (100 * record.active_blood_donor_clubs) /
-              record.total_blood_donations
-            ).toFixed(1)}
-            %
-          </p>
-        );
-      },
+      render: (_, record) => (
+        <p>
+          {record.total_blood_donations > 0
+            ? `${(
+                (100 * record.active_blood_donor_clubs) /
+                record.total_blood_donations
+              ).toFixed(1)}% (${record.active_blood_donor_clubs})`
+            : `0% (${record.active_blood_donor_clubs})`}
+        </p>
+      ),
       width: 300,
     },
     {
-      title: "Collection plan achivement  ",
-      dataIndex: "collection_plan_achivement  ",
-      render: (_, record) => {
-        return (
-          <p>
-            {(record.target
-              ? (100 * record.total_blood_donations) / record.target
-              : 0
-            ).toFixed(1)}
-            %
-          </p>
-        );
-      },
+      title: "Collection plan achievement",
+      dataIndex: "collection_plan_achievement",
+      render: (_, record) => (
+        <p>
+          {record.target > 0
+            ? `${((100 * record.total_blood_donations) / record.target).toFixed(
+                1
+              )}% (${record.total_blood_donations})`
+            : `0% (${record.total_blood_donations})`}
+        </p>
+      ),
       sorter: false,
+      width: 200,
     },
     {
-      title: "Collection Per Mobile Session ",
-      dataIndex: "collection_per_mobile_session ",
-      render: (_, record) => {
-        return (
-          <p>
-            {record.mobile_sessions_conducted
-              ? Math.round(
-                  record.donations_from_mobile /
-                    record.mobile_sessions_conducted
-                )
-              : 0}
-          </p>
-        );
-      },
+      title: "Collection Per Mobile Session",
+      dataIndex: "collection_per_mobile_session",
+      render: (_, record) => (
+        <p>
+          {record.mobile_sessions_conducted > 0
+            ? `${Math.round(
+                record.donations_from_mobile / record.mobile_sessions_conducted
+              )} (${record.donations_from_mobile})`
+            : `0 (${record.donations_from_mobile})`}
+        </p>
+      ),
       sorter: false,
+      width: 200,
     },
   ];
 

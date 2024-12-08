@@ -52,8 +52,17 @@ class IndicatorsService {
       return response.data;
     });
   }
-  searchIndicator({ page, limit, searchText = null, sort = null, order }) {
-    let url = `/indicators?page=${page}&limit=${limit}`;
+  searchIndicator({
+    page,
+    limit,
+    searchText = null,
+    sort = null,
+    order,
+    toDate,
+    formDate,
+    siteId,
+  }) {
+    let url = `/indicators?page=${page}&limit=${limit}&toDate=${toDate}&fromDate=${formDate}`;
     if (sort) {
       const sortValue =
         order == "ascend" ? sort : order == "descend" ? "-" + sort : "";
@@ -62,6 +71,9 @@ class IndicatorsService {
 
     if (searchText) {
       url = url + `&searchText=${searchText}`;
+    }
+    if (siteId) {
+      url = url + `&siteId=${siteId}`;
     }
 
     return api.get(url).then((response) => {
