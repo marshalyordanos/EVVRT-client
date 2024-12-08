@@ -10,7 +10,7 @@ import RhMinusVeBlood from "./RhMinusVeBlood";
 import BloodUtilization from "./BloodUtilization";
 import PDC from "./PDC";
 import Logstics from "./Logstics";
-
+import AllReport from "./AllReports";
 const ReportTab = () => {
   const onChange = (key) => {
     console.log(key);
@@ -18,7 +18,12 @@ const ReportTab = () => {
   const items = [
     {
       key: "1",
-      label: <p className=" p-2 text-lg">Tab 1</p>,
+      label: <p className=" p-2 text-lg">All</p>,
+      children: <AllReport />,
+    },
+    {
+      key: "1000",
+      label: <p className=" p-2 text-lg">By Region</p>,
       children: <AdminDashboard />,
     },
     {

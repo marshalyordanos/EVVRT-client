@@ -174,7 +174,7 @@ const RegionsEdit = ({
         <Form.Item
           className=" flex-1"
           name={["region", "managerId"]}
-          label="managerid"
+          label="manager"
           rules={[
             {
               required: true,

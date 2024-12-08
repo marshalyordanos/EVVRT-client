@@ -1,5 +1,6 @@
 import React from "react";
 import * as XLSX from "xlsx";
+import { indicatorsInvert } from "./indicators";
 
 function FileInput({
   data,
@@ -28,9 +29,16 @@ function FileInput({
       setIsModalOpen(true);
       setModalImport(false);
       // setModeID(id);
+
+      const x = sheetData.map((data) => ({
+        name: indicatorsInvert[data.name],
+        value: data.value,
+      }));
       console.log("sheetData ............................ : ", sheetData);
 
-      setData(sheetData);
+      console.log("sheetData ............................ : ", x);
+
+      setData(x);
       e.target.value = ""; // This clears the file input
     };
 

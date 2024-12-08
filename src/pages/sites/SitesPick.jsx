@@ -89,7 +89,7 @@ const SitesPick = ({ setIsModalOpen, selectHandler }) => {
       </SearchInputStyle>
 
       <CommonTable
-        rowSelectionType={"radio"}
+        rowSelectionType={"checkbox"}
         data={sitesData}
         columns={columns}
         setSelection={setSitesSelection}
@@ -104,7 +104,7 @@ const SitesPick = ({ setIsModalOpen, selectHandler }) => {
         <button
           disabled={sitesSelection.length == 0}
           className={sitesSelection.length > 0 ? "" : "disable"}
-          onClick={() => selectHandler(sitesSelection[0])}
+          onClick={() => selectHandler(sitesSelection)}
         >
           Submit
         </button>

@@ -66,6 +66,11 @@ const UsersEdit = ({
     form.resetFields(); // Reset form fields
   };
 
+  function validateEthiopianPhoneNumber(phoneNumber) {
+    const regex = /^(\+2519\d{8}|\+2517\d{8}|09\d{8}|07\d{8})$/;
+    return regex.test(phoneNumber);
+  }
+
   const userPickHandler = (data) => {
     console.log("userPickHandler", data);
 
@@ -212,12 +217,20 @@ const UsersEdit = ({
           )}
 
           <Form.Item
-            className=" flex-1"
+            className="flex-1"
             name={["user", "phoneNumber"]}
             label="Phone Number"
             rules={[
               {
-                required: true,
+                validator: (_, value) => {
+                  if (!value) {
+                    return Promise.reject("Phone number is required");
+                  }
+                  if (!validateEthiopianPhoneNumber(value)) {
+                    return Promise.reject("Please enter a valid phone number");
+                  }
+                  return Promise.resolve();
+                },
               },
             ]}
           >

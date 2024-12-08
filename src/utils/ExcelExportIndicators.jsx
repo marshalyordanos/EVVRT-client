@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { saveAs } from "file-saver";
 import * as XLSX from "xlsx";
+import { indicators } from "./indicators";
 
 const ExcelExportIndicators = ({ data }) => {
   console.log("indicators excel data: ", data);
   const report = Object.keys(data?.indicators).map((key) => ({
-    name: key,
+    name: indicators[key],
     value: data?.indicators[key],
   }));
+  console.log("indicators excel data222: ", data?.indicators);
 
   const exportToExcel = () => {
     const worksheet = XLSX.utils.json_to_sheet(report);

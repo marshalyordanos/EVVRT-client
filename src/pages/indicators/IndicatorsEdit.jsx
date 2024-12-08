@@ -55,6 +55,8 @@ const IndicatorsEdit = ({
   const [indicatorPick, setIndicatorPick] = useState(false);
   const [sitePick, setSitePick] = useState(false);
   const [selectedSite, setSelectedsite] = useState(null);
+  const [selectedSites, setSelectedsites] = useState([]);
+
   const [forms, setForms] = useState(null);
   const first_time_donors =
     Number(Form.useWatch(["indicator", "first_time_donors"], form)) || 0;
@@ -128,6 +130,7 @@ const IndicatorsEdit = ({
           siteId: data.siteId._id,
           dueDate: dayjs(data.dueDate),
           date: dayjs(data.date),
+          submissionDate: dayjs(data.submissionDate),
           isPublished: data.isPublished,
         });
 
@@ -144,6 +147,7 @@ const IndicatorsEdit = ({
               dueDate: dayjs(data.dueDate),
               date: dayjs(data.date),
               isPublished: data.isPublished,
+              submissionDate: dayjs(data.submissionDate),
             },
             indicator: objImpotred,
           });
@@ -155,6 +159,7 @@ const IndicatorsEdit = ({
               dueDate: dayjs(data.dueDate),
               date: dayjs(data.date),
               isPublished: data.isPublished,
+              submissionDate: dayjs(data.submissionDate),
             },
             indicator: data.indicators,
           });
@@ -177,11 +182,11 @@ const IndicatorsEdit = ({
     setIndicatorPick(false);
   };
   const sitePickHandler = (data) => {
-    setSelectedsite(data);
+    setSelectedsites(data);
     form.setFieldsValue({
       form: {
         ...form.getFieldsValue().form,
-        siteId: data?._id,
+        siteId: data[0]?._id,
       },
     });
     setSitePick(false);
@@ -192,15 +197,25 @@ const IndicatorsEdit = ({
       // setLoading(true);
       console.log("datas", datas);
 
-      const data = await indicatorsService.createIndicator({
-        ...datas.form,
-        date: forms?.date,
-        dueDate: forms?.dueDate,
-        submissionDate: form?.submissionDate,
-      });
+      // const data = await indicatorsService.createIndicator({
+      //   ...datas.form,
+      //   date: forms?.date,
+      //   dueDate: forms?.dueDate,
+      //   submissionDate: form?.submissionDate,
+      // });
 
+      selectedSites.forEach(async (data) => {
+        const data2 = await indicatorsService.createIndicator({
+          ...datas.form,
+          siteId: data?._id,
+          date: forms?.date,
+          dueDate: forms?.dueDate,
+          submissionDate: forms?.submissionDate,
+        });
+
+        searchData("9999-09-03", "1970-09-03");
+      });
       setIsModalOpen(false);
-      searchData("9999-09-03", "1970-09-03");
 
       setLoading(false);
     } catch (err) {
@@ -238,7 +253,7 @@ const IndicatorsEdit = ({
             date: forms?.date,
             dueDate: forms?.dueDate,
             isPublished: forms?.isPublished,
-            submissionDate: form?.submissionDate,
+            submissionDate: forms?.submissionDate,
           },
           mode
         );
@@ -256,17 +271,19 @@ const IndicatorsEdit = ({
         // setLoading(true);
         console.log("datas", "===================================datas", datas);
 
+        // selectedSites.forEach(async (data) => {
         const data2 = await indicatorsService.saveIndicator({
           ...forms,
           indicators: datas.indicator,
           next: current,
         });
-
+        // });
         next();
         setIMportedData(null);
         if (current == 14) {
           setIsModalOpen(false);
         }
+        searchData("9999-09-03", "1970-09-03");
       } catch (err) {
         console.log(err);
       }
@@ -2687,7 +2704,11 @@ overload"
             <div className=" flex bg-slate-200 border-gray-200 border-[1px] rounded ">
               <Input
                 disabled
-                value={selectedSite?.name}
+                value={
+                  mode
+                    ? selectedSite?.name
+                    : selectedSites?.length + " site are selected"
+                }
                 className="border-none flex-1"
               />
               <div
@@ -2708,7 +2729,7 @@ overload"
               },
             ]}
           >
-            <DatePicker onChange={onChangeDate} />
+            <DatePicker onChange={onChangeSubmissionDate} />
           </Form.Item>
           <Form.Item
             className="flex-1 "

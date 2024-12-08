@@ -3,8 +3,8 @@ import { saveAs } from "file-saver";
 import * as XLSX from "xlsx";
 
 const ExcelExport = ({
-  regionId,
-  regionsData,
+  // regionId,
+  // regionsData,
   formDate,
   toDate,
   reportData,
@@ -13,13 +13,14 @@ const ExcelExport = ({
 }) => {
   const [exelData, setExelData] = useState([]);
   const [region, setRegion] = useState([]);
+  // console.log("{{{{{{{{{{{{{{{{{{{{{:", data, reportData);
 
   useEffect(() => {
-    const reg = regionsData.find((region) => region._id == regionId);
+    // const reg = regionsData.find((region) => region._id == regionId);
     //   let col = ""
-    console.log("res", reg);
-    setRegion(reg);
-    console.log("reg", reportData, reg);
+    // console.log("res", reg);
+    // setRegion(reg);
+    // console.log("reg", reportData, reg);
     let result = data.map((obj) => {
       let newObj = { name: obj.name };
       reportData.forEach((key, index) => {
@@ -28,8 +29,10 @@ const ExcelExport = ({
       newObj["total"] = obj.total;
       return newObj;
     });
+    console.log("{{{{{{{{{{{{{{{{{{{{{:", result);
+
     setExelData(result);
-  }, [regionId, formDate, toDate]);
+  }, [formDate, toDate]);
   const exportToExcel = () => {
     const worksheet = XLSX.utils.json_to_sheet(exelData);
     const workbook = XLSX.utils.book_new();
@@ -39,7 +42,7 @@ const ExcelExport = ({
       type: "array",
     });
     const blob = new Blob([excelBuffer], { type: "application/octet-stream" });
-    saveAs(blob, `${region?.name}${formDate}_to_${toDate}.xlsx`);
+    saveAs(blob, `${"all"}${formDate}_to_${toDate}.xlsx`);
   };
 
   return (

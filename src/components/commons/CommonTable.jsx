@@ -67,7 +67,7 @@ const CommonTable = React.memo(
               total={total}
               defaultPageSize={5}
               defaultCurrent={1}
-              pageSizeOptions={["5", "10", "20"]}
+              pageSizeOptions={["5", "10", "20", "100"]}
               showSizeChanger={true}
               onChange={onShowSizeChange}
             />

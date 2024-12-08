@@ -232,6 +232,32 @@ const IndicatorsList = () => {
     },
 
     {
+      title: "Submission Date",
+      dataIndex: "submissionDate",
+      sorter: true,
+      render: (text, record) => {
+        return (
+          <p>
+            {new Date(record?.submissionDate).toLocaleDateString(
+              "en-US",
+              options
+            )}
+          </p>
+        );
+      },
+    },
+
+    {
+      title: "Start Date",
+      dataIndex: "date",
+      sorter: true,
+      render: (text, record) => {
+        return (
+          <p>{new Date(record?.date).toLocaleDateString("en-US", options)}</p>
+        );
+      },
+    },
+    {
       title: "Due date",
       dataIndex: "dueDate",
       sorter: true,
@@ -245,21 +271,10 @@ const IndicatorsList = () => {
     },
 
     {
-      title: "Date",
-      dataIndex: "date",
-      sorter: true,
-      render: (text, record) => {
-        return (
-          <p>{new Date(record?.date).toLocaleDateString("en-US", options)}</p>
-        );
-      },
-    },
-
-    {
-      title: "Is Published",
+      title: "Is Submited",
       dataIndex: "isPublished",
       render: (text, recored) => {
-        return recored.isPublished ? <p>true</p> : <p>false</p>;
+        return recored.isPublished ? <p className="">Yes</p> : <p>No</p>;
       },
     },
     {
@@ -499,7 +514,7 @@ const IndicatorsList = () => {
         >
           <div
             onClick={() => {
-              console.log("ppppp", recored);
+              // console.log("ppppp", recored);
             }}
             className="App"
           >
@@ -527,7 +542,7 @@ const IndicatorsList = () => {
         </SearchInputStyle> */}
         <div>
           {branchsData?.length != 0 &&
-            user?.user?.role == "site_coordiantor" && (
+            user?.user?.role !== "site_coordiantor" && (
               <Select
                 onChange={onBranchChange}
                 className="border-gray-400 mr-2 w-[200px]"
