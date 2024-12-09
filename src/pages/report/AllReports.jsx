@@ -57,13 +57,17 @@ const AllReport = () => {
 
   async function searchReport(toDate, formDate) {
     try {
+      setLoading(true);
       const res = await indicatorsService.getAdminReport(toDate, formDate);
       console.log(" console.log(res.data);,===", res);
       setReportData(res);
 
       funcCol(res);
       transformData(res);
+      setLoading(false);
     } catch (err) {
+      setLoading(false);
+
       console.log(err);
     }
   }
