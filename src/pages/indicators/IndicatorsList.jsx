@@ -225,7 +225,7 @@ const IndicatorsList = () => {
   };
   const columns = [
     {
-      title: "siteid",
+      title: "Branch",
       dataIndex: "siteId",
       render: (text, recored) => {
         return <p>{recored?.siteId?.name}</p>;
