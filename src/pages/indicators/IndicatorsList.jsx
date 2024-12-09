@@ -232,7 +232,7 @@ const IndicatorsList = () => {
     },
 
     {
-      title: "Submission Date",
+      title: "Report Date",
       dataIndex: "submissionDate",
       sorter: true,
       render: (text, record) => {
