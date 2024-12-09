@@ -531,7 +531,7 @@ const IndicatorsList = () => {
         </CommonModal>
       )}
 
-      <div className="flex flex-row gap-6 my-8 justify-between items-center">
+      <div className="flex flex-col   sm:flex-row gap-6 my-8 justify-between items-center">
         {/* <SearchInputStyle>
           <Input
             onChange={searchHandler}
@@ -572,7 +572,7 @@ const IndicatorsList = () => {
           />
         </div>
 
-        <div className="header_right flex items-center gap-3">
+        <div className="header_right flex flex-col   sm:flex-row  items-center gap-3">
           <div className="flex bg-green-800 flex justify-center items-center text-white py-2 px-4 rounded-full w-[200px] gap-2">
             <a
               className="block"

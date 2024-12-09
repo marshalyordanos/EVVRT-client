@@ -70,7 +70,7 @@ const Home = () => {
   };
   return (
     <div>
-      <div className="flex   justify-between mx-10 max-w-[1000px] m-5 md:mx-auto">
+      <div className="flex flex-col gap-2 sm:flex-row  justify-between mx-10 max-w-[1000px] m-5 md:mx-auto">
         <RangePicker
           // defaultValue={[
           //   dayjs("2019-09-03", dateFormat),

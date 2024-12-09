@@ -927,7 +927,7 @@ Diseases"
         >
           <Select
             className="border-gray-400 h-10"
-            placeholder="select your role"
+            placeholder="select the branch"
           >
             <Option value={true}>Yes</Option>
             <Option value={false}>no</Option>
@@ -2788,7 +2788,12 @@ overload"
         >
           {/* **************************** steper ****************************** */}
           <>
-            <Steps current={current} items={items} />
+            <Steps
+              size={10}
+              responsive={false}
+              current={current}
+              items={items}
+            />
             <div style={contentStyle}>{steps[current].content}</div>
             <div
               style={{
