@@ -473,7 +473,7 @@ const IndicatorsList = () => {
 
       {submitModal ? (
         <Modal
-          title="Delete"
+          title="Report"
           open={submitModal}
           onOk={() => {
             handleSubmitIndectors(selectedIndicator);
@@ -490,7 +490,6 @@ const IndicatorsList = () => {
               Cancel
             </Button>,
             <Button
-              danger
               key="submit"
               type="primary"
               loading={loading}

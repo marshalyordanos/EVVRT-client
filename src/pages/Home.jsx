@@ -30,18 +30,23 @@ const Home = () => {
         formDate
       );
       console.log(" console.log(res.data);,", res);
-      const x = Object.keys(res[0]).map((key) => ({
-        name: key,
-        val: res[0][key],
-      }));
-      const y = x.map((data) => ({
-        name: indicators[data.name],
-        value: data.val,
-      }));
-      console.log("yyyyyyyyyyyyyy::", y);
-      setData(x);
-      setExelData(y);
-      setLoading(false);
+      if (res.length > 0) {
+        const x = Object.keys(res[0]).map((key) => ({
+          name: key,
+          val: res[0][key],
+        }));
+        const y = x.map((data) => ({
+          name: indicators[data.name],
+          value: data.val,
+        }));
+        console.log("yyyyyyyyyyyyyy::", y, x);
+        setData(x);
+        setExelData(y);
+        setLoading(false);
+      } else {
+        setData(res);
+        setLoading(false);
+      }
     } catch (err) {
       setLoading(false);
       console.log(err);
