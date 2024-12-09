@@ -127,16 +127,18 @@ const IndicatorsList = () => {
     featchBranch();
   }, []);
   async function featchBranch() {
-    try {
-      setLoading(true);
-      const { payload } = await dispatch(searchSites("all"));
-      console.log("payload", payload);
-      setBranchsData(payload.data);
+    if (user?.user?.role != "site_coordiantor") {
+      try {
+        setLoading(true);
+        const { payload } = await dispatch(searchSites("all"));
+        console.log("payload", payload);
+        setBranchsData(payload.data);
 
-      setLoading(false);
-    } catch (err) {
-      console.log(err);
-      setLoading(false);
+        setLoading(false);
+      } catch (err) {
+        console.log(err);
+        setLoading(false);
+      }
     }
   }
   const handlePagination = async (page, pageSize) => {

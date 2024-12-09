@@ -116,8 +116,12 @@ const Navbar = () => {
             </li>
           )}
           <li>
+            {" "}
+            <NavLink to="/setting/profile">Profile</NavLink>
+          </li>
+          <li>
             <button
-              className="logut_link"
+              className="logut_link my-2 px-3 text-lg"
               onClick={() => {
                 setIsModalOpen(true);
               }}
