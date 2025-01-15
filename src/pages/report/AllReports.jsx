@@ -151,6 +151,7 @@ const AllReport = () => {
       <div className="flex justify-between items-center">
         <div className="flex gap-10 my-5">
           <RangePicker
+            picker="month"
             // defaultValue={[
             //   dayjs("2019-09-03", dateFormat),
             //   dayjs("2019-11-22", dateFormat),

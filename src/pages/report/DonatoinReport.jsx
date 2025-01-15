@@ -310,6 +310,7 @@ const DonatoinReport = () => {
             </Select>
           )} */}
               <RangePicker
+                picker="month"
                 // defaultValue={[
                 //   dayjs("2019-09-03", dateFormat),
                 //   dayjs("2019-11-22", dateFormat),

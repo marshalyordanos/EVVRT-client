@@ -3,9 +3,10 @@ import ChatApp from "../../utils/BarChart";
 import indicatorsService from "../indicators/IndicatorsService";
 import { searchRegions } from "../regions/RegionsRedux";
 import { useDispatch } from "react-redux";
-import { Select } from "antd";
+import { DatePicker, Select } from "antd";
 import Chart from "react-apexcharts";
 import { indicators } from "../../utils/indicators";
+const { RangePicker } = DatePicker;
 
 const DashBoard = () => {
   const [forms, setForms] = useState({
@@ -14,6 +15,10 @@ const DashBoard = () => {
     formDate: "1970-09-03",
   });
   const [loading, setLoading] = useState("false");
+  const [ind, setInd] = useState(null);
+  const [ind2, setInd2] = useState(null);
+  const [resInd, setResInd] = useState(null);
+  const [dataMonth, setDataMonth] = useState([]);
 
   const [regionsData, setRegionsData] = useState([]);
 
@@ -26,6 +31,13 @@ const DashBoard = () => {
   // useEffect(() => {
   //   searchReport(forms.toDate, forms.formDate);
   // }, []);
+  useEffect(() => {
+    console.log("statrt");
+    searchReport(forms.toDate, forms.formDate);
+    const currentYear = new Date().getFullYear().toString();
+
+    searchMonthReport(currentYear);
+  }, []);
 
   useEffect(() => {
     searchData();
@@ -47,7 +59,41 @@ const DashBoard = () => {
       setLoading(false);
     }
   }
-
+  async function searchMonthReport(year) {
+    try {
+      const res = await indicatorsService.getRegionReportMonth(year);
+      console.log(
+        " console.log(res.data): searchMonthReport:1 ",
+        Object.keys(res[0])
+          .filter((x) => x != "name" || x != "total")
+          .map((x) => res[0][x])
+      );
+      setDataMonth(res);
+      setMale_femaleData({
+        options: {
+          chart: {
+            id: "basic-line",
+          },
+          xaxis: {
+            categories: Object.keys(res[0]).filter(
+              (x) => x != "name" && x != "total"
+            ),
+          },
+          colors: ["#FF5733"], // Custom color for the line
+        },
+        series: [
+          {
+            name: "series-1",
+            data: Object.keys(res[0])
+              .filter((x) => x != "name" && x != "total")
+              .map((x) => res[0][x]),
+          },
+        ],
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  }
   async function searchReport(toDate, formDate, regionId) {
     try {
       const res = await indicatorsService.getAdminReport(
@@ -55,10 +101,21 @@ const DashBoard = () => {
         formDate,
         regionId
       );
-      console.log(" console.log(res.data);,", res);
+      if (res?.length > 0) {
+        const xx = async (res) => {
+          const d = Object.keys(res).filter((x) => {
+            return indicators[x]?.startsWith("T");
+          });
+          return d;
+        };
+        const d = await xx(res[0]);
+        console.log(" console.log(res.data);,11", d);
+
+        setInd(d);
+      }
       const x = res.map((r) => r?.siteName);
       const y = res.map((r) => r?.total_blood_donations);
-
+      setResInd(res);
       console.log(" console.log(res.data);,", x, y);
 
       setData({
@@ -142,16 +199,7 @@ const DashBoard = () => {
       // }));
 
       console.log("xxxxxxxxxxxxxx:", res[0]);
-      setMale_femaleData({
-        series: [res[0].male_donors, res[0].female_donors],
-        options: {
-          // chart: {
-          //   width: 380,
-          //   type: "pie",
-          // },
-          labels: ["Male donors", "Female donors"],
-        },
-      });
+
       // console.log("yyyyyyyyyyyyyy::", y);
       // setData(x);
       // setExelData(y);
@@ -161,23 +209,99 @@ const DashBoard = () => {
       console.log(err);
     }
   }
+  const onChangeFromDate = (date, dateString) => {
+    console.log(date, dateString);
+    if (dateString[0] == "" && dateString[1] == "") {
+      setForms({ ...forms, toDate: "9999-09-03", formDate: "1970-09-03" });
+      searchReport("9999-09-03", "1970-09-03", forms.regionId);
+    } else {
+      setForms({ ...forms, formDate: dateString[0], toDate: dateString[1] });
+      searchReport(dateString[1], dateString[0], forms.regionId);
+    }
+  };
+  const onIndChnage = (val) => {
+    setInd2(val);
+    console.log(
+      "resInd::",
+      val,
+      dataMonth.find((x) => x.name == val)
+    );
+    const y = resInd.map((r) => r[val]);
+
+    setMale_femaleData({
+      options: {
+        chart: {
+          id: "basic-line",
+        },
+        xaxis: {
+          categories: Object.keys(dataMonth.find((x) => x.name == val)).filter(
+            (x) => x != "name" && x != "total"
+          ),
+        },
+        colors: ["#FF5733"], // Custom color for the line
+      },
+      series: [
+        {
+          name: "series-1",
+          data: Object.keys(dataMonth.find((x) => x.name == val))
+            .filter((x) => x != "name" && x != "total")
+            .map((x) => dataMonth.find((x) => x.name == val)[x]),
+        },
+      ],
+    });
+    setData({
+      ...data,
+      series: [
+        {
+          name: indicators[val],
+          data: y, // Data for each month
+        },
+      ],
+    });
+  };
   return (
-    <div className=" max-w-full m-auto ">
-      <div className="flex gap-4">
-        <div className="bg-slate-100 w-[700px] my-10 p-6 rounded-xl">
-          <p className="text-2xl">Region total blood donations </p>
-          {regionsData?.length != 0 && (
+    <div className=" max-w-full m-auto flex flex-col items-center ">
+      <div className="px-10 pt-10 self-start flex  gap-4 ">
+        {regionsData?.length != 0 && (
+          <Select
+            onChange={onRegionChange}
+            className="border-gray-400 w-[300px]"
+            placeholder="select your role"
+            defaultValue={regionsData && regionsData[0]?._id}
+          >
+            {regionsData?.map((region) => (
+              <Option value={region._id}>{region.name}</Option>
+            ))}
+          </Select>
+        )}
+        <RangePicker
+          picker="month"
+          // defaultValue={[
+          //   dayjs("2019-09-03", dateFormat),
+          //   dayjs("2019-11-22", dateFormat),
+          // ]}
+          onChange={onChangeFromDate}
+        />
+        <div className="">
+          {ind?.length != 0 && (
             <Select
-              onChange={onRegionChange}
+              onChange={onIndChnage}
               className="border-gray-400 w-[300px]"
               placeholder="select your role"
               defaultValue={regionsData && regionsData[0]?._id}
             >
-              {regionsData?.map((region) => (
-                <Option value={region._id}>{region.name}</Option>
+              {ind?.map((d, i) => (
+                <Option value={d}>{indicators[d]}</Option>
               ))}
             </Select>
           )}
+        </div>
+      </div>
+
+      <div className="flex gap-4">
+        <div className="bg-slate-100 w-[700px] my-10 p-6 rounded-xl">
+          <p className="text-2xl">Region total blood donations </p>
+
           <div className="flex gap-3">
             <div className="w-[700px]">
               {data && <ChatApp type={"bar"} data={data} />}
@@ -193,7 +317,7 @@ const DashBoard = () => {
               <Chart
                 options={male_femaleData?.options}
                 series={male_femaleData?.series}
-                type="pie"
+                type="line"
                 width={500}
                 height={400}
               />

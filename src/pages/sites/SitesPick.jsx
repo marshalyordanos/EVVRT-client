@@ -70,11 +70,6 @@ const SitesPick = ({ setIsModalOpen, selectHandler }) => {
       title: "name",
       dataIndex: "name",
     },
-
-    {
-      title: "coordinatorid",
-      dataIndex: "coordinatorid",
-    },
   ];
 
   return (

@@ -219,6 +219,7 @@ const IndicatorsList = () => {
         id
       );
       searchData("9999-09-03", "1970-09-03", null);
+      setSubmitModal(false);
     } catch (error) {
       console.log("err:::::", error);
     }
@@ -276,7 +277,11 @@ const IndicatorsList = () => {
       title: "Is Submited",
       dataIndex: "isPublished",
       render: (text, recored) => {
-        return recored.isPublished ? <p className="">Yes</p> : <p>No</p>;
+        return recored.isPublished ? (
+          <p className="">Submited</p>
+        ) : (
+          <p>Not Submited</p>
+        );
       },
     },
     {
@@ -500,7 +505,7 @@ const IndicatorsList = () => {
           ]}
           onCancel={() => setSubmitModal(false)}
         >
-          <h1 className=" text-2xl">Are you sure?</h1>
+          <h1 className=" text-2xl">Submit the indicators to the admin?</h1>
         </Modal>
       ) : (
         ""
@@ -565,6 +570,7 @@ const IndicatorsList = () => {
               </Select>
             )}
           <RangePicker
+            picker="month"
             // defaultValue={[
             //   dayjs("2019-09-03", dateFormat),
             //   dayjs("2019-11-22", dateFormat),

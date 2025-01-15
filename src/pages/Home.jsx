@@ -6,6 +6,7 @@ import { DatePicker, Empty, Spin } from "antd";
 import { saveAs } from "file-saver";
 import * as XLSX from "xlsx";
 const { RangePicker } = DatePicker;
+import dayjs from "dayjs";
 
 const Home = () => {
   const [data, setData] = useState([]);
@@ -13,11 +14,11 @@ const Home = () => {
   const [exelData, setExelData] = useState([]);
   const [forms, setForms] = useState({
     regionId: null,
-    toDate: "9999-09-03",
-    formDate: "1970-09-03",
+    toDate: "2025-01-01",
+    formDate: "2025-12-31",
   });
   useEffect(() => {
-    searchReport(null, null, null, "9999-09-03", "1970-09-03");
+    searchReport(null, null, null, "2025-01-01", "2025-12-31");
   }, []);
   async function searchReport(type, siteId, regionId, toDate, formDate) {
     try {
@@ -73,14 +74,16 @@ const Home = () => {
       searchReport(null, null, null, dateString[1], dateString[0]);
     }
   };
+  const dateFormat = "YYYY-MM-DD";
   return (
     <div>
       <div className="flex flex-col gap-2 sm:flex-row  justify-between mx-10 max-w-[1000px] m-5 md:mx-auto">
         <RangePicker
-          // defaultValue={[
-          //   dayjs("2019-09-03", dateFormat),
-          //   dayjs("2019-11-22", dateFormat),
-          // ]}
+          picker="month"
+          defaultValue={[
+            dayjs("2025-01-01", dateFormat),
+            dayjs("2025-12-31", dateFormat),
+          ]}
           onChange={onChangeFromDate}
         />
         <button
