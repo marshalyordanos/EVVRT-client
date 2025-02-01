@@ -333,7 +333,7 @@ const IndicatorsList = () => {
                   setIsModalOpen(true);
                 }}
               >
-                Add Indicators
+                Add Report
               </Button>
             )}
             {user?.user?.role == "site_coordiantor" &&

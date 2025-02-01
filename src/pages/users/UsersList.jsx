@@ -28,6 +28,7 @@ const UsersList = () => {
   const [usersSelection, setUsersSelection] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isDeleteModalOpen2, setIsDeleteModalOpen2] = useState(false);
 
   const [modeID, setModeID] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
@@ -118,6 +119,18 @@ const UsersList = () => {
       setLoading(false);
     }
   };
+  const handleDelete2 = async () => {
+    try {
+      setLoading(true);
+      const data = await usersService.deleteUser2(modeID);
+      setIsDeleteModalOpen2(false);
+
+      searchData();
+      setLoading(false);
+    } catch (err) {
+      setLoading(false);
+    }
+  };
 
   const onClick = ({ key }, record) => {
     if (key == "edit") {
@@ -196,6 +209,22 @@ const UsersList = () => {
       title: "role",
       dataIndex: "role",
       sorter: true,
+      render: (text, recored) => {
+        let x;
+        if (text == "admin") {
+          x = "Admin";
+        }
+        if (text == "site_coordiantor") {
+          x = "Site coordiantor";
+        }
+        if (text == "regional_manager") {
+          x = "Regional manager";
+        }
+        if (text == "manager") {
+          x = "Top Management Staff";
+        }
+        return <p>{x}</p>;
+      },
     },
 
     {
@@ -204,27 +233,36 @@ const UsersList = () => {
       render: (_, recored) => {
         return (
           <div className="flex g-2">
-          
             <Button
               type="text"
-              style={{border:"1px solid ligthgray",width:50}}
+              style={{ border: "1px solid ligthgray", width: 50 }}
               icon={<FiEdit size={20} />}
               onClick={() => {
                 setModeID(recored._id);
                 setIsModalOpen(true);
               }}
-             ></Button>
-             <di className="mx-1"></di>
-             <Button
+            ></Button>
+            <div className="mx-1"></div>
+            <button
+              className="border by-2 px-4 rounded hover:border-blue-600"
+              onClick={() => {
+                setModeID(recored._id);
+                setIsDeleteModalOpen2(true);
+              }}
+            >
+              {recored.isActive == "no" ? "Disabled" : "Enabled"}
+            </button>
+            <div className="mx-1"></div>
+
+            <Button
               type="text"
               icon={<IoTrashOutline size={20} />}
-              style={{border:"1px solid ligthgray",width:50}}
+              style={{ border: "1px solid ligthgray", width: 50 }}
               onClick={() => {
-                setModeID(recored._id); 
-      setIsDeleteModalOpen(true);
-
+                setModeID(recored._id);
+                setIsDeleteModalOpen(true);
               }}
-             ></Button>
+            ></Button>
           </div>
         );
       },
@@ -258,6 +296,19 @@ const UsersList = () => {
           handleDelete={handleDelete}
           loading={loading}
           isModalOpen={isDeleteModalOpen}
+        >
+          <h1 className=" text-2xl">Are you sure?</h1>
+        </CommonDeleteModal>
+      ) : (
+        ""
+      )}
+      {isDeleteModalOpen2 ? (
+        <CommonDeleteModal
+          title="Disable"
+          setIsModalOpen={setIsDeleteModalOpen2}
+          handleDelete={handleDelete2}
+          loading={loading}
+          isModalOpen={isDeleteModalOpen2}
         >
           <h1 className=" text-2xl">Are you sure?</h1>
         </CommonDeleteModal>

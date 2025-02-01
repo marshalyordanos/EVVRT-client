@@ -201,20 +201,18 @@ const UsersEdit = ({
         </FlexStyle>
 
         <FlexStyle>
-          {!mode && (
-            <Form.Item
-              className=" flex-1"
-              name={["user", "password"]}
-              label="Password"
-              rules={[
-                {
-                  required: true,
-                },
-              ]}
-            >
-              <Input className="border-gray-400 py-2" />
-            </Form.Item>
-          )}
+          <Form.Item
+            className=" flex-1"
+            name={["user", "password"]}
+            label="Password"
+            rules={[
+              {
+                required: true,
+              },
+            ]}
+          >
+            <Input className="border-gray-400 py-2" />
+          </Form.Item>
 
           <Form.Item
             className="flex-1"
@@ -236,7 +234,6 @@ const UsersEdit = ({
           >
             <Input className="border-gray-400 py-2" />
           </Form.Item>
-
           <Form.Item
             name={["user", "role"]}
             label="Role"
@@ -254,8 +251,8 @@ const UsersEdit = ({
             >
               <Option value="admin">Admin</Option>
               <Option value="site_coordiantor">Site coordiantor</Option>
-              <Option value="regional_manager">Rsegional manager</Option>
-              <Option value="manager">Data Manager</Option>
+              <Option value="regional_manager">Regional manager</Option>
+              <Option value="manager">Top Management Staff</Option>
             </Select>
           </Form.Item>
         </FlexStyle>

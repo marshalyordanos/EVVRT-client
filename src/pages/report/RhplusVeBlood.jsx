@@ -103,6 +103,14 @@ const RhplusVeBlood = () => {
       sorter: false,
     },
     {
+      title: "Platelets  requested by HFs ",
+      dataIndex: "target",
+      render: (_, record) => {
+        return <p>{record.requested_platelets_units}</p>;
+      },
+      sorter: false,
+    },
+    {
       title: "A+ve WB/CRC distributed to HFs",
       dataIndex: "target",
       render: (_, record) => {
@@ -139,6 +147,14 @@ const RhplusVeBlood = () => {
       dataIndex: "target",
       render: (_, record) => {
         return <p>{record.distributed_ffp_units}</p>;
+      },
+      sorter: false,
+    },
+    {
+      title: "Platelets  distributed to HFs",
+      dataIndex: "target",
+      render: (_, record) => {
+        return <p>{record.distributed_platelets_units}</p>;
       },
       sorter: false,
     },
@@ -219,6 +235,23 @@ const RhplusVeBlood = () => {
             {(record.requested_ffp_units
               ? (100 * record.distributed_ffp_units) /
                 record.requested_ffp_units
+              : 0
+            ).toFixed(1)}
+            %{` (${record.distributed_ffp_units})`}
+          </p>
+        );
+      },
+      sorter: false,
+    },
+    {
+      title: "Platelets   HFs Satisfaction",
+      dataIndex: "target",
+      render: (_, record) => {
+        return (
+          <p>
+            {(record.requested_platelets_units
+              ? (100 * record.distributed_ffp_units) /
+                record.requested_platelets_units
               : 0
             ).toFixed(1)}
             %{` (${record.distributed_ffp_units})`}

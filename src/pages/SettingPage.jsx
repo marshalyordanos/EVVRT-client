@@ -48,7 +48,7 @@ const SettingPage = () => {
       <div className="ml-10">
         <div className="flex gap-8 items-center mt-10">
           <p className="text-xl w-[270px] bg-gray-200  px-5 rounded-lg ">
-            Report form visibility start 1 date in the month
+            The report form becomes visible on the 1st of each month
           </p>
 
           {date && <InputNumber defaultValue={date} onChange={onChange} />}
@@ -56,7 +56,7 @@ const SettingPage = () => {
         </div>
         <div className="flex gap-8 items-center mt-5 ">
           <p className="text-xl w-[270px] bg-gray-200 px-5 rounded-lg ">
-            Duration of report form online in days
+            Duration of the report form's online availability in days.
           </p>
           {dueDate && (
             <InputNumber defaultValue={dueDate} onChange={onChangeTwo} />

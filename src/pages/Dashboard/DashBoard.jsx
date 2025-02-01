@@ -18,6 +18,10 @@ const DashBoard = () => {
   const [ind, setInd] = useState(null);
   const [ind2, setInd2] = useState(null);
   const [resInd, setResInd] = useState(null);
+  const [reportData, setReportData] = useState([]);
+  const [dipost, setDiposit] = useState(null);
+  const [component, setComponent] = useState(null);
+
   const [dataMonth, setDataMonth] = useState([]);
 
   const [regionsData, setRegionsData] = useState([]);
@@ -42,6 +46,10 @@ const DashBoard = () => {
   useEffect(() => {
     searchData();
   }, []);
+  useEffect(() => {
+    console.log("statrteee");
+    searchReport22(forms.toDate, forms.formDate);
+  }, []);
   async function searchData() {
     try {
       setLoading(true);
@@ -57,6 +65,87 @@ const DashBoard = () => {
     } catch (err) {
       console.log(err);
       setLoading(false);
+    }
+  }
+
+  async function searchReport22(toDate, formDate, regionId, reg) {
+    try {
+      console.log(" console.log(res.data) donsation;,2");
+
+      const res = await indicatorsService.getRegionReport(toDate, formDate);
+      console.log(" console.log(res.data) donsation;,", res);
+      setReportData(data);
+
+      const x = res.map((d) => d.regionName);
+      const y = res.map((record) =>
+        record.mobile_sessions_conducted > 0
+          ? `${Math.round(
+              record.donations_from_mobile / record.mobile_sessions_conducted
+            )} (${record.donations_from_mobile})`
+          : `0 (${record.donations_from_mobile})`
+      );
+      const y2 = res.map(
+        (record) => record.whole_blood_separated_into_components
+      );
+      console.log("xxxxx::::w: ", y2);
+
+      setDiposit({
+        options: {
+          chart: {
+            id: "basic-bar",
+          },
+          xaxis: {
+            categories: x,
+          },
+          title: {
+            text: "",
+            align: "center",
+          },
+          plotOptions: {
+            bar: {
+              horizontal: false,
+              endingShape: "rounded",
+            },
+          },
+        },
+        series: [
+          {
+            name: "Total blood collection",
+            data: y, // Data for each month
+          },
+        ],
+      });
+
+      setComponent({
+        options: {
+          chart: {
+            id: "basic-bar",
+          },
+          xaxis: {
+            categories: x,
+          },
+          title: {
+            text: "",
+            align: "center",
+          },
+          plotOptions: {
+            bar: {
+              horizontal: false,
+              endingShape: "rounded",
+            },
+          },
+        },
+        series: [
+          {
+            name: "Total blood collection",
+            data: y2, // Data for each month
+          },
+        ],
+      });
+      //   funcCol(regionId, res, reg);
+      // transformData(res);
+    } catch (err) {
+      console.log(err);
     }
   }
   async function searchMonthReport(year) {
@@ -109,12 +198,13 @@ const DashBoard = () => {
           return d;
         };
         const d = await xx(res[0]);
-        console.log(" console.log(res.data);,11", d);
 
         setInd(d);
       }
       const x = res.map((r) => r?.siteName);
       const y = res.map((r) => r?.total_blood_donations);
+      console.log(" console.log(res.data);,11", res);
+
       setResInd(res);
       console.log(" console.log(res.data);,", x, y);
 
@@ -144,26 +234,6 @@ const DashBoard = () => {
           },
         ],
       });
-      // setData2({
-      //   options: {
-      //     chart: {
-      //       id: "basic-pie",
-      //     },
-      //     labels: ["Category A", "Category B", "Category C"],
-      //     responsive: [{
-      //       breakpoint: 480,
-      //       options: {
-      //         chart: {
-      //           width: 200
-      //         },
-      //         legend: {
-      //           position: 'bottom'
-      //         }
-      //       }
-      //     }]
-      //   },
-      //   series: [44, 55, 41], // Data for each category
-      // })
     } catch (err) {
       console.log(err);
     }
@@ -310,7 +380,7 @@ const DashBoard = () => {
           {/* {data2 && <ChatApp type={"pie"} data={data2} />} */}
         </div>
         <div className="bg-slate-100 w-[700px] my-10 p-6 rounded-xl">
-          <p className="text-2xl">Total Female and male Donors </p>
+          <p className="text-2xl">{indicators[ind2]} </p>
 
           <div className="mixed-chart  flex justify-center items-center">
             {male_femaleData && (
@@ -325,6 +395,50 @@ const DashBoard = () => {
           </div>
           {/* {data2 && <ChatApp type={"pie"} data={data2} />} */}
         </div>
+      </div>
+
+      <div className="w-[100vw] p-5 bg-[#f3f8f8] r">
+        <p className="px-3">Collection Per Mobile Session</p>
+        {dipost && (
+          <div>
+            <div className="app ">
+              <div className="row">
+                <div className="mixed-chart">
+                  <Chart
+                    options={dipost?.options}
+                    series={dipost?.series}
+                    type={"bar"}
+                    width="100%"
+                    height={350}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      <div className="w-[100vw] my-10 p-5 bg-[#f3f8f8] r">
+        <p className="px-3">
+          Number of whole blood donations separated into components{" "}
+        </p>
+        {component && (
+          <div>
+            <div className="app ">
+              <div className="row">
+                <div className="mixed-chart">
+                  <Chart
+                    options={component?.options}
+                    series={component?.series}
+                    type={"bar"}
+                    width="100%"
+                    height={350}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
